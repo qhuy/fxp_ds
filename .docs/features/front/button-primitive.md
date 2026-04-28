@@ -14,7 +14,7 @@ progress:
   step: "placeholder en place (2 variants, 2 tailles, asChild) — roadmap d'enrichissement à dérouler"
   blockers: []
   resume_hint: "Composant fonctionnel mais minimal. Prochain enrichissement : variant destructive + tests a11y. Voir 'Roadmap d'enrichissement' ci-dessous pour le séquencement."
-  updated: "2026-04-28"
+  updated: 2026-04-28
 ---
 
 # Button — composant primitif
@@ -36,8 +36,8 @@ Cette fiche extrait `Button` du périmètre de `architecture/monorepo-bootstrap`
 ```
 
 **Variants livrés** :
-- `variant`: `primary` | `secondary` | `destructive`
-- `size`: `sm` | `md`
+- `variant`: `primary` | `secondary` | `destructive` | `ghost` | `link`
+- `size`: `sm` | `md` | `lg`
 - `asChild`: `boolean` (Radix Slot pour composition `<Button asChild><Link/></Button>`)
 - `ref` : prop standard React 19 (cf. `front/migrate-react-19-ref-prop`)
 - Toutes les `React.ButtonHTMLAttributes<HTMLButtonElement>` (disabled, onClick, type, form, etc.)
@@ -66,14 +66,14 @@ Le `Button` doit, à maturité, couvrir l'ensemble des cas d'usage attendus d'un
 - [x] `primary` — action principale (CTA primaire)
 - [x] `secondary` — action secondaire (CTA secondaire / outline)
 - [x] `destructive` — action destructrice (suppression, irréversible) — **3 usages identifiés** : confirm-delete, leave-without-saving, force-logout
-- [ ] `ghost` — action discrète (textuelle, sans fond)
-- [ ] `link` — visuellement un lien mais sémantiquement un button (utile dans les `Toast`, `Banner`)
+- [x] `ghost` — action discrète (textuelle, sans fond)
+- [x] `link` — visuellement un lien mais sémantiquement un button (utile dans les `Toast`, `Banner`)
 
 ### Tailles
 
 - [x] `sm`
 - [x] `md`
-- [ ] `lg` — pour CTA héros / hauteur 48px+
+- [x] `lg` — pour CTA héros / hauteur 48px+
 
 ### États
 
@@ -106,10 +106,11 @@ Les apps tenant peuvent override ces vars pour personnaliser le `Button` sans to
 | `--fxp-color-bg-default` | background variant secondary |
 | `--fxp-color-status-danger`, `--fxp-color-status-danger-hover` | background variant destructive |
 | `--fxp-color-fg-on-danger` | texte sur fond danger |
+| `--fxp-color-bg-subtle` | hover variant ghost |
 | `--fxp-color-focus-ring` | ring focus-visible |
 | `--fxp-radius-md` | border-radius |
 | `--fxp-space-2`/`-3`/`-4` | padding |
-| `--fxp-font-family-sans`, `--fxp-font-weight-medium`, `--fxp-font-size-sm`/`-md` | typographie |
+| `--fxp-font-family-sans`, `--fxp-font-weight-medium`, `--fxp-font-size-sm`/`-md`/`-lg` | typographie |
 | `--fxp-transition-fast` | transition hover/focus |
 
 Tout ajout de var consommée = à documenter ici **dans le même commit**.
@@ -137,12 +138,12 @@ Tout ajout de var consommée = à documenter ici **dans le même commit**.
 | Étape | Contenu | Effort | Trigger | Statut |
 |---|---|---|---|---|
 | 1 | Variant `destructive` + 1 story + 1 test | XS | Premier vrai usage app (confirmation suppression) | ✅ 2026-04-28 |
-| 2 | Variant `ghost` | XS | Usage Modal footer / Toolbar | — |
-| 3 | Taille `lg` + `font-size-lg` token | XS | Page hero CTA |
-| 4 | Slots `iconLeft`/`iconRight` | S | Préreq `front/icon-button-pattern` |
-| 5 | State `loading` | S | Préreq `front/spinner-primitive` |
-| 6 | Variant `link` | XS | Usage Banner / inline messages |
-| 7 | Audit a11y formel + tests keyboard | S | Avant 1ʳᵉ release publique |
+| 2 | Variant `ghost` | XS | Usage Modal footer / Toolbar | ✅ 2026-04-28 |
+| 3 | Taille `lg` + `font-size-lg` token | XS | Page hero CTA | ✅ 2026-04-28 |
+| 4 | Slots `iconLeft`/`iconRight` | S | Préreq `front/icon-button-pattern` | — |
+| 5 | State `loading` | S | Préreq `front/spinner-primitive` | — |
+| 6 | Variant `link` | XS | Usage Banner / inline messages | ✅ 2026-04-28 |
+| 7 | Audit a11y formel + tests keyboard | S | Avant 1ʳᵉ release publique | — |
 
 Chaque étape = 1 commit `feat(front): button — <change>`, mise à jour de cette fiche (cocher la case + ajouter dans Historique), update `docs/design-system-registry.md`.
 
@@ -153,6 +154,7 @@ Chaque étape = 1 commit `feat(front): button — <change>`, mise à jour de cet
 - **2026-04-28** — Storybook 10 + addon-vitest activés → 5 stories testées en Chromium headless (commit `180b13c`, `7530694`).
 - **2026-04-28** — **Fiche feature dédiée créée** (cette fiche) — extraction depuis bootstrap pour donner une vie propre au composant. Aucun change de code dans cette extraction (`docs:` only).
 - **2026-04-28** — **Étape 1 roadmap livrée** : variant `destructive`. Tokens ajoutés dans `packages/tokens/src/tokens.json` (`color.status.danger`, `color.status.danger-hover`, `color.fg.on-danger`) → regénérés via SD dans `dist/css/fxp.css`. `Button.css` enrichi (3 lignes CSS variant + hover). 1 test unitaire + 1 story Storybook. Validation : test 6/6, test:storybook 6/6 (Chromium headless), build/typecheck/lint/boundaries verts.
+- **2026-04-28** — **Étapes 2/3/6 roadmap livrées** : variants `ghost` + `link` + taille `lg`. Tokens ajoutés (`color.bg.subtle` pour ghost hover, `font-size.lg` pour size lg) → régénérés via SD. `Button.css` enrichi (3 nouveaux blocs variant + 1 size). cva mis à jour. 4 nouveaux tests + 3 nouvelles stories. Validation complète verte (test 9/9, test:storybook 9/9, build/typecheck/lint/boundaries verts).
 
 ## Definition of Done (du placeholder actuel — déjà fait)
 

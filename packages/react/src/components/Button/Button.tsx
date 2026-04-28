@@ -10,10 +10,13 @@ const buttonVariants = cva('fxp-button', {
       primary: 'fxp-button--primary',
       secondary: 'fxp-button--secondary',
       destructive: 'fxp-button--destructive',
+      ghost: 'fxp-button--ghost',
+      link: 'fxp-button--link',
     },
     size: {
       sm: 'fxp-button--sm',
       md: 'fxp-button--md',
+      lg: 'fxp-button--lg',
     },
   },
   defaultVariants: { variant: 'primary', size: 'md' },

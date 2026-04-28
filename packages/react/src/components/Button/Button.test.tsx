@@ -20,6 +20,21 @@ describe('Button', () => {
     expect(screen.getByRole('button').className).toContain('fxp-button--destructive')
   })
 
+  it('applique le variant ghost quand demandé', () => {
+    render(<Button variant="ghost">Discret</Button>)
+    expect(screen.getByRole('button').className).toContain('fxp-button--ghost')
+  })
+
+  it('applique le variant link quand demandé', () => {
+    render(<Button variant="link">En savoir plus</Button>)
+    expect(screen.getByRole('button').className).toContain('fxp-button--link')
+  })
+
+  it('applique la taille lg quand demandée', () => {
+    render(<Button size="lg">Hero CTA</Button>)
+    expect(screen.getByRole('button').className).toContain('fxp-button--lg')
+  })
+
   it('passthrough la prop className', () => {
     render(<Button className="custom-class">x</Button>)
     expect(screen.getByRole('button').className).toContain('custom-class')

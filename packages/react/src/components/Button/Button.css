@@ -47,6 +47,25 @@
   background: var(--fxp-color-status-danger-hover);
 }
 
+.fxp-button--ghost {
+  background: transparent;
+  color: var(--fxp-color-fg-default);
+}
+.fxp-button--ghost:hover:not(:disabled) {
+  background: var(--fxp-color-bg-subtle);
+}
+
+.fxp-button--link {
+  background: transparent;
+  color: var(--fxp-color-brand-500);
+  text-decoration: underline;
+  padding: 0;
+  border: none;
+}
+.fxp-button--link:hover:not(:disabled) {
+  color: var(--fxp-color-brand-500-hover);
+}
+
 /* sizes */
 .fxp-button--sm {
   padding: var(--fxp-space-2) var(--fxp-space-3);
@@ -55,4 +74,8 @@
 .fxp-button--md {
   padding: var(--fxp-space-2) var(--fxp-space-4);
   font-size: var(--fxp-font-size-md);
+}
+.fxp-button--lg {
+  padding: var(--fxp-space-3) var(--fxp-space-4);
+  font-size: var(--fxp-font-size-lg);
 }
