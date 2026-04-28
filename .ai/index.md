@@ -10,13 +10,22 @@ Entrée unique pour tout agent AI. Les shims à la racine (AGENTS.md, CLAUDE.md,
 
 1. Ce fichier (`.ai/index.md`)
 2. `.ai/quality/QUALITY_GATE.md` — critères BLOQUANTS avant DONE
+3. `.ai/guardrails.md` — non-goals + glossaire métier (si présent ; créé via `/aic-project-guardrails`)
 
 Puis **identifier le scope primaire** et charger :
 
-3. `.ai/rules/<scope>.md` (Pack B, scope-dépendant)
-4. **Lister** `ls .docs/features/<scope>/` — obligatoire à chaque tâche (pas conditionnel).
-5. Si la tâche touche une feature existante → charger `.docs/features/<scope>/<id>.md` **et** suivre récursivement ses `depends_on`.
-6. Si la tâche crée une nouvelle feature → créer le fichier depuis `.docs/FEATURE_TEMPLATE.md` AVANT tout commit.
+4. `.ai/rules/<scope>.md` (Pack B, scope-dépendant)
+5. **Lister** `ls .docs/features/<scope>/` — obligatoire à chaque tâche (pas conditionnel).
+6. Si la tâche touche une feature existante → charger `.docs/features/<scope>/<id>.md` **et** suivre récursivement ses `depends_on`.
+7. Si la tâche crée une nouvelle feature → créer le fichier depuis `.docs/FEATURE_TEMPLATE.md` AVANT tout commit.
+
+8. Charger les règles tech du preset :
+
+
+   - `.ai/rules/tech-react.md` si la tâche touche React/Next
+
+
+
 
 ## Scopes disponibles
 
@@ -30,6 +39,16 @@ Puis **identifier le scope primaire** et charger :
 | `architecture` | [.ai/rules/architecture.md](rules/architecture.md) | [`.docs/features/architecture/`](../.docs/features/architecture/) |
 | `security` | [.ai/rules/security.md](rules/security.md) | [`.docs/features/security/`](../.docs/features/security/) |
 | `handoff` | [.ai/rules/handoff.md](rules/handoff.md) | — |
+
+
+
+## Preset technique
+
+| Preset | Rules |
+|---|---|
+| `react-next` | [.ai/rules/tech-react.md](rules/tech-react.md) |
+
+
 
 
 ## Feature mesh (règle transverse, systématique)
@@ -47,6 +66,40 @@ Toute feature DOIT avoir son fichier sous `.docs/features/<scope>/<id>.md`.
 - **Pas de full diffs par défaut** — présenter les changements ciblés.
 - **Conventional Commits BLOQUANTS** — voir `.ai/quality/QUALITY_GATE.md` section Commits.
 - **Commits en français** (imposé par règles projet).
+
+## Auto-progression
+
+**Par défaut : zéro skill à invoquer.** L'utilisateur prompte en langage naturel, l'agent code/teste/commit, les transitions de phase feature sont appliquées automatiquement par deux canaux convergents :
+
+| Canal | Déclenché par | Agents bénéficiaires | Latence |
+|---|---|---|---|
+| Hook Claude `Stop` (`auto-progress.sh`) | fin de tour Claude Code | Claude | immédiat (avant commit) |
+| Hook git `pre-commit` (`.githooks/pre-commit`) | `git commit` | tous (claude, humain CLI) | au commit |
+
+Les deux partagent le même script et snapshotent chaque transition dans `.ai/.progress-history.jsonl` (append-only, 50 dernières, gitignored) pour permettre `/aic undo`.
+
+Règles inférées automatiquement (V1, conservatrice) :
+- Édits couverts par `touches:` d'une feature en `phase: spec` → bascule en `phase: implement`.
+- `progress.updated` bumpée à chaque édition.
+- Worklog appendé avec la liste des fichiers modifiés.
+
+Les transitions `implement → review` et `review → done` restent manuelles (override explicite ou `aic-feature-done`) pour éviter les faux positifs.
+
+### Skill `/aic` (override, rare)
+
+À n'utiliser que quand l'auto-progression se trompe :
+- `/aic repasse en spec` — rollback d'une bascule mal inférée
+- `/aic marque ça blocked, j'attends X` — bloqueur explicite
+- `/aic rouvre feature-X pour Y` — réouverture d'une fiche `done`
+- `/aic force done` — clôture sans attendre inférence evidence
+- `/aic undo` — annule la dernière transition auto
+
+Skills accessibles directement (lecture/CI) :
+- `/aic-feature-resume` — buckets EN COURS / BLOQUÉES / STALE / À FAIRE
+- `/aic-quality-gate` — check go/no-go complet
+- `/aic-project-guardrails` — cadre non-goals + glossaire métier (1-2 fois par projet ; produit `.ai/guardrails.md`)
+
+Les autres skills `/aic-feature-{new,update,handoff,done}` sont **internes** (invoqués par les hooks et par `/aic`). Pas besoin de les taper à la main.
 
 ## Runtime enforcement
 

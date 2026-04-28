@@ -11,7 +11,8 @@ Ce projet a été scaffoldé depuis le template [`ai_context`](https://github.co
    chmod +x .githooks/*
    ```
 3. Enrichir les fichiers `.ai/rules/<scope>.md` avec les règles spécifiques à fanxp-design-system.
-4. Vérifier l'intégrité :
+4. **Cadrer les guardrails** (recommandé) : dans Claude Code, lancer `/aic-project-guardrails` pour saisir les non-goals (hors-scope explicite) et le glossaire métier. Crée `.ai/guardrails.md` chargé via Pack A.
+5. Vérifier l'intégrité :
    ```bash
    bash .ai/scripts/check-shims.sh
    bash .ai/scripts/check-features.sh
@@ -32,6 +33,15 @@ Ce projet a été scaffoldé depuis le template [`ai_context`](https://github.co
 - `architecture` → `.ai/rules/architecture.md` + features `.docs/features/architecture/`
 - `security` → `.ai/rules/security.md` + features `.docs/features/security/`
 - `handoff` → `.ai/rules/handoff.md`
+
+
+
+## Preset technique
+
+`react-next` ajoute les règles suivantes :
+
+- `.ai/rules/tech-react.md`
+
 
 
 ## Feature mesh (systématique)
