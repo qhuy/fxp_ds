@@ -1,0 +1,7 @@
+/* @fxp/tokens — overrides dark
+ * Activation : <html data-theme="dark"> */
+
+[data-theme='dark'] {
+  --fxp-color-fg-default: #ededed;
+  --fxp-color-bg-default: #0a0a0a;
+}

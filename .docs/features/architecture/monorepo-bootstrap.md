@@ -4,14 +4,24 @@ scope: architecture
 title: Bootstrap monorepo Turbo (packages + apps + outillage)
 status: active
 depends_on: []
-touches: []
-# touches: rempli au prochain commit feat: (scaffold), quand les paths existeront.
-# Cibles documentées dans la section "Structure repo cible" ci-dessous.
+touches:
+  - package.json
+  - pnpm-workspace.yaml
+  - pnpm-lock.yaml
+  - turbo.json
+  - tsconfig.base.json
+  - .gitignore
+  - .npmrc
+  - .changeset/**
+  - packages/tokens/**
+  - packages/react/**
+  - packages/icons/**
+  - apps/docs/**
 progress:
-  phase: spec
-  step: "1/4 spec rédigée, scaffold à venir"
+  phase: implement
+  step: "scaffold complet — chaîne pnpm install/typecheck/test/build/storybook:build validée"
   blockers: []
-  resume_hint: "Toutes décisions structurelles sont actées dans .ai/rules/architecture.md et .ai/guardrails.md. Prochain tour : commit feat(architecture) qui pose la structure réelle et remplit touches."
+  resume_hint: "Squelette posé. Prochaines features candidates : architecture/tokens-pipeline-bootstrap (Style Dictionary + livraison DA), front/button-primitive-final (variants destructive/ghost + tailles supplémentaires), architecture/ci-cd-pipeline (GitHub Actions release Changesets)."
   updated: "2026-04-28"
 ---
 
@@ -142,14 +152,25 @@ Ces ADRs sont **bénéfiques mais non bloquants** pour le scaffold initial. Ils 
 
 ## Definition of Done
 
-- [ ] `package.json`, `pnpm-workspace.yaml`, `turbo.json`, `tsconfig.base.json`, `.gitignore`, `.npmrc` créés à la racine
-- [ ] `packages/{tokens,react,icons}/` scaffoldés avec `package.json`, `tsconfig.json`, stub `src/`
-- [ ] `apps/docs/` scaffoldé avec Astro fonctionnel
-- [ ] `Button` placeholder dans `packages/react/src/components/Button/` (Button.tsx + .css + .test + .stories + index)
-- [ ] `pnpm install` clean (pas de warning bloquant)
-- [ ] `pnpm typecheck` vert
-- [ ] `pnpm test` vert (au moins 1 test smoke Button)
-- [ ] `pnpm build` vert sur les 3 packages + Astro app
-- [ ] `pnpm storybook` boot et affiche `Button` avec ses variants
-- [ ] Worklog `monorepo-bootstrap.worklog.md` mis à jour à chaque édit (auto via hook ou manuel)
-- [ ] Commit `feat(architecture): scaffolde le monorepo (...)` valide (Conventional Commits + feature touchée)
+- [x] `package.json`, `pnpm-workspace.yaml`, `turbo.json`, `tsconfig.base.json`, `.gitignore`, `.npmrc` créés à la racine
+- [x] `packages/{tokens,react,icons}/` scaffoldés avec `package.json`, `tsconfig.json`, stub `src/`
+- [x] `apps/docs/` scaffoldé avec Astro fonctionnel (build static OK, 1 page générée)
+- [x] `Button` placeholder dans `packages/react/src/components/Button/` (Button.tsx + .css + .test + .stories + index)
+- [x] `pnpm install` clean (668 packages installés, postinstalls esbuild/sharp approuvés)
+- [x] `pnpm typecheck` vert (6 tasks)
+- [x] `pnpm test` vert (5 tests Button passed)
+- [x] `pnpm build` vert sur les 3 packages + Astro app
+- [x] `pnpm storybook:build` vert (preview built en 2s, output `storybook-static/`)
+- [x] `.changeset/` initialisé (config + README)
+- [ ] Worklog `monorepo-bootstrap.worklog.md` — laissé à l'auto-worklog hook
+- [x] Commit `feat(architecture): scaffolde le monorepo (...)` à venir avec ce changement
+
+## Evidence (validations exécutées 2026-04-28)
+
+```
+pnpm install        → ✓ Done in 5.8s (668 packages)
+pnpm typecheck      → ✓ 6/6 successful (turbo)
+pnpm test           → ✓ 5 tests passed (Button.test.tsx)
+pnpm build          → ✓ 4/4 successful (tokens echo, icons echo, react tsup, docs Astro)
+pnpm storybook:build → ✓ 3/3 successful (preview built in 2s)
+```

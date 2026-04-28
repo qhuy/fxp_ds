@@ -1,0 +1,30 @@
+/* @fxp/tokens — CSS vars publiques (light, default)
+ * Convention naming : --fxp-{category}-{role}-{shade-or-state}
+ * Cf. .ai/rules/architecture.md "Convention de naming CSS vars" */
+
+:root {
+  /* color */
+  --fxp-color-brand-500: #1e40af;
+  --fxp-color-brand-500-hover: #1e3a8a;
+  --fxp-color-fg-default: #0a0a0a;
+  --fxp-color-fg-on-brand: #ffffff;
+  --fxp-color-bg-default: #ffffff;
+  --fxp-color-focus-ring: #3b82f6;
+
+  /* space */
+  --fxp-space-2: 0.5rem;
+  --fxp-space-3: 0.75rem;
+  --fxp-space-4: 1rem;
+
+  /* radius */
+  --fxp-radius-md: 0.5rem;
+
+  /* typography */
+  --fxp-font-family-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --fxp-font-weight-medium: 500;
+  --fxp-font-size-sm: 0.875rem;
+  --fxp-font-size-md: 1rem;
+
+  /* transition */
+  --fxp-transition-fast: 150ms ease-out;
+}
