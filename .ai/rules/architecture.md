@@ -58,28 +58,93 @@ Stratégie A retenue (cf. ADR à créer) : `@fxp/react` est une lib NPM compilé
 - **`"use client"` par défaut** sur tout composant exporté → 100% RSC-compatible. Détail dans `.ai/rules/tech-react.md`.
 - **Registry NPM** : à confirmer avant 1ʳᵉ release (interne FXP via Verdaccio/JFrog/GitHub Packages, ou public npmjs sous scope `@fxp`).
 
-## Theming & pipeline tokens
+## Theming — niveau 3 (multi-tenant DTCG)
 
-Niveau actuel = **niveau 2** (light + dark via CSS vars). Upgrade niveau 3 (multi-tenant DTCG transforms) plus tard sans rewrite — Style Dictionary supporte les deux.
+**Niveau retenu dès jour 1 : niveau 3.** Cible : 4+ apps consommatrices, 5+ tenants par app, white-label scalable. Le niveau 2 (light/dark mono-tenant) est un cas dégradé du niveau 3.
 
-Pipeline :
+**Philosophie** : FXP ne fournit pas une *identité* — FXP fournit l'*ossature* (composants + structure tokens). Toute la couche visuelle (couleurs, typo, spacing, radius, shadows, transitions, motion, z-index, opacity, breakpoints) est **tenant-owned** via tokens DTCG.
+
+### Pipeline tokens
 
 ```
-DA / Figma + Tokens Studio plugin (export DTCG W3C natif)
-        ↓
-packages/tokens/src/tokens.json     (committed via PR par DA)
-        ↓ Style Dictionary build
+Tokens Studio (Figma plugin, format DTCG W3C natif)
+   ├── core/                        ← FXP-owned (échelles primitives + sémantiques)
+   │   ├── color-primitives.json    (gray-50…900, blue-50…900, etc.)
+   │   ├── typography-scales.json
+   │   ├── spacing-scale.json
+   │   ├── radius-scale.json
+   │   ├── shadow-scale.json
+   │   └── transition-scale.json
+   ├── theme-base/                  ← FXP-owned (mappings sémantiques par défaut)
+   │   └── semantic.json            (--fxp-color-brand-500 → core.blue.500, etc.)
+   └── tenants/                     ← DA + tenant-owned (overrides)
+       ├── tenant-acme.json
+       ├── tenant-bcd.json
+       └── …
+            ↓ Style Dictionary build (1 commande, N sorties)
 packages/tokens/dist/
-    fxp.css                  → :root { --fxp-color-brand-500: ... }
-    fxp.dark.css             → [data-theme="dark"] { ... }
-    tokens.ts                → export const colors = { brand: { 500: '#...' } }
-    tailwind.preset.js       → consommé interne au build packages/react
+    fxp.base.css                    → :root { --fxp-* (defaults) }
+    tenants/acme.css                → [data-tenant="acme"] { --fxp-* (overrides) }
+    tenants/bcd.css                 → [data-tenant="bcd"] { --fxp-* }
+    tenants/_index.json             → manifest { id, name, version, hash } pour discovery runtime
+    tokens.ts                       → export const tokens = { … } (typesafe pour code interne)
+    tailwind.preset.js              → consommé en interne au build packages/react UNIQUEMENT
 ```
 
-- **Source de vérité** : `packages/tokens/src/tokens.json` au format DTCG W3C.
-- **Builder** : Style Dictionary (Salesforce) — standard de facto, plugins pour les 4 sorties.
-- **Pas de runtime token resolution** côté `@fxp/react` — tokens compilés au build, exposés en CSS vars.
-- **Customisation par les apps** : redéfinir `--fxp-*` dans leur `:root`. **Seul** mécanisme supporté (cf. `.ai/guardrails.md` non-goal "Distribution registry-style").
+- **Source de vérité** : Tokens Studio côté DA, exporté en JSON DTCG W3C, committé dans `packages/tokens/src/` via PR.
+- **Builder** : [Style Dictionary](https://styledictionary.com) (Salesforce) — standard de facto, supporte natif les `$themes` Tokens Studio (1 base + N tenants → N fichiers CSS scopés).
+- **Pas de runtime token resolution** côté `@fxp/react` — tokens compilés au build, exposés en CSS vars. Les composants ne savent rien des tenants.
+
+### Convention de naming CSS vars (figée — rename = breaking major)
+
+```
+--fxp-{category}-{role}-{shade-or-state?}
+```
+
+Exemples canoniques :
+
+| Catégorie | Exemples |
+|---|---|
+| `color` | `--fxp-color-brand-500`, `--fxp-color-brand-500-hover`, `--fxp-color-fg-default`, `--fxp-color-fg-on-brand`, `--fxp-color-bg-subtle`, `--fxp-color-status-success`, `--fxp-color-status-danger` |
+| `space` | `--fxp-space-0`…`--fxp-space-24` (échelle 0/1/2/3/4/5/6/8/10/12/16/20/24) |
+| `radius` | `--fxp-radius-sm`, `--fxp-radius-md`, `--fxp-radius-lg`, `--fxp-radius-full` |
+| `shadow` | `--fxp-shadow-sm`, `--fxp-shadow-md`, `--fxp-shadow-lg` |
+| `font-family` | `--fxp-font-family-sans`, `--fxp-font-family-mono` |
+| `font-size` | `--fxp-font-size-xs`…`--fxp-font-size-2xl` |
+| `font-weight` | `--fxp-font-weight-regular`, `--fxp-font-weight-medium`, `--fxp-font-weight-bold` |
+| `line-height` | `--fxp-line-height-tight`, `--fxp-line-height-normal`, `--fxp-line-height-loose` |
+| `transition` | `--fxp-transition-fast`, `--fxp-transition-base`, `--fxp-transition-slow` |
+| `z` | `--fxp-z-dropdown`, `--fxp-z-sticky`, `--fxp-z-modal`, `--fxp-z-popover`, `--fxp-z-toast` |
+
+**Règle d'or** : sémantique > valeur brute. `--fxp-color-bg-default` est meilleur que `--fxp-color-gray-50` (un tenant peut mapper `bg-default` à du sable, du gris, du noir). Les `core/color-primitives` sont privées au pipeline tokens, pas exposées en CSS vars publiques.
+
+**Future-proof** : nouvelles catégories ajoutables sans breaking si la convention `--fxp-{category}-…` est respectée. La règle est inviolable.
+
+### Tenant resolution côté apps (Next.js)
+
+Avec 5+ tenants par app, les CSS de tous les tenants ne peuvent pas vivre dans le bundle. Stratégie standard :
+
+1. **Detection tenant côté serveur** — `middleware.ts` Next.js lit subdomain (`acme.app.fxp.com`), header (`X-Tenant-Id`), ou cookie → injecte `tenantId` dans la request.
+2. **Loading dynamique du CSS tenant** — le layout root injecte `<link rel="stylesheet" href="/_fxp/tenants/{tenantId}.css">` (asset servi par CDN, pas dans le bundle JS).
+3. **Annotation DOM** — `<html data-tenant={tenantId}>` pour activer le scope `[data-tenant="…"]` du CSS chargé.
+4. **Anti-FOUC** — le `<link>` est en `<head>` (rendu serveur), donc présent avant le first paint. Pas de flash.
+
+Le CDN sert les fichiers `tenants/<id>.css` générés par Style Dictionary. Versioning via hash (`tenants/acme.a3f9c2.css`) pour cache busting indépendant du bundle JS.
+
+### Customisation par les apps consommatrices
+
+**Seul mécanisme supporté** : redéfinir `--fxp-*` (via Tokens Studio + Style Dictionary, ou exceptionnellement directement dans le CSS de l'app).
+
+**Pas** d'override de markup, comportement, API publique, ou code source des composants — cf. [`.ai/guardrails.md`](../guardrails.md) non-goal "Customisation au-delà des tokens DTCG". Si un besoin sort de ce périmètre → PR upstream sur `@fxp/react` ou composant applicatif local non-FXP.
+
+### Gouvernance tokens (à formaliser en ADR)
+
+À cadrer avec la DA dès l'amorçage :
+
+- Qui peut écrire dans `core/` (FXP-owned) ? → équipe FXP uniquement.
+- Qui peut écrire dans `theme-base/` (FXP-owned) ? → équipe FXP, avec review DA.
+- Qui peut écrire dans `tenants/<id>.json` ? → DA, ou tenant lui-même via formulaire/UI ? À trancher.
+- Qui valide la PR de bump tokens ? → équipe FXP (cohérence) + DA (fidélité visuelle) à co-review.
 
 ## Versioning & breaking changes
 
