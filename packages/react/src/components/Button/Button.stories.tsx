@@ -80,6 +80,14 @@ export const WithIconRight: Story = {
   args: { iconRight: <ChevronRight />, children: 'Suivant' },
 }
 
+export const Loading: Story = {
+  args: { loading: true, children: 'Chargement…' },
+}
+
+export const LoadingDestructive: Story = {
+  args: { loading: true, variant: 'destructive', children: 'Suppression…' },
+}
+
 export const Small: Story = {
   args: { size: 'sm', children: 'Small' },
 }
