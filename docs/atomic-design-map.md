@@ -1,8 +1,8 @@
 # Atomic Design Map
 
-Cartographie atomique de l'UI. Sert aux audits de duplication, aux guards d'imports et à la planification de refactor DS.
+Cartographie atomique de l'UI exposée par `@fxp/react` et des surfaces applicatives de demo.
 
-Scope : composants UI (`ui/**`), composants de feature (`features/**`), routes (`app/**` ou `src/routes/**`).
+Scope courant : `packages/react/src/components/**`, `apps/docs/**`, `apps/playground/**`.
 
 ## Légende
 
@@ -12,8 +12,8 @@ Scope : composants UI (`ui/**`), composants de feature (`features/**`), routes (
 ## Notes
 
 - Classification initiale basée sur la structure et le nommage ; affiner au fil du refactor.
-- Les libs UI tierces lourdes sont isolées derrière des adapters dans `ui/adapters/<lib>/*` ; aucun import direct ailleurs.
-- Les primitives shadcn/Radix vivent dans `ui/primitives/*` et sont consommées par `ui/common/*`.
+- Les primitives FXP vivent dans `packages/react/src/components/*`.
+- Les apps `apps/*` consomment `@fxp/react` via le barrel public et importent `@fxp/react/styles.css` une seule fois à la racine.
 
 ## Summary
 
@@ -25,9 +25,9 @@ Scope : composants UI (`ui/**`), composants de feature (`features/**`), routes (
 - Adapter files : 0
 -->
 
-- UI components : 0
+- UI components : 2
 - Feature components : 0
-- App route components : 0
+- App route components : 3
 - Imports libs tierces hors adapters : 0
 - Adapter files : 0
 
@@ -42,11 +42,8 @@ Scope : composants UI (`ui/**`), composants de feature (`features/**`), routes (
 
 | Component | Level | Tags | Notes |
 |---|---|---|---|
-<!-- Exemple :
-| ui/common/appCard/index.tsx | atom | layout | — |
-| ui/common/appButton/index.tsx | atom | — | variants + icons, taille icon selon label |
-| ui/common/appDataGrid/index.tsx | organism | grid, kendo | consomme `ui/adapters/kendo/react-grid` |
--->
+| packages/react/src/components/Button/Button.tsx | atom | action, form, theme | 6 variants, 8 tailles, slots icônes, loading, asChild, aria-invalid/expanded |
+| packages/react/src/components/Spinner/Spinner.tsx | atom | feedback, loading | Tailles sm/md/lg, role status, label accessible |
 
 ## Feature Components
 
@@ -60,6 +57,6 @@ Scope : composants UI (`ui/**`), composants de feature (`features/**`), routes (
 
 | Route | Level | Tags | Notes |
 |---|---|---|---|
-<!-- Exemple :
-| app/(protected)/users/page.tsx | page | routing | — |
--->
+| apps/docs/src/pages/index.astro | page | docs | Placeholder doc Astro |
+| apps/playground/app/page.tsx | page | playground, theme | Demo Button/Spinner + sélecteur tenant |
+| apps/playground/app/tenant/route.ts | route | theme, cookie | Pose le cookie `fxp-tenant` puis redirige vers `/` |

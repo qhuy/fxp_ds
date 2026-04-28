@@ -20,7 +20,7 @@ Garder chaque entrée courte (1-4 lignes max). Détails d'implémentation = lire
 
 ## Primitives (atomes)
 
-- **Button** : action utilisateur (click). 5 variants (`primary` / `secondary` / `destructive` / `ghost` / `link`) × 3 tailles (`sm` / `md` / `lg`). Slots `iconLeft` / `iconRight` (`ReactNode`). Prop `loading` qui désactive + remplace `iconLeft` par `<Spinner>` + expose `aria-busy="true"`. Prop `asChild` (Radix Slot) pour composition (`<Button asChild><Link/></Button>` — slots et loading ignorés). Focus ring `--fxp-color-focus-ring`. ref = prop standard React 19. Contraste WCAG 2.1 AA validé tous variants.
+- **Button** : action utilisateur (click). 6 variants (`primary` / `secondary` / `outline` / `destructive` / `ghost` / `link`) × 8 tailles (`xs` / `sm` / `md` / `lg` / `icon` / `icon-xs` / `icon-sm` / `icon-lg`). Slots `iconLeft` / `iconRight` (`ReactNode`). Prop `loading` qui désactive + remplace `iconLeft` par `<Spinner>` + expose `aria-busy="true"`. Prop `asChild` (Radix Slot) pour composition (`<Button asChild><Link/></Button>` — slots et loading ignorés). États `aria-invalid` / `aria-expanded` stylés. ref = prop standard React 19.
   → Fiche : [.docs/features/front/button-primitive.md](../.docs/features/front/button-primitive.md)
 
 - **Spinner** : feedback de chargement. Tailles `sm` / `md` / `lg`. `role="status"` + `aria-label` overridable (fallback `"Loading"`). Animation CSS pure (rotation 1s linear ; ralentie à 3s en `prefers-reduced-motion`). Couleur via `currentColor` (override par parent CSS). Consommé par `Button` loading state ; futur `DataGrid`, `EmptyState`.

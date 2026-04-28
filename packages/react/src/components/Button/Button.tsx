@@ -10,14 +10,20 @@ const buttonVariants = cva('fxp-button', {
     variant: {
       primary: 'fxp-button--primary',
       secondary: 'fxp-button--secondary',
+      outline: 'fxp-button--outline',
       destructive: 'fxp-button--destructive',
       ghost: 'fxp-button--ghost',
       link: 'fxp-button--link',
     },
     size: {
+      xs: 'fxp-button--xs',
       sm: 'fxp-button--sm',
       md: 'fxp-button--md',
       lg: 'fxp-button--lg',
+      icon: 'fxp-button--icon',
+      'icon-xs': 'fxp-button--icon-xs',
+      'icon-sm': 'fxp-button--icon-sm',
+      'icon-lg': 'fxp-button--icon-lg',
     },
   },
   defaultVariants: { variant: 'primary', size: 'md' },
@@ -57,17 +63,19 @@ export function Button({
   // Les slots iconLeft/iconRight et l'état loading sont volontairement ignorés dans ce mode.
   if (asChild) {
     return (
-      <Slot ref={ref} className={classes} {...props}>
+      <Slot ref={ref} data-slot="button" className={classes} {...props}>
         {children}
       </Slot>
     )
   }
 
-  const spinnerSize = size ?? 'md'
+  const spinnerSize =
+    size === 'xs' || size === 'icon-xs' ? 'sm' : size === 'lg' || size === 'icon-lg' ? 'lg' : 'md'
 
   return (
     <button
       ref={ref}
+      data-slot="button"
       className={classes}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
@@ -77,14 +85,14 @@ export function Button({
         <Spinner size={spinnerSize} aria-hidden="true" />
       ) : (
         iconLeft != null && (
-          <span className="fxp-button__icon" aria-hidden="true">
+          <span className="fxp-button__icon" data-icon="inline-start" aria-hidden="true">
             {iconLeft}
           </span>
         )
       )}
       {children}
       {!loading && iconRight != null && (
-        <span className="fxp-button__icon" aria-hidden="true">
+        <span className="fxp-button__icon" data-icon="inline-end" aria-hidden="true">
           {iconRight}
         </span>
       )}

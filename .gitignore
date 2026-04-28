@@ -4,8 +4,10 @@ node_modules/
 # Build outputs
 dist/
 .turbo/
+.next/
 build/
 storybook-static/
+*.tsbuildinfo
 
 # Environment
 .env
