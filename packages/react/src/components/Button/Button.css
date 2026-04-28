@@ -1,0 +1,50 @@
+.fxp-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fxp-space-2);
+  font-family: var(--fxp-font-family-sans);
+  font-weight: var(--fxp-font-weight-medium);
+  border-radius: var(--fxp-radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color var(--fxp-transition-fast),
+              color var(--fxp-transition-fast),
+              border-color var(--fxp-transition-fast);
+}
+
+.fxp-button:focus-visible {
+  outline: 2px solid var(--fxp-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.fxp-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* variants */
+.fxp-button--primary {
+  background: var(--fxp-color-brand-500);
+  color: var(--fxp-color-fg-on-brand);
+}
+.fxp-button--primary:hover:not(:disabled) {
+  background: var(--fxp-color-brand-500-hover);
+}
+
+.fxp-button--secondary {
+  background: var(--fxp-color-bg-default);
+  color: var(--fxp-color-fg-default);
+  border-color: var(--fxp-color-fg-default);
+}
+
+/* sizes */
+.fxp-button--sm {
+  padding: var(--fxp-space-2) var(--fxp-space-3);
+  font-size: var(--fxp-font-size-sm);
+}
+.fxp-button--md {
+  padding: var(--fxp-space-2) var(--fxp-space-4);
+  font-size: var(--fxp-font-size-md);
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@fxp/docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "astro build",
+    "dev": "astro dev",
+    "preview": "astro preview",
+    "typecheck": "astro check",
+    "test": "echo \"no tests yet\"",
+    "lint": "echo \"no lint yet\""
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@fxp/react": "workspace:*",
+    "@fxp/tokens": "workspace:*",
+    "astro": "^5.0.5",
+    "typescript": "^5.7.2"
+  }
+}

@@ -1,0 +1,44 @@
+---
+import '@fxp/tokens/css/fxp.css';
+import '@fxp/tokens/css/fxp.dark.css';
+---
+<html lang="fr" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FanXp Design System — docs</title>
+  </head>
+  <body>
+    <main>
+      <h1>FanXp Design System</h1>
+      <p>Site de documentation — placeholder bootstrap.</p>
+      <p>
+        Composants : <code>@fxp/react</code>.<br />
+        Preview interactive : <code>pnpm storybook</code> à la racine.
+      </p>
+    </main>
+
+    <style>
+      body {
+        margin: 0;
+        background: var(--fxp-color-bg-default);
+        color: var(--fxp-color-fg-default);
+        font-family: var(--fxp-font-family-sans);
+      }
+      main {
+        padding: var(--fxp-space-4);
+        max-width: 720px;
+        margin: 0 auto;
+      }
+      h1 {
+        font-weight: var(--fxp-font-weight-medium);
+      }
+      code {
+        background: var(--fxp-color-bg-default);
+        padding: 0 var(--fxp-space-2);
+        border-radius: var(--fxp-radius-md);
+        border: 1px solid var(--fxp-color-fg-default);
+      }
+    </style>
+  </body>
+</html>
