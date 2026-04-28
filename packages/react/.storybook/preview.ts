@@ -1,11 +1,17 @@
-import type { Preview } from '@storybook/react'
+import type { Preview } from '@storybook/react-vite'
 import '@fxp/tokens/css/fxp.css'
 import '@fxp/tokens/css/fxp.dark.css'
 
 const preview: Preview = {
   parameters: {
     controls: { expanded: true },
-    backgrounds: { default: 'light' },
+    backgrounds: {},
+  },
+
+  initialGlobals: {
+    backgrounds: {
+      value: 'light',
+    },
   },
 }
 
