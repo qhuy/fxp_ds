@@ -1,160 +1,230 @@
-# Règles tech — React / Next
+# Règles tech — React (lib DS `@fxp/react`)
 
-À charger uniquement pour les tâches React/Next quand `tech_profile=react-next`.
+À charger pour toute tâche touchant `packages/react/`. Ce fichier remplace les règles `react-next` du preset (orientées **app Next.js consommatrice**) par des règles **lib DS** (orientées **publication NPM**).
 
-## Stack déclarée
+Cf. [`.ai/rules/architecture.md`](architecture.md) pour le périmètre monorepo, distribution, theming, versioning. Cf. [`.ai/guardrails.md`](../guardrails.md) pour les non-goals projet.
 
-- Runtime : Next.js App Router (14+) **ou** Vite + React 18+. Le projet DOIT trancher explicitement dans `.ai/rules/front.md`, avec le mode de rendu (CSR / SSR / SSG / ISR / static export) et l'URL de production.
-- Auth : cookie HTTP-only (JWT ou session), TTL documenté. Pas de token en `localStorage`.
-- Data fetching : TanStack Query v5.
-- Forms : React Hook Form + Zod (schéma → `z.infer` → type).
-- Style : Tailwind 4 (CSS-first, tokens via `@theme`) **ou** design system maison avec tokens DTCG. Jamais de CSS en-dur en dehors d'une allowlist restreinte.
-- Primitives bas niveau : shadcn/ui ou Radix ; pas d'import direct sans passer par `ui/primitives/` ou `ui/common/`.
-- Tests : Vitest + Testing Library. E2E : Playwright recommandé.
-- i18n : bibliothèque dédiée (`react-intl`, `next-intl`, `i18next`) ; pas de texte codé en dur en composant visible.
-- Le projet DOIT déclarer tout écart à cette stack dans `.ai/rules/front.md` ou la fiche feature.
+## Stack & runtime
 
-## Architecture & nommage
+- **React 18+ / 19+** — peerDeps `react@^18 || ^19`, `react-dom@^18 || ^19`. Jamais bundler React.
+- **`"use client"` par défaut** — directive en tête de chaque fichier composant exposé. RSC-compatible (Next.js App Router) sans intervention de l'app. Exception (composants purement structurels sans state/effect/event) à valider en review.
+- **TypeScript strict** — `strict: true` partout. `tsc --noEmit` bloquant en CI.
+- **Bundle output** — ESM (`.mjs`) + CJS (`.cjs`) + `.d.ts`, généré par `tsup`. `sideEffects: false` dans `package.json` → tree-shaking agressif.
+- **Pas de Next.js / Vite spécifique** — la lib doit fonctionner dans Next.js (App Router + Pages), Vite, Remix, Astro, Webpack legacy. **Pas** d'import `next/*`, pas d'utilisation `useRouter`/`usePathname`/`useSearchParams`. Si un composant a besoin d'un routing, l'app le passe en prop (ex : `Link` accepté en `asChild`).
+- **Primitives bas-niveau** — Radix UI. `lucide-react` pour les icônes (ou `@fxp/icons` si forké). Pas d'autre lib UI lourde.
 
-### Layout projet
+## Layout & nommage
 
-- `app/` (Next) ou `src/routes/` — routing, layout, composition **uniquement**. Pas de logique métier.
-- `features/<feature>/` — logique métier par feature, organisation feature-first.
-  - `features/<feature>/components/` — composants spécifiques, non réutilisables.
-  - `features/<feature>/hooks/` — hooks métier (queries, mutations, state).
-  - `features/<feature>/<name>Schema.ts` — schémas Zod, type dérivé obligatoire : `export type XxxForm = z.infer<typeof xxxSchema>`.
-  - `features/<feature>/api.ts` ou `features/<feature>/services/` — appels API.
-- `ui/primitives/` — wrappers shadcn/Radix/primitives bas niveau.
-- `ui/common/` — composants génériques réutilisables (atoms/molecules).
-- `ui/partials/` — composants composites métier-agnostiques réutilisés (molecules/organisms).
-- `ui/adapters/<lib>/` — seule porte d'entrée autorisée pour une lib UI tierce lourde (Kendo, MUI, AntD, Mantine…).
-- `lib/` — adapters, clients HTTP, helpers purs, intégrations transverses.
+```
+packages/react/src/
+├── components/
+│   ├── Button/
+│   │   ├── Button.tsx           ← composant principal (named export)
+│   │   ├── Button.css           ← styles scoped (extraits au build)
+│   │   ├── Button.test.tsx      ← Vitest + Testing Library
+│   │   ├── Button.stories.tsx   ← Storybook (OBLIGATOIRE)
+│   │   └── index.ts             ← barrel: export { Button } from './Button'
+│   ├── Modal/
+│   │   ├── Modal.tsx
+│   │   ├── ModalHeader.tsx
+│   │   ├── ModalBody.tsx
+│   │   ├── ModalFooter.tsx
+│   │   ├── Modal.css
+│   │   ├── Modal.test.tsx
+│   │   ├── Modal.stories.tsx
+│   │   └── index.ts             ← export Modal compound + sous-éléments typés
+│   └── …
+├── lib/
+│   ├── cn.ts                    ← clsx + tailwind-merge wrapper
+│   └── …
+└── index.ts                     ← barrel root: re-export public surface
+```
 
-### Règles inter-couches
+- **Un dossier par composant**. Pas de fichier "fourre-tout" avec plusieurs composants.
+- **Named exports uniquement** — pas de `export default`. Tree-shaking + autocomplete exigent les named.
+- **Barrel `src/index.ts`** = unique surface publique. Ce qui n'y est pas exporté n'est pas API publique.
+- **Imports absolus `@/`** dans `packages/react/` interne. Pas de `../../` profonds.
 
-- `features/*` ne dépend JAMAIS d'un autre `features/*`. Partage via `ui/common`, `ui/partials`, `lib/`, ou un hook dédié.
-- `app/` peut consommer `features/*`, `ui/*`, `lib/*`. L'inverse est interdit.
-- Imports absolus (`@/`) obligatoires ; pas de chemins relatifs profonds (`../../`).
-- Pas d'effet réseau dans un composant purement présentationnel : tout `fetch`/`useQuery`/`useMutation` passe par un hook ou un service dédié.
+## Anatomie d'un composant primitif
 
-## Design System & composants partagés
+```tsx
+// packages/react/src/components/Button/Button.tsx
+'use client'
+import { forwardRef } from 'react'
+import { Slot } from '@radix-ui/react-slot'
+import { cva, type VariantProps } from 'class-variance-authority'
+import { cn } from '@/lib/cn'
 
-### Arborescence hiérarchisée (stricte)
+const buttonVariants = cva('fxp-button', {
+  variants: {
+    variant: {
+      primary: 'fxp-button--primary',
+      secondary: 'fxp-button--secondary',
+      ghost: 'fxp-button--ghost',
+      destructive: 'fxp-button--destructive',
+    },
+    size: { sm: 'fxp-button--sm', md: 'fxp-button--md', lg: 'fxp-button--lg' },
+  },
+  defaultVariants: { variant: 'primary', size: 'md' },
+})
 
-Ordre de priorité de réutilisation : **`ui/partials/` > `ui/common/` > `ui/primitives/` > créer**.
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+          VariantProps<typeof buttonVariants> {
+  asChild?: boolean
+}
 
-Avant de créer un composant, l'agent DOIT scanner `ui/partials/` puis `ui/common/` pour un équivalent. Dupliquer un composant existant est interdit.
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild, ...props }, ref) => {
+    const Comp = asChild ? Slot : 'button'
+    return (
+      <Comp
+        ref={ref}
+        className={cn(buttonVariants({ variant, size }), className)}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = 'Button'
+```
 
-### Registry obligatoire
+**Conventions imposées** :
 
-Fichier canonique : `docs/design-system-registry.md` (ou équivalent déclaré dans `.ai/rules/front.md`).
+- `forwardRef` obligatoire dès qu'un élément DOM est rendu — permet à l'app de gérer focus / passer une ref.
+- `displayName` obligatoire — DevTools React + lint rule `react/display-name`.
+- `asChild` (pattern Radix Slot) sur tout composant où la composition fait sens (`Button`, `Link`, `Trigger`, `Item`...). Permet `<Button asChild><Link href="/x">Aller</Link></Button>`.
+- Variants typés via **`cva` (class-variance-authority)** — `VariantProps<typeof xxxVariants>` injecte les types automatiquement.
+- `cn()` interne combine classes via clsx + tailwind-merge → la prop `className` de l'app override toujours les classes par défaut.
 
-- Liste **tous** les composants de `ui/common/` et `ui/partials/` avec leur rôle fonctionnel + règles de comportement (1-3 lignes chacun).
-- Organisé par catégorie : Layout & Shell / Forms & Inputs / Lists & Tables / Navigation / Feedback / Partials métier.
-- Tout nouveau composant générique DOIT être ajouté au registry **dans le même commit** que sa création.
-- Toute règle de comportement (ex : « `DtSelect` avec `requiredField=true` → auto-sélection premier item ») DOIT être documentée au registry, pas déduite du code.
-- Le registry est la source de vérité consultée par l'agent avant toute création de composant.
+## Composition & slots — compound components
 
-### Atomic map obligatoire dès 30 composants
+Pour tout composant ayant des sous-zones logiques (`Modal`, `Card`, `Tabs`, `Accordion`...), pattern **compound components** (Radix-style) :
 
-Fichier : `docs/atomic-design-map.md`.
+```tsx
+// Usage côté app consommatrice
+<Modal open={open} onOpenChange={setOpen}>
+  <Modal.Header>
+    <Modal.Title>Confirmer la suppression</Modal.Title>
+    <Modal.Description>Cette action est irréversible.</Modal.Description>
+  </Modal.Header>
+  <Modal.Body>{/* contenu libre */}</Modal.Body>
+  <Modal.Footer>
+    <Button variant="ghost" onClick={() => setOpen(false)}>Annuler</Button>
+    <Button variant="destructive" onClick={handleDelete}>Supprimer</Button>
+  </Modal.Footer>
+</Modal>
+```
 
-- Classe chaque composant UI en `atom` / `molecule` / `organism` / `template` / `page`.
-- Ajoute des tags (`form`, `grid`, `list`, `nav`, `layout`, `overlay`, `<lib-name>`…).
-- Inclut compteurs agrégés (UI components, features, app routes, adapters, imports interdits).
-- Sert aux audits de duplication et aux guards d'imports.
+- **Implémentation** : sous-composants exportés en propriétés statiques du composant racine, ou via `Object.assign(Modal, { Header, Body, ... })`. Préférer Radix primitives sous le capot quand pertinent (`Dialog.Root`, `Dialog.Trigger`...).
+- **Avantages** : ordre flexible, app peut omettre des slots, sub-components typés indépendamment, refs accessibles slot par slot.
+- **Anti-pattern** : props slot (`headerSlot`, `footerSlot`) — explicitement écarté lors du cadrage projet.
 
-### Isolation des libs UI tierces lourdes
+## Tokens & styling
 
-- Kendo, MUI, AntD, Mantine, Material, Chakra : imports autorisés **uniquement** depuis `ui/adapters/<lib>/*`.
-- Aucun import direct depuis `features/*`, `ui/common/*`, `ui/partials/*`, ou `app/*`.
-- Le projet DOIT ajouter un lint guard (`lint:<lib>`) en CI si la lib est présente.
+- **CSS vars uniquement** pour toute valeur visuelle. Aucune couleur, taille, rayon, ombre, transition **en-dur** dans le CSS d'un composant.
+  - ❌ `background: #1e40af`
+  - ✅ `background: var(--fxp-color-brand-500)`
+- **Convention naming** des CSS vars : cf. [`.ai/rules/architecture.md`](architecture.md) section "Convention de naming CSS vars".
+- **Tailwind** est un détail d'implémentation **interne** au build de `packages/react`. Utilisé via `cn()` + classes utilitaires *qui consomment des CSS vars*. **Pas exposé** aux apps consommatrices.
+- **Pas de `style={{...}}` inline** dans un composant exposé — tout passe par className + CSS scoped.
+- **Pas de CSS-in-JS** (Emotion, styled-components, vanilla-extract) — incompatible avec le pipeline tokens compilé et SSR-safe par défaut.
 
-### Storybook (recommandé dès 10 composants)
+## No-strings rule (i18n-agnostic)
 
-- Tout nouveau `ui/common/<comp>/index.tsx` DOIT avoir un `<comp>.stories.tsx` voisin.
-- Guard `lint:stories-required` recommandé en CI.
-- Les stories consomment les vrais tokens (pas de thème mock).
+Aucun string user-visible **hardcodé** dans un composant exposé. Cohérence avec [`.ai/guardrails.md`](../guardrails.md) non-goal i18n.
 
-## Data, formulaires, état
+```tsx
+// ❌ Interdit
+<button>Précédent</button>
+<p>Aucune donnée</p>
 
-### Data fetching (TanStack Query)
+// ✅ Obligatoire — l'app fournit le texte
+<Pagination
+  previousLabel="Précédent"
+  nextLabel="Suivant"
+  labelTemplate={(c, t) => `Page ${c} sur ${t}`}
+/>
+<DataGrid emptyMessage={<EmptyState>Aucune donnée</EmptyState>} />
+```
 
-- `QueryProvider` monté une seule fois au niveau `app/layout.tsx` (ou équivalent) — pas d'instanciation locale.
-- `queryKey = [endpoint, params?]` — `endpoint` = chemin HTTP absolu. `params` JSON-sérialisables uniquement (pas de `Date`, `URL`, cycle).
-- `queryFn` passe par un client HTTP centralisé (`lib/api/httpClient` ou équivalent) qui applique headers, auth, transform.
-- Mutations : `mutationFn` explicite, `onSuccess` → `queryClient.invalidateQueries({ queryKey })`.
-- Optimistic updates : rollback obligatoire + feedback visible en cas d'échec.
+**Composants concernés** (à ne pas oublier en review) : `Pagination`, `DataGrid`, `Combobox` (no-results), `DatePicker`, `FileUpload`, `EmptyState`, `Toaster`, `ErrorBoundary`.
 
-### Formulaires (React Hook Form + Zod)
+**Cas spécial Date / Number** — utiliser `Intl.DateTimeFormat` / `Intl.NumberFormat` natif navigateur, avec une prop `locale?: string` (default `undefined` = locale navigateur). Zero dépendance i18n.
 
-- Schéma Zod dans `features/<feature>/<name>Schema.ts`, type dérivé `z.infer<typeof xxxSchema>`.
-- Mount : `useForm({ resolver: zodResolver(xxxSchema) })`.
-- Messages d'erreur Zod = **clés i18n**, résolues via `t(errors.field.message)` au rendu. Pas de texte en dur dans le schéma.
-- Validation centralisée dans le schéma ; pas de regex ou fonction `getXxxErrors()` dispersée.
+```tsx
+<DatePicker locale="fr-FR" />   // override explicite
+<DatePicker />                   // navigator.language par défaut
+```
 
-### État global
+**Tolérance** : `aria-*` peut avoir un fallback en anglais si la prop n'est pas fournie (ex : `aria-label="Close"` par défaut, override possible via prop).
 
-- Par défaut : pas d'état global. Les queries TanStack + URL params couvrent la majorité des besoins.
-- Si nécessaire : Zustand, Jotai, ou Context local. À déclarer dans `.ai/rules/front.md`.
-- Éviter Redux sur un projet neuf sauf contrainte explicite.
+## Accessibilité (WCAG 2.1 AA)
 
-## UX, accessibilité, i18n
+- **Radix UI sous le capot** pour toute primitive interactive (Dialog, Popover, Tooltip, Select, Tabs, Accordion, RadioGroup, Switch...). Radix gère focus, keyboard, ARIA, escape, click-outside.
+- **Focus visible** par défaut (ring CSS via `--fxp-color-focus-ring`) — jamais `outline: none` sans alternative visible.
+- **Navigation clavier** fonctionnelle sur tout composant interactif. Tests Storybook avec `play` function pour vérifier.
+- **Labels accessibles** — `Input` avec `<label>` lié, ou `aria-label` si pas de texte visible (cf. no-strings rule : prop `aria-label` overridable).
+- **Cible WCAG 2.1 AA** uniquement (cf. guardrails). AAA et RGAA hors scope.
 
-### États UI minimum (obligatoires sur tout flux visible)
+## API surface & évolution
 
-Chaque écran/composant consommant une query ou une mutation DOIT gérer explicitement : **loading / empty / error / success**. Pas de spinner implicite ou d'état manquant.
+- **Variants justifiés par 3 cas d'usage concrets** minimum avant ajout. Pas de variant "au cas où". Cf. [`.ai/rules/architecture.md`](architecture.md) section ADRs.
+- **Props minimales** — chaque prop sert un usage clair. Ajouter une prop = élargir API surface = potentiel breaking futur.
+- **Breaking change = SemVer major + Changeset major + entry MIGRATION.md**. Jamais `Button2` (cf. guardrails).
+- **Cycle de dépréciation** : `@deprecated` JSDoc dans la major en cours → suppression à la major suivante.
+- **Composants exposés via `src/index.ts`** uniquement. Sub-imports profonds (`@fxp/react/components/Button/Button`) interdits côté apps — sinon on bloque les renames internes.
 
-### Accessibilité
+## Storybook (OBLIGATOIRE)
 
-- Labels accessibles sur tous les inputs (`label` lié, `aria-label` si pas de texte visible).
-- Navigation clavier fonctionnelle : focus visible, `Tab` logique, `Enter`/`Esc` sur dialogues.
-- Messages d'erreur lisibles et associés au champ (`aria-describedby`).
-- Composants interactifs non-natifs (dropdown custom, dialog, tabs…) : respecter WAI-ARIA Authoring Practices ou consommer une primitive accessible (Radix).
+- Chaque composant exposé `packages/react/src/components/<Name>/<Name>.tsx` DOIT avoir un voisin `<Name>.stories.tsx`.
+- **Lint guard CI** : `lint:stories-required` — un nouveau composant sans story = build CI rouge.
+- Stories consomment les **vrais tokens** (pas de thème mock). Le Storybook charge `@fxp/tokens/css/fxp.base.css` (+ optionnellement un tenant pour preview multi-tenant).
+- Couvrir au minimum : variants, tailles, états (hover/focus/disabled/loading), edge cases (empty, long content).
+- Sert de **base à la régression visuelle** (Chromatic ou Playwright VRT — outil tranché dans une feature dédiée).
+- Sert de **terrain de jeu interactif** pendant le dev — `pnpm storybook` à la racine.
 
-### Responsive
+## Tests
 
-- Chaque nouveau composant vérifie au moins les breakpoints mobile / tablet / desktop du design system.
-- Pas de layout figé en pixels quand une approche fluide est possible.
+- **Unit/composant** — Vitest + `@testing-library/react`. Couvrir variantes principales + comportement documenté.
+- **Régression visuelle** — outil TBD (Chromatic via Storybook, ou Playwright VRT). Bloquant avant 1ʳᵉ release publique.
+- **Type checking** — `tsc --noEmit` bloquant en CI.
+- **Pas de tests E2E** dans `packages/react/` — c'est le job des apps consommatrices.
 
-### i18n
+### Seuil minimum par composant exposé
 
-- Pas de texte en dur dans un composant visible. Utiliser `t('key')` ou équivalent.
-- Clés i18n structurées par feature : `features.<feature>.<surface>.<key>`.
-- Pas de concaténation de clés (`t('prefix.' + variable)`) — utiliser des clés complètes.
+- Test des variantes visuelles principales (1 test par variant majeur).
+- Test du comportement clavier (Tab, Enter, Escape selon le composant).
+- Test de la prop `asChild` quand applicable.
+- Test des callbacks (`onClick`, `onChange`...) déclenchés correctement.
+
+## Documentation
+
+- **`docs/design-system-registry.md`** (à la racine repo, créé par scaffold) — tout composant ajouté à `packages/react/src/components/` est inscrit dans le **même commit**. Format : nom + rôle 1-3 lignes + variants exposés.
+- **`docs/atomic-design-map.md`** — classification atom/molecule/organism. À tenir à jour dès 30 composants (déjà recommandé par le scaffold).
+- **Site Astro `apps/docs/`** — doc visuelle exhaustive avec preview live (MDX), props, CSS vars consommées par composant. Built par-dessus Storybook ou indépendant — à trancher dans une feature dédiée.
 
 ## Interdits explicites
 
-- **Créer un composant sans avoir scanné `ui/partials/` et `ui/common/`** — duplication garantie.
-- **Ajouter un composant à `ui/common/` ou `ui/partials/` sans l'inscrire au registry dans le même commit** — le registry devient obsolète au premier oubli.
-- **Import direct d'une lib UI tierce (Kendo, MUI, AntD, Mantine…) depuis `features/*`, `ui/common/*`, `ui/partials/*`, ou `app/*`** — passer par `ui/adapters/<lib>/`.
-- **`window.dispatchEvent('xxxInvalidated')` ou bus d'événements custom pour invalider des queries** — utiliser `queryClient.invalidateQueries`, le cache Query est la source unique.
-- **Callbacks `refreshXxx` remontés via props ou context** — remplacer par `invalidateQueries`.
-- **Effet réseau (`fetch`, `useQuery`, `useMutation`) dans un composant purement présentationnel** — déplacer dans un hook ou service de la feature.
-- **Imports relatifs profonds (`../../` et au-delà)** — utiliser les alias absolus (`@/`).
-- **Validation regex ou `getXxxFormErrors(input)` dispersée hors du schéma Zod** — tout centraliser dans le schéma.
-- **Texte en dur dans un composant visible** — passer par i18n.
-- **Token CSS (`--xxx:`) déclaré hors des fichiers d'allowlist (`tokens.css`, `global.css`)** — passer par le pipeline de tokens.
+- ❌ Import `next/*` (router, image, link, font, headers...) — la lib doit fonctionner partout.
+- ❌ `useState` / `useReducer` / `useContext` pour de la **logique métier** (queries, forms, state global) — strictement état local UI (open/closed, hover, controlled inputs...).
+- ❌ `useEffect` réseau / data fetching — la lib ne fait jamais d'appel HTTP.
+- ❌ `useRouter`, `usePathname`, `useSearchParams` — la lib ignore le routing.
+- ❌ Texte user-visible hardcodé (cf. no-strings rule).
+- ❌ Couleur / radius / ombre / transition en-dur (cf. tokens & styling).
+- ❌ `style={{...}}` inline dans un composant exposé.
+- ❌ Import direct de Radix (ou autre lib bas-niveau) **exposé** côté apps. Radix vit sous le capot, jamais re-exporté.
+- ❌ `export default` (named only).
+- ❌ Composants sans `forwardRef` quand un élément DOM est rendu.
+- ❌ Composants exposés sans Storybook story (`lint:stories-required` rouge).
+- ❌ Sub-imports profonds depuis les apps (`@fxp/react/components/Button/Button`) — uniquement le barrel root.
 
-## Validation
+## Validation (commandes monorepo Turbo)
 
-### Commandes privilégiées
+- `pnpm typecheck` — `tsc --noEmit` sur `packages/react`. Bloquant.
+- `pnpm lint` — ESLint avec guards FXP (`no-default-export`, `no-next-import`, `no-hardcoded-strings`, `no-hardcoded-tokens`, `stories-required`).
+- `pnpm test` — Vitest. Bloquant.
+- `pnpm build` — tsup. Bloquant.
+- `pnpm storybook:build` — bloquant si Storybook ne build pas.
 
-- `npm run typecheck` (ou `tsc --noEmit`) — bloquant.
-- `npm run lint` / `npm run lint:all` — incluant les guards projet (`lint:tokens`, `lint:kendo`, `lint:stories-required`, `lint:docs` s'ils existent).
-- `npm run test` — Vitest + Testing Library.
-- `npm run build` — bloquant avant delivery.
-- Skip accepté uniquement avec raison explicite + commande à rejouer.
-
-### Seuil de tests minimum
-
-- Composant UI réutilisable (`ui/common`, `ui/partials`) : test des variantes principales + comportement documenté au registry.
-- Hook métier (`features/<f>/hooks/`) : test du happy path + 1 cas d'erreur.
-- Formulaire avec schéma Zod : test validation succès + au moins une validation erreur par règle critique.
-- Flow critique (auth, paiement, soumission) : test E2E Playwright recommandé.
-
-### Documentation à mettre à jour
-
-- Composant ajouté/modifié dans `ui/common` ou `ui/partials` → `docs/design-system-registry.md`.
-- Composant atteignant le seuil de 30 UI components → `docs/atomic-design-map.md` à créer.
-- Pattern de data fetching / formulaire / state modifié → doc cookbook du projet (ex : `docs/PATTERNS_DATA_FETCHING.md`).
+Skip accepté uniquement avec raison explicite + commande à rejouer.
