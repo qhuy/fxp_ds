@@ -1,61 +1,40 @@
-# Design System Registry (Functional)
+# Design System Registry (`@fxp/react`)
 
-Source de vérité unique sur les composants UI génériques disponibles dans `ui/common/` et `ui/partials/`, leur rôle fonctionnel et leurs règles de comportement.
+Source de vérité unique sur les composants UI exposés par `@fxp/react` aux apps consommatrices, leur rôle fonctionnel et leurs règles de comportement.
 
 ## Règle mandatory
 
-- Pour toute feature ou page, utiliser les composants listés dans ce registry dès qu'ils couvrent le besoin.
-- Ne pas créer de composant local/custom quand un équivalent existe dans `ui/partials/` ou `ui/common/`.
-- Priorité de réutilisation : **`ui/partials/` > `ui/common/` > `ui/primitives/` > créer**.
-- Si un composant générique manque : l'ajouter au DS d'abord, puis le consommer.
-- Tout ajout ou modification d'un composant générique DOIT être reflété ici **dans le même commit**.
+- Tout composant ajouté à `packages/react/src/components/` est **inscrit ici dans le même commit** (cf. `.ai/rules/tech-react.md`).
+- Cette source de vérité est consultée **avant** la création d'un nouveau composant : si un équivalent existe, l'enrichir plutôt que dupliquer.
+- Toute règle de comportement non évidente (ex : "Button.asChild délègue le rendu à l'enfant via Radix Slot") DOIT être documentée ici, pas seulement déduite du code.
+- Une fiche feature dédiée vit en parallèle dans `.docs/features/front/<id>.md` pour la roadmap, l'engagement SemVer, et l'historique.
 
 ## Format d'entrée
 
 ```
-- NomComposant : rôle fonctionnel en 1 ligne. Règles de comportement éventuelles (props critiques, états, contraintes).
+- NomComposant : rôle fonctionnel (1 ligne). Variants exposés. Règle(s) de comportement non évidente(s).
+  → Fiche : .docs/features/front/<id>.md
 ```
 
-Garder chaque entrée courte (1-3 lignes). Documenter ici les règles non évidentes, pas le détail d'implémentation (lire le code pour ça).
+Garder chaque entrée courte (1-4 lignes max). Détails d'implémentation = lire le code ; détails de roadmap = lire la fiche feature.
 
-## Layout & Shell
+## Primitives (atomes)
 
-<!-- Exemple d'entrée à remplacer par tes composants réels :
-- AppPage : shell de page applicative avec asides gauche/droite optionnels, header, gestion scroll. Expose `contentCardActions` pour injecter des actions dans le header de la carte principale.
--->
+- **Button** : action utilisateur (click). Variants `primary` (CTA principal) / `secondary` (CTA secondaire outline) / `destructive` (action irréversible — fond rouge `--fxp-color-status-danger`). Tailles `sm` / `md`. Prop `asChild` (Radix Slot) pour rendre l'enfant à la place du `<button>` (`<Button asChild><Link href="…">Aller</Link></Button>`). Focus ring auto via `--fxp-color-focus-ring`. ref = prop standard React 19, plus de `forwardRef`.
+  → Fiche : [.docs/features/front/button-primitive.md](../.docs/features/front/button-primitive.md)
 
-## Forms & Inputs
+## Composites (molécules / organismes)
 
-<!-- Exemple :
-- AppSelect : select simple. Règle : quand `requiredField=true`, la sélection nulle est désactivée et le premier item est auto-sélectionné si aucune valeur n'est fournie.
--->
+*(à venir : FormEditSection, DataGrid, Filters, Modal compound, …)*
 
-## Lists & Tables
+## Patterns UX
 
-<!-- Exemple :
-- AppDataGrid : tableau de données avec tri, filtrage, sélection. Sélection et recherche globale activées par défaut. Persiste la visibilité des colonnes en `localStorage` via `columnVisibilityStorageKey`.
--->
-
-## Navigation & Utilities
-
-<!-- Exemple :
-- BackButton : bouton de navigation retour avec i18n.
--->
-
-## Feedback & Overlays
-
-<!-- Exemple :
-- ConfirmDialog : dialogue de confirmation modal. Variants `default` / `destructive`. Gère focus et navigation clavier (Esc = annuler).
--->
-
-## Partials (composants composites métier-agnostiques)
-
-<!-- Exemple :
-- FormEditSection : section d'édition CRUD standard avec header + actions `Annuler`/`Valider`. Utiliser `DtFormGrid`/`DtFormGridItem` pour la disposition des champs.
--->
+*(à venir : EmptyState, Toaster, Skeleton, ErrorBoundary, …)*
 
 ## Notes transverses
 
-- Préférer des props enum pour les variantes visuelles (density, tone, layout) plutôt que des flags `className` bruts.
-- Radius et typography : tokens centralisés dans `tokens/` ; ne pas surcharger localement.
-- Libs UI tierces lourdes (Kendo, MUI, AntD, Mantine…) : imports autorisés uniquement depuis `ui/adapters/<lib>/*`.
+- **API surface stable engagée SemVer** — tout retrait/rename de prop publique = major bump ; ajout de variant = minor bump (cf. `.ai/rules/architecture.md` Versioning).
+- **Theming exclusivement via CSS vars `--fxp-*`** — les apps tenant overrident les variables dans leur `:root`, ne touchent jamais le code FXP (cf. `.ai/guardrails.md` non-goal "Customisation au-delà des tokens DTCG").
+- **i18n agnostique** — aucun string user-visible hardcodé dans les composants. Tout texte transite par une prop. Cf. `.ai/rules/tech-react.md` "No-strings rule".
+- **Storybook obligatoire** par composant exposé (`<Name>.stories.tsx` voisin). Tests built-in (interaction + a11y) via `@storybook/addon-vitest` + Playwright Chromium headless.
+- **Compound components** (Radix-style) pour tout composant à sous-zones (`Modal`, `Card`, `Tabs`, …) — pas de props slot (`headerSlot`, `footerSlot`).
