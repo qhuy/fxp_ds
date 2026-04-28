@@ -105,3 +105,4 @@ Ajouter ecosystem `github-actions` pour bumper les versions des actions tierces.
 ## Historique / suite
 
 - **2026-04-28** — Implémenté : 2 workflows + dependabot enrichi. Validation YAML locale OK. Runtime test → post-push GitHub.
+- **2026-04-28 (post Point #8)** — `ci.yml` enrichi par la feature `architecture/visual-regression-testing` : ajout étape `playwright install --with-deps chromium` + step `pnpm test:storybook` après le `pnpm test` unit. Le runner GitHub Actions doit installer Chromium (~150 Mo) avant chaque CI ; cache Playwright à envisager si CI devient lent.
