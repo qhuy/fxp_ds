@@ -179,13 +179,17 @@ Aucun string user-visible **hardcodé** dans un composant exposé. Cohérence av
 - **Cycle de dépréciation** : `@deprecated` JSDoc dans la major en cours → suppression à la major suivante.
 - **Composants exposés via `src/index.ts`** uniquement. Sub-imports profonds (`@fxp/react/components/Button/Button`) interdits côté apps — sinon on bloque les renames internes.
 
-## Storybook (OBLIGATOIRE)
+## Storybook (OBLIGATOIRE — Storybook 9+ / 10+)
 
 - Chaque composant exposé `packages/react/src/components/<Name>/<Name>.tsx` DOIT avoir un voisin `<Name>.stories.tsx`.
 - **Lint guard CI** : `lint:stories-required` — un nouveau composant sans story = build CI rouge.
-- Stories consomment les **vrais tokens** (pas de thème mock). Le Storybook charge `@fxp/tokens/css/fxp.base.css` (+ optionnellement un tenant pour preview multi-tenant).
+- Stories consomment les **vrais tokens** (pas de thème mock). Le Storybook charge `@fxp/tokens/css/fxp.css` + `fxp.dark.css` au boot.
 - Couvrir au minimum : variants, tailles, états (hover/focus/disabled/loading), edge cases (empty, long content).
-- Sert de **base à la régression visuelle** (Chromatic ou Playwright VRT — outil tranché dans une feature dédiée).
+- **Imports types depuis `@storybook/react-vite`** (pas `@storybook/react`) — pattern framework-based SB9+.
+- **`initialGlobals`** (pas `parameters.backgrounds`) pour configurer les contextes par défaut — API SB9+ globals.
+- **Tests built-in SB9+** : visual regression, a11y, interaction, coverage automatique. Servent de base à la régression visuelle.
+- **Story globals toolbar** (`backgrounds`, `viewport`) : test dark mode, mobile/tablet, RTL en 1 click.
+- **Tags** custom (`alpha`, `deprecated`, `feature-flag`) pour filtrer les stories.
 - Sert de **terrain de jeu interactif** pendant le dev — `pnpm storybook` à la racine.
 
 ## Tests
