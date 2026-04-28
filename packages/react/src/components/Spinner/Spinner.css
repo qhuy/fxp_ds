@@ -1,0 +1,41 @@
+.fxp-spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fxp-color-brand-500);
+  flex-shrink: 0;
+}
+
+.fxp-spinner svg {
+  width: 100%;
+  height: 100%;
+  animation: fxp-spinner-rotate 1s linear infinite;
+}
+
+.fxp-spinner--sm {
+  width: 1rem;
+  height: 1rem;
+}
+.fxp-spinner--md {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.fxp-spinner--lg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+@keyframes fxp-spinner-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fxp-spinner svg {
+    animation-duration: 3s;
+  }
+}
