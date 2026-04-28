@@ -10,7 +10,7 @@ touches:
   - packages/react/package.json
   - packages/react/.storybook/**
   - packages/react/vitest.config.ts
-  - packages/react/vitest.setup.ts
+  - packages/react/vitest.shims.d.ts
 progress:
   phase: implement
   step: "audit P2.5 — exécution autopilot"
