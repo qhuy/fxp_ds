@@ -6,7 +6,7 @@ const meta: Meta<typeof Button> = {
   component: Button,
   tags: ['autodocs'],
   argTypes: {
-    variant: { control: 'radio', options: ['primary', 'secondary'] },
+    variant: { control: 'radio', options: ['primary', 'secondary', 'destructive'] },
     size: { control: 'radio', options: ['sm', 'md'] },
     disabled: { control: 'boolean' },
   },
@@ -22,6 +22,10 @@ export const Primary: Story = {
 
 export const Secondary: Story = {
   args: { variant: 'secondary', children: 'Secondary' },
+}
+
+export const Destructive: Story = {
+  args: { variant: 'destructive', children: 'Supprimer' },
 }
 
 export const Small: Story = {

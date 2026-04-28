@@ -9,6 +9,7 @@ const buttonVariants = cva('fxp-button', {
     variant: {
       primary: 'fxp-button--primary',
       secondary: 'fxp-button--secondary',
+      destructive: 'fxp-button--destructive',
     },
     size: {
       sm: 'fxp-button--sm',
