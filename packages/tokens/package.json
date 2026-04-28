@@ -23,6 +23,6 @@
     "lint": "echo \"no lint yet\""
   },
   "devDependencies": {
-    "typescript": "^5.7.2"
+    "typescript": "catalog:"
   }
 }

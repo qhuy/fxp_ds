@@ -16,6 +16,6 @@
     "@fxp/react": "workspace:*",
     "@fxp/tokens": "workspace:*",
     "astro": "^5.0.5",
-    "typescript": "^5.7.2"
+    "typescript": "catalog:"
   }
 }
