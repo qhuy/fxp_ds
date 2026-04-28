@@ -1,5 +1,24 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "boundaries": {
+    "tags": {
+      "tokens-layer": {
+        "dependencies": {
+          "deny": ["components-layer", "icons-layer", "app-layer"]
+        }
+      },
+      "icons-layer": {
+        "dependencies": {
+          "deny": ["tokens-layer", "components-layer", "app-layer"]
+        }
+      },
+      "components-layer": {
+        "dependencies": {
+          "deny": ["app-layer"]
+        }
+      }
+    }
+  },
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
