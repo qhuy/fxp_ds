@@ -70,6 +70,26 @@ describe('Button', () => {
     expect(btn.lastElementChild?.contains(icon)).toBe(true)
   })
 
+  it('rend un Spinner et désactive le bouton quand loading=true', () => {
+    render(<Button loading>Soumettre</Button>)
+    const btn = screen.getByRole('button', { name: 'Soumettre' })
+    expect(btn.hasAttribute('disabled')).toBe(true)
+    expect(btn.getAttribute('aria-busy')).toBe('true')
+    // Le Spinner a role="status" — il est imbriqué dans le button
+    expect(screen.getByRole('status', { hidden: true })).toBeDefined()
+  })
+
+  it('loading remplace iconLeft mais garde le label visible', () => {
+    render(
+      <Button loading iconLeft={<svg data-testid="left-icon" aria-hidden="true" />}>
+        Sauver
+      </Button>,
+    )
+    expect(screen.queryByTestId('left-icon')).toBeNull()
+    expect(screen.getByRole('button', { name: 'Sauver' })).toBeDefined()
+    expect(screen.getByRole('status', { hidden: true })).toBeDefined()
+  })
+
   it('ignore iconLeft/iconRight quand asChild=true', () => {
     render(
       <Button asChild iconLeft={<svg data-testid="ignored-icon" aria-hidden="true" />}>
