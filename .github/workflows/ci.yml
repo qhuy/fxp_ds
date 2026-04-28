@@ -45,8 +45,14 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
-      - name: Test
+      - name: Test (unit)
         run: pnpm test
+
+      - name: Install Playwright Chromium (for Storybook tests)
+        run: pnpm --filter @fxp/react exec playwright install --with-deps chromium
+
+      - name: Test (Storybook stories via Playwright)
+        run: pnpm test:storybook
 
       - name: Build packages
         run: pnpm build
