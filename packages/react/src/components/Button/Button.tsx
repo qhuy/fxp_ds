@@ -25,13 +25,52 @@ const buttonVariants = cva('fxp-button', {
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  /** Si vrai, le composant rend l'enfant via Radix Slot (composition) */
+  /** Si vrai, le composant rend l'enfant via Radix Slot (composition). Ignore iconLeft/iconRight. */
   asChild?: boolean
   /** ref React 19 — passée comme prop standard, plus de forwardRef */
   ref?: React.Ref<HTMLButtonElement>
+  /** Icône avant le label. Ignoré si asChild=true (le Slot délègue le rendu). */
+  iconLeft?: React.ReactNode
+  /** Icône après le label. Ignoré si asChild=true (le Slot délègue le rendu). */
+  iconRight?: React.ReactNode
 }
 
-export function Button({ className, variant, size, asChild, ref, ...props }: ButtonProps) {
-  const Comp = asChild ? Slot : 'button'
-  return <Comp ref={ref} className={cn(buttonVariants({ variant, size }), className)} {...props} />
+export function Button({
+  className,
+  variant,
+  size,
+  asChild,
+  ref,
+  iconLeft,
+  iconRight,
+  children,
+  ...props
+}: ButtonProps) {
+  const classes = cn(buttonVariants({ variant, size }), className)
+
+  // asChild délègue au Slot Radix qui exige un seul enfant React.
+  // Les slots iconLeft/iconRight sont volontairement ignorés dans ce mode.
+  if (asChild) {
+    return (
+      <Slot ref={ref} className={classes} {...props}>
+        {children}
+      </Slot>
+    )
+  }
+
+  return (
+    <button ref={ref} className={classes} {...props}>
+      {iconLeft != null && (
+        <span className="fxp-button__icon" aria-hidden="true">
+          {iconLeft}
+        </span>
+      )}
+      {children}
+      {iconRight != null && (
+        <span className="fxp-button__icon" aria-hidden="true">
+          {iconRight}
+        </span>
+      )}
+    </button>
+  )
 }
