@@ -50,7 +50,6 @@ packages/react/src/
 ```tsx
 // packages/react/src/components/Button/Button.tsx
 'use client'
-import { forwardRef } from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/cn'
@@ -72,27 +71,32 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
           VariantProps<typeof buttonVariants> {
   asChild?: boolean
+  /** ref React 19 — prop standard, plus de forwardRef */
+  ref?: React.Ref<HTMLButtonElement>
 }
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button'
-    return (
-      <Comp
-        ref={ref}
-        className={cn(buttonVariants({ variant, size }), className)}
-        {...props}
-      />
-    )
-  }
-)
-Button.displayName = 'Button'
+export function Button({
+  className,
+  variant,
+  size,
+  asChild,
+  ref,
+  ...props
+}: ButtonProps) {
+  const Comp = asChild ? Slot : 'button'
+  return (
+    <Comp
+      ref={ref}
+      className={cn(buttonVariants({ variant, size }), className)}
+      {...props}
+    />
+  )
+}
 ```
 
 **Conventions imposées** :
 
-- `forwardRef` obligatoire dès qu'un élément DOM est rendu — permet à l'app de gérer focus / passer une ref.
-- `displayName` obligatoire — DevTools React + lint rule `react/display-name`.
+- **`ref` comme prop standard** — pattern React 19. **Plus de `forwardRef`** (deprecated). Typer via `React.Ref<HTMLElementXxx>` dans l'interface. Le `displayName` est auto-dérivé du nom de la fonction, pas besoin de l'écrire.
 - `asChild` (pattern Radix Slot) sur tout composant où la composition fait sens (`Button`, `Link`, `Trigger`, `Item`...). Permet `<Button asChild><Link href="/x">Aller</Link></Button>`.
 - Variants typés via **`cva` (class-variance-authority)** — `VariantProps<typeof xxxVariants>` injecte les types automatiquement.
 - `cn()` interne combine classes via clsx + tailwind-merge → la prop `className` de l'app override toujours les classes par défaut.
@@ -215,7 +219,8 @@ Aucun string user-visible **hardcodé** dans un composant exposé. Cohérence av
 - ❌ `style={{...}}` inline dans un composant exposé.
 - ❌ Import direct de Radix (ou autre lib bas-niveau) **exposé** côté apps. Radix vit sous le capot, jamais re-exporté.
 - ❌ `export default` (named only).
-- ❌ Composants sans `forwardRef` quand un élément DOM est rendu.
+- ❌ `forwardRef` — deprecated en React 19. Utiliser `ref` comme prop standard (cf. anatomie composant).
+- ❌ `displayName` explicite — auto-dérivé du nom de la fonction. Inutile depuis ref-as-prop.
 - ❌ Composants exposés sans Storybook story (`lint:stories-required` rouge).
 - ❌ Sub-imports profonds depuis les apps (`@fxp/react/components/Button/Button`) — uniquement le barrel root.
 

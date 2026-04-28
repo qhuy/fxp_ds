@@ -1,5 +1,4 @@
 'use client'
-import { forwardRef } from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/cn'
@@ -22,19 +21,26 @@ const buttonVariants = cva('fxp-button', {
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
+  /** Si vrai, le composant rend l'enfant via Radix Slot (composition) */
   asChild?: boolean
+  /** ref React 19 — passée comme prop standard, plus de forwardRef */
+  ref?: React.Ref<HTMLButtonElement>
 }
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button'
-    return (
-      <Comp
-        ref={ref}
-        className={cn(buttonVariants({ variant, size }), className)}
-        {...props}
-      />
-    )
-  }
-)
-Button.displayName = 'Button'
+export function Button({
+  className,
+  variant,
+  size,
+  asChild,
+  ref,
+  ...props
+}: ButtonProps) {
+  const Comp = asChild ? Slot : 'button'
+  return (
+    <Comp
+      ref={ref}
+      className={cn(buttonVariants({ variant, size }), className)}
+      {...props}
+    />
+  )
+}

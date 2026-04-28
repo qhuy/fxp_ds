@@ -139,6 +139,7 @@ Aucune dépendance sortante (feature fondatrice). **Toutes les features ultérie
   - [`.ai/rules/architecture.md`](../../../.ai/rules/architecture.md) — commits `f9171b1` (enrichissement initial), `a8f99dc` (theming niveau 3 + tenant resolution)
   - [`.ai/rules/tech-react.md`](../../../.ai/rules/tech-react.md) — commit `41ba8ed` (réécriture lib DS)
 - **Périmètre volontairement minimal** : ce scaffold ne livre PAS de pipeline tokens fonctionnel (en attente DA), PAS de tenant resolution Next.js (en attente d'une app consommatrice), PAS de CI/CD (feature dédiée). Il livre **uniquement** ce qui permet `pnpm build/test/typecheck/lint/storybook` localement avec un composant `Button` placeholder.
+- **2026-04-28 (post-bootstrap)** — `Button.tsx` initial utilisait `forwardRef` (legacy React 18). Migré vers `ref` as prop par feature [`front/migrate-react-19-ref-prop`](../front/migrate-react-19-ref-prop.md). Le pattern de référence pour tous les futurs composants est désormais ref-as-prop (cf. `.ai/rules/tech-react.md`).
 
 ## ADRs liées (à créer en parallèle ou peu après)
 
