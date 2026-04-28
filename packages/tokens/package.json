@@ -3,26 +3,32 @@
   "version": "0.0.0",
   "private": true,
   "license": "UNLICENSED",
-  "description": "Tokens DTCG — couleurs, typo, spacing, radius, shadows. Source-only en attendant pipeline Style Dictionary.",
+  "description": "Tokens DTCG — couleurs, typo, spacing, radius, shadows. Pipeline Style Dictionary 4.",
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/tokens.js",
+  "types": "./dist/tokens.d.ts",
   "exports": {
-    ".": "./src/index.ts",
-    "./css/fxp.css": "./src/css/fxp.css",
-    "./css/fxp.dark.css": "./src/css/fxp.dark.css",
+    ".": {
+      "types": "./dist/tokens.d.ts",
+      "import": "./dist/tokens.js",
+      "default": "./dist/tokens.js"
+    },
+    "./css/fxp.css": "./dist/css/fxp.css",
+    "./css/fxp.dark.css": "./dist/css/fxp.dark.css",
     "./tokens.json": "./src/tokens.json"
   },
   "files": [
-    "src"
+    "dist",
+    "src/tokens.json"
   ],
   "scripts": {
-    "build": "echo \"@fxp/tokens: source-only (Style Dictionary build à venir)\"",
-    "typecheck": "tsc --noEmit",
+    "build": "style-dictionary build --config ./style-dictionary.config.mjs && cp src/css/fxp.dark.css dist/css/fxp.dark.css",
+    "typecheck": "echo \"@fxp/tokens: pas de TS source — .d.ts générés par Style Dictionary\"",
     "test": "echo \"no tests yet\"",
     "lint": "echo \"no lint yet\""
   },
   "devDependencies": {
+    "style-dictionary": "^4.4.0",
     "typescript": "catalog:"
   }
 }
