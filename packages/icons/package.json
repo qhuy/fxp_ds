@@ -10,7 +10,9 @@
   "exports": {
     ".": "./src/index.ts"
   },
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "scripts": {
     "build": "echo \"@fxp/icons: source-only placeholder\"",
     "typecheck": "tsc --noEmit",
