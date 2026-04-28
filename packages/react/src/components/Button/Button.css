@@ -19,6 +19,13 @@
   outline-offset: 2px;
 }
 
+.fxp-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 .fxp-button:disabled {
   cursor: not-allowed;
   opacity: 0.5;

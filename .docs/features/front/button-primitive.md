@@ -39,6 +39,7 @@ Cette fiche extrait `Button` du périmètre de `architecture/monorepo-bootstrap`
 - `variant`: `primary` | `secondary` | `destructive` | `ghost` | `link`
 - `size`: `sm` | `md` | `lg`
 - `asChild`: `boolean` (Radix Slot pour composition `<Button asChild><Link/></Button>`)
+- `iconLeft?: ReactNode` / `iconRight?: ReactNode` — slots icônes (ignorés si asChild=true ; wrappés en `<span aria-hidden>`)
 - `ref` : prop standard React 19 (cf. `front/migrate-react-19-ref-prop`)
 - Toutes les `React.ButtonHTMLAttributes<HTMLButtonElement>` (disabled, onClick, type, form, etc.)
 
@@ -83,7 +84,7 @@ Le `Button` doit, à maturité, couvrir l'ensemble des cas d'usage attendus d'un
 ### Composition / slots
 
 - [x] `asChild` (Radix Slot)
-- [ ] `iconLeft?: ReactNode` / `iconRight?: ReactNode` — slots typés pour icône avant/après le label (consomme `@fxp/icons`)
+- [x] `iconLeft?: ReactNode` / `iconRight?: ReactNode` — slots typés ; ReactNode-based (n'importe quelle source d'icônes : `@fxp/icons`, `lucide-react` direct, SVG inline)
 - [ ] `iconOnly` mode — `aria-label` obligatoire si pas de texte visible (lint rule à coder)
 
 ## Contrats
@@ -140,7 +141,7 @@ Tout ajout de var consommée = à documenter ici **dans le même commit**.
 | 1 | Variant `destructive` + 1 story + 1 test | XS | Premier vrai usage app (confirmation suppression) | ✅ 2026-04-28 |
 | 2 | Variant `ghost` | XS | Usage Modal footer / Toolbar | ✅ 2026-04-28 |
 | 3 | Taille `lg` + `font-size-lg` token | XS | Page hero CTA | ✅ 2026-04-28 |
-| 4 | Slots `iconLeft`/`iconRight` | S | Préreq `front/icon-button-pattern` | — |
+| 4 | Slots `iconLeft`/`iconRight` | S | Préreq `front/icon-button-pattern` | ✅ 2026-04-28 |
 | 5 | State `loading` | S | Préreq `front/spinner-primitive` | — |
 | 6 | Variant `link` | XS | Usage Banner / inline messages | ✅ 2026-04-28 |
 | 7 | Audit a11y formel + tests keyboard | S | Avant 1ʳᵉ release publique | — |
@@ -155,6 +156,7 @@ Chaque étape = 1 commit `feat(front): button — <change>`, mise à jour de cet
 - **2026-04-28** — **Fiche feature dédiée créée** (cette fiche) — extraction depuis bootstrap pour donner une vie propre au composant. Aucun change de code dans cette extraction (`docs:` only).
 - **2026-04-28** — **Étape 1 roadmap livrée** : variant `destructive`. Tokens ajoutés dans `packages/tokens/src/tokens.json` (`color.status.danger`, `color.status.danger-hover`, `color.fg.on-danger`) → regénérés via SD dans `dist/css/fxp.css`. `Button.css` enrichi (3 lignes CSS variant + hover). 1 test unitaire + 1 story Storybook. Validation : test 6/6, test:storybook 6/6 (Chromium headless), build/typecheck/lint/boundaries verts.
 - **2026-04-28** — **Étapes 2/3/6 roadmap livrées** : variants `ghost` + `link` + taille `lg`. Tokens ajoutés (`color.bg.subtle` pour ghost hover, `font-size.lg` pour size lg) → régénérés via SD. `Button.css` enrichi (3 nouveaux blocs variant + 1 size). cva mis à jour. 4 nouveaux tests + 3 nouvelles stories. Validation complète verte (test 9/9, test:storybook 9/9, build/typecheck/lint/boundaries verts).
+- **2026-04-28** — **Étape 4 roadmap livrée** : slots `iconLeft`/`iconRight` (`ReactNode`-based, indépendants de `@fxp/icons`). Refactor du rendu en 2 branches `asChild`/`button` pour respecter `React.Children.only` du Radix Slot. Wrappers `<span aria-hidden>` autour des icônes (cohérent a11y). Style `.fxp-button__icon` (flex inline, flex-shrink: 0). 3 nouveaux tests + 2 nouvelles stories (WithIconLeft, WithIconRight) + lint a11y `noSvgWithoutTitle` respecté (titles ajoutés sur SVG demos). Validation : test 12/12, test:storybook 11/11, lint clean.
 
 ## Definition of Done (du placeholder actuel — déjà fait)
 

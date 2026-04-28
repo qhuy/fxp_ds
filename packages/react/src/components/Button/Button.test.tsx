@@ -54,4 +54,28 @@ describe('Button', () => {
     render(<Button disabled>x</Button>)
     expect(screen.getByRole('button').hasAttribute('disabled')).toBe(true)
   })
+
+  it('rend iconLeft avant le label', () => {
+    render(<Button iconLeft={<svg data-testid="left-icon" aria-hidden="true" />}>Précédent</Button>)
+    const btn = screen.getByRole('button', { name: 'Précédent' })
+    const icon = screen.getByTestId('left-icon')
+    expect(btn.contains(icon)).toBe(true)
+    expect(btn.firstElementChild?.contains(icon)).toBe(true)
+  })
+
+  it('rend iconRight après le label', () => {
+    render(<Button iconRight={<svg data-testid="right-icon" aria-hidden="true" />}>Suivant</Button>)
+    const btn = screen.getByRole('button', { name: 'Suivant' })
+    const icon = screen.getByTestId('right-icon')
+    expect(btn.lastElementChild?.contains(icon)).toBe(true)
+  })
+
+  it('ignore iconLeft/iconRight quand asChild=true', () => {
+    render(
+      <Button asChild iconLeft={<svg data-testid="ignored-icon" aria-hidden="true" />}>
+        <a href="/test">lien</a>
+      </Button>,
+    )
+    expect(screen.queryByTestId('ignored-icon')).toBeNull()
+  })
 })
