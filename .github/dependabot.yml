@@ -1,6 +1,29 @@
 version: 2
 
 updates:
+  # GitHub Actions versions (workflows CI + release)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Europe/Paris"
+    open-pull-requests-limit: 3
+    labels:
+      - "deps"
+      - "automated"
+      - "github-actions"
+    commit-message:
+      prefix: "chore(ci)"
+    groups:
+      gh-actions:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
   # JS/TS deps via pnpm workspace (auto-détection des sous-package.json)
   - package-ecosystem: "npm"
     directory: "/"
