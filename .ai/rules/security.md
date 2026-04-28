@@ -1,0 +1,24 @@
+# Rules — security
+
+Règles de sécurité. Tout changement touchant auth / secrets / data externe est NON-TRIVIAL.
+
+## Obligation feature (systématique)
+
+Toute feature security (guard, policy, authz logic, rate limit, header exposé) **DOIT** avoir son fichier `.docs/features/security/<id>.md` avant DONE.
+Les features back qui exposent une surface protégée référencent la feature security via `depends_on: ["security/<id>"]`.
+Squelette : `.docs/FEATURE_TEMPLATE.md`. Enforcement : `.githooks/commit-msg` sur `feat:`.
+
+## Bloquants
+
+- Feature doc security créée / à jour (threat, contrôle, portée).
+- Autorisation vérifiée à chaque endpoint exposé.
+- Secrets jamais logués, jamais commités, toujours via variables d'env / secret store.
+- CORS / CSP à jour si exposé web.
+- Rate limiting sur les endpoints publics.
+
+## À éviter
+
+- Parser du contenu utilisateur avec des regex maison pour la sécurité.
+- Faire confiance à un header client.
+
+> Enrichir avec la stack d'auth et la threat model spécifiques à fanxp-design-system.

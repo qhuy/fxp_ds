@@ -1,0 +1,24 @@
+# Rules — front
+
+Règles pour le code frontend de fanxp-design-system.
+
+## Obligation feature (systématique)
+
+Toute feature front **DOIT** avoir son fichier `.docs/features/front/<id>.md` avant DONE.
+Si la feature consomme une API back, lister la dépendance : `depends_on: ["back/<id>"]`.
+Squelette : `.docs/FEATURE_TEMPLATE.md`. Enforcement : `.githooks/commit-msg` sur `feat:`.
+
+## Bloquants avant DONE
+
+- Feature doc front créée / à jour, avec `depends_on` vers back/security si applicable.
+- Build + typecheck verts.
+- États loading / error / empty gérés explicitement.
+- Accessibilité (labels, aria, contraste) respectée.
+- Imports absolus plutôt que chaînes relatives profondes.
+
+## À éviter
+
+- État serveur dupliqué dans l'état client — une source unique de vérité.
+- Styles en ligne / classes magiques hors du design system.
+
+> Enrichir avec la stack concrète (framework, state management, DS).
