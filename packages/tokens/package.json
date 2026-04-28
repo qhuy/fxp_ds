@@ -13,7 +13,9 @@
     "./css/fxp.dark.css": "./src/css/fxp.dark.css",
     "./tokens.json": "./src/tokens.json"
   },
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "scripts": {
     "build": "echo \"@fxp/tokens: source-only (Style Dictionary build à venir)\"",
     "typecheck": "tsc --noEmit",

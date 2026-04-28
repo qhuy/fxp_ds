@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
 import { Button } from './Button'
 
 describe('Button', () => {
@@ -20,17 +20,17 @@ describe('Button', () => {
     expect(screen.getByRole('button').className).toContain('custom-class')
   })
 
-  it('asChild rend l\'élément enfant à la place du button', () => {
+  it("asChild rend l'élément enfant à la place du button", () => {
     render(
       <Button asChild>
         <a href="/test">lien</a>
-      </Button>
+      </Button>,
     )
     expect(screen.getByRole('link', { name: 'lien' })).toBeDefined()
     expect(screen.queryByRole('button')).toBeNull()
   })
 
-  it('respecte l\'attribut disabled', () => {
+  it("respecte l'attribut disabled", () => {
     render(<Button disabled>x</Button>)
     expect(screen.getByRole('button').hasAttribute('disabled')).toBe(true)
   })

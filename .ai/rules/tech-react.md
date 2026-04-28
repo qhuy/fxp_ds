@@ -227,7 +227,8 @@ Aucun string user-visible **hardcodé** dans un composant exposé. Cohérence av
 ## Validation (commandes monorepo Turbo)
 
 - `pnpm typecheck` — `tsc --noEmit` sur `packages/react`. Bloquant.
-- `pnpm lint` — ESLint avec guards FXP (`no-default-export`, `no-next-import`, `no-hardcoded-strings`, `no-hardcoded-tokens`, `stories-required`).
+- `pnpm lint` — **Biome** (lint + format check). Règles activées : `recommended` + `noDefaultExport: error` + `useImportType` + `noUnusedImports`. Guards FXP custom (`no-next-import`, `no-hardcoded-strings`, `no-hardcoded-tokens`, `stories-required`) à venir dans une feature dédiée — pour l'instant code review manuelle.
+- `pnpm format` / `pnpm format:check` — Biome formatter (single quote, no semi, trailing comma all, indent 2).
 - `pnpm test` — Vitest. Bloquant.
 - `pnpm build` — tsup. Bloquant.
 - `pnpm storybook:build` — bloquant si Storybook ne build pas.

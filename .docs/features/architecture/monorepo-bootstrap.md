@@ -41,7 +41,7 @@ Au sortir du scaffold, l'environnement local doit permettre :
 |---|---|
 | `pnpm install` | Installation propre des 3 packages + 1 app, sans warning bloquant |
 | `pnpm typecheck` | `tsc --noEmit` vert sur tous les packages |
-| `pnpm lint` | ESLint vert (config base, guards FXP à enrichir plus tard) |
+| `pnpm lint` | Biome check vert (lint + format check, cf. feature `architecture/lint-format-biome`) |
 | `pnpm test` | Vitest vert (suite vide ou test placeholder OK) |
 | `pnpm build` | `tsup` build OK pour `@fxp/tokens`, `@fxp/react`, `@fxp/icons` ; Astro build OK pour `apps/docs` |
 | `pnpm storybook` | Storybook boot avec au moins un composant placeholder (`Button`) visible |
@@ -119,8 +119,7 @@ fanxp-design-system/
 | **Vitest** | Tests unit/composant | Compatible Vite/tsup, pas Jest |
 | **Storybook 8+** | Dev + doc visuelle composants | Mounted dans `packages/react/.storybook/` |
 | **Astro 4+** | Site doc | App séparée dans `apps/docs/` |
-| **Prettier** | Formatting (déjà présent à la racine) | Inchangé |
-| **ESLint** | Linting | Config flat (eslint.config.js), à enrichir avec guards FXP plus tard |
+| **Biome 2.x** | Lint + format (1 outil, racine) | Remplace Prettier + ESLint. Config `biome.json`. Cf. feature `architecture/lint-format-biome`. |
 
 ### Naming convention NPM
 
