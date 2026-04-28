@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import userEvent from '@testing-library/user-event'
+import { describe, expect, it, vi } from 'vitest'
 import { Button } from './Button'
 
 describe('Button', () => {
@@ -97,5 +98,56 @@ describe('Button', () => {
       </Button>,
     )
     expect(screen.queryByTestId('ignored-icon')).toBeNull()
+  })
+
+  // ── Audit a11y / clavier (étape 7 roadmap) ──
+
+  it('est focusable au clavier (Tab)', async () => {
+    const user = userEvent.setup()
+    render(<Button>Cible</Button>)
+    await user.tab()
+    expect(document.activeElement).toBe(screen.getByRole('button'))
+  })
+
+  it('déclenche onClick au clavier (Enter)', async () => {
+    const onClick = vi.fn()
+    const user = userEvent.setup()
+    render(<Button onClick={onClick}>Valider</Button>)
+    await user.tab()
+    await user.keyboard('{Enter}')
+    expect(onClick).toHaveBeenCalledTimes(1)
+  })
+
+  it('déclenche onClick au clavier (Espace)', async () => {
+    const onClick = vi.fn()
+    const user = userEvent.setup()
+    render(<Button onClick={onClick}>Valider</Button>)
+    await user.tab()
+    await user.keyboard(' ')
+    expect(onClick).toHaveBeenCalledTimes(1)
+  })
+
+  it('ne déclenche pas onClick quand disabled', async () => {
+    const onClick = vi.fn()
+    const user = userEvent.setup()
+    render(
+      <Button onClick={onClick} disabled>
+        Inactif
+      </Button>,
+    )
+    await user.click(screen.getByRole('button'))
+    expect(onClick).not.toHaveBeenCalled()
+  })
+
+  it('ne déclenche pas onClick quand loading', async () => {
+    const onClick = vi.fn()
+    const user = userEvent.setup()
+    render(
+      <Button onClick={onClick} loading>
+        En cours
+      </Button>,
+    )
+    await user.click(screen.getByRole('button'))
+    expect(onClick).not.toHaveBeenCalled()
   })
 })

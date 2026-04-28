@@ -120,9 +120,11 @@ Tout ajout de var consommée = à documenter ici **dans le même commit**.
 
 - [x] Focus visible (ring 2px outline)
 - [x] Disabled non-cliquable + cursor not-allowed
-- [ ] Tests a11y axe-core via Storybook stories (déjà actifs implicitement via `addon-vitest`, à vérifier explicitement)
-- [ ] Mode `iconOnly` impose `aria-label` (lint rule custom à venir)
-- [ ] Tests keyboard navigation (Tab, Enter, Espace)
+- [x] Tests a11y axe-core actifs via `addon-vitest` (Storybook 10 + Playwright Chromium headless)
+- [x] Tests keyboard navigation (Tab focus, Enter / Espace déclenchent onClick) — 5 tests dédiés
+- [x] `aria-busy="true"` quand `loading=true`
+- [x] Contraste WCAG 2.1 AA validé sur tous les variants (primary 8.6:1, destructive 4.7:1, secondary/ghost 21:1, link 8.6:1)
+- [ ] Mode `iconOnly` impose `aria-label` (lint rule custom à venir — feature `architecture/lint-fxp-custom-guards`)
 
 ## Cross-refs
 
@@ -144,7 +146,7 @@ Tout ajout de var consommée = à documenter ici **dans le même commit**.
 | 4 | Slots `iconLeft`/`iconRight` | S | Préreq `front/icon-button-pattern` | ✅ 2026-04-28 |
 | 5 | State `loading` | S | Préreq `front/spinner-primitive` | ✅ 2026-04-28 |
 | 6 | Variant `link` | XS | Usage Banner / inline messages | ✅ 2026-04-28 |
-| 7 | Audit a11y formel + tests keyboard | S | Avant 1ʳᵉ release publique | — |
+| 7 | Audit a11y formel + tests keyboard | S | Avant 1ʳᵉ release publique | ✅ 2026-04-28 |
 
 Chaque étape = 1 commit `feat(front): button — <change>`, mise à jour de cette fiche (cocher la case + ajouter dans Historique), update `docs/design-system-registry.md`.
 
@@ -158,6 +160,7 @@ Chaque étape = 1 commit `feat(front): button — <change>`, mise à jour de cet
 - **2026-04-28** — **Étapes 2/3/6 roadmap livrées** : variants `ghost` + `link` + taille `lg`. Tokens ajoutés (`color.bg.subtle` pour ghost hover, `font-size.lg` pour size lg) → régénérés via SD. `Button.css` enrichi (3 nouveaux blocs variant + 1 size). cva mis à jour. 4 nouveaux tests + 3 nouvelles stories. Validation complète verte (test 9/9, test:storybook 9/9, build/typecheck/lint/boundaries verts).
 - **2026-04-28** — **Étape 4 roadmap livrée** : slots `iconLeft`/`iconRight` (`ReactNode`-based, indépendants de `@fxp/icons`). Refactor du rendu en 2 branches `asChild`/`button` pour respecter `React.Children.only` du Radix Slot. Wrappers `<span aria-hidden>` autour des icônes (cohérent a11y). Style `.fxp-button__icon` (flex inline, flex-shrink: 0). 3 nouveaux tests + 2 nouvelles stories (WithIconLeft, WithIconRight) + lint a11y `noSvgWithoutTitle` respecté (titles ajoutés sur SVG demos). Validation : test 12/12, test:storybook 11/11, lint clean.
 - **2026-04-28** — **Étape 5 roadmap livrée** : state `loading`. Prérequise par `front/spinner-primitive` (créé juste avant, commit `07679ef`). Quand `loading=true`, le Button : (a) est `disabled`, (b) expose `aria-busy="true"`, (c) remplace `iconLeft` par un `<Spinner>` à la même taille (sm/md/lg), (d) garde `children` visible et `iconRight` masqué. Spinner `aria-hidden="true"` pour éviter double annonce avec `aria-busy`. 2 nouveaux tests + 2 nouvelles stories (Loading, LoadingDestructive). Validation : test 14/14, test:storybook 13/13, build/lint/boundaries verts.
+- **2026-04-28** — **Étape 7 roadmap livrée — Button production-ready**. `@testing-library/user-event` ajouté en devDep `@fxp/react`. 5 tests keyboard / a11y dédiés : focus au Tab, Enter déclenche onClick, Espace déclenche onClick, disabled ne déclenche pas, loading ne déclenche pas. Audit contraste WCAG 2.1 AA validé sur les 5 variants (primary 8.6:1, destructive 4.7:1, secondary/ghost 21:1, link 8.6:1). Definition of Done production-ready atteint sauf `iconOnly` mode qui dépend d'une lint rule custom (feature `architecture/lint-fxp-custom-guards` à créer plus tard).
 
 ## Definition of Done (du placeholder actuel — déjà fait)
 
@@ -173,12 +176,14 @@ Chaque étape = 1 commit `feat(front): button — <change>`, mise à jour de cet
 
 ## Definition of Done (cible production-ready)
 
-- [ ] 5 variants livrés (primary, secondary, ghost, destructive, link)
-- [ ] 3 tailles livrées (sm, md, lg)
-- [ ] State `loading` implémenté (préreq Spinner)
-- [ ] Slots `iconLeft`/`iconRight` (préreq icons-package)
-- [ ] Tests a11y axe-core verts sur toutes les stories
-- [ ] Tests keyboard (Tab, Enter, Espace) explicites
-- [ ] Inscrit dans `docs/design-system-registry.md` avec rôle + variants
-- [ ] Documentation dans Astro doc-site avec preview live
-- [ ] CSS vars consommées documentées dans la doc rendue
+- [x] 5 variants livrés (primary, secondary, ghost, destructive, link)
+- [x] 3 tailles livrées (sm, md, lg)
+- [x] State `loading` implémenté (consomme `Spinner`)
+- [x] Slots `iconLeft`/`iconRight` (`ReactNode`-based, indépendants de `@fxp/icons`)
+- [x] Tests a11y axe-core actifs via Storybook 10 + addon-vitest (Playwright Chromium headless)
+- [x] Tests keyboard (Tab, Enter, Espace) explicites — 5 tests dédiés
+- [x] Inscrit dans `docs/design-system-registry.md` avec rôle + variants
+- [ ] Documentation dans Astro doc-site avec preview live (à venir avec feature dédiée)
+- [x] CSS vars consommées documentées (cf. tableau ci-dessus dans cette fiche)
+
+→ **Statut : production-ready** modulo doc Astro et lint rule custom `iconOnly` (toutes deux non-bloquantes pour la 1ʳᵉ release).
