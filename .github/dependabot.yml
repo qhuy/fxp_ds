@@ -1,0 +1,91 @@
+version: 2
+
+updates:
+  # JS/TS deps via pnpm workspace (auto-détection des sous-package.json)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Europe/Paris"
+    open-pull-requests-limit: 5
+    labels:
+      - "deps"
+      - "automated"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    # Stratégie : minor/patch groupés par catégorie (1 PR/sem/groupe).
+    # Majors → PR séparée par dep (revue humaine obligatoire).
+    groups:
+      # React + types React (cohérence runtime)
+      react-stack:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+        update-types:
+          - "minor"
+          - "patch"
+      # Storybook + addons (gros bundle, bumps cohérents indispensables)
+      storybook:
+        patterns:
+          - "storybook"
+          - "@storybook/*"
+        update-types:
+          - "minor"
+          - "patch"
+      # Stack de tests
+      testing:
+        patterns:
+          - "vitest"
+          - "@testing-library/*"
+          - "happy-dom"
+        update-types:
+          - "minor"
+          - "patch"
+      # Outillage build / lint / TS / monorepo
+      build-tooling:
+        patterns:
+          - "tsup"
+          - "vite"
+          - "turbo"
+          - "@biomejs/biome"
+          - "typescript"
+          - "@types/node"
+        update-types:
+          - "minor"
+          - "patch"
+      # Radix UI (primitives bas-niveau composants)
+      radix:
+        patterns:
+          - "@radix-ui/*"
+        update-types:
+          - "minor"
+          - "patch"
+      # Changesets
+      changesets:
+        patterns:
+          - "@changesets/*"
+        update-types:
+          - "minor"
+          - "patch"
+      # Astro (site doc)
+      astro:
+        patterns:
+          - "astro"
+          - "@astrojs/*"
+        update-types:
+          - "minor"
+          - "patch"
+      # Utilitaires composants (cva, clsx, tailwind-merge)
+      component-utils:
+        patterns:
+          - "class-variance-authority"
+          - "clsx"
+          - "tailwind-merge"
+        update-types:
+          - "minor"
+          - "patch"
