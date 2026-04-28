@@ -6,14 +6,19 @@ status: active
 depends_on:
   - architecture/monorepo-bootstrap
   - front/migrate-react-19-ref-prop
+  - front/spinner-primitive
 touches:
   - packages/react/src/components/Button/**
   - packages/react/src/index.ts
+  - packages/tokens/src/tokens.json
+  - packages/tokens/src/css/fxp.css
+  - packages/tokens/src/css/fxp.dark.css
+  - docs/design-system-registry.md
 progress:
   phase: implement
-  step: "placeholder en place (2 variants, 2 tailles, asChild) — roadmap d'enrichissement à dérouler"
+  step: "code-complete : 6 variants, 8 tailles, loading, slots, states aria, tokens --fxp-button-*"
   blockers: []
-  resume_hint: "Composant fonctionnel mais minimal. Prochain enrichissement : variant destructive + tests a11y. Voir 'Roadmap d'enrichissement' ci-dessous pour le séquencement."
+  resume_hint: "Button utilisable localement et dans le playground multitenant. Reste prod-blocked par doc Astro live, lint custom iconOnly, VRT hosted, pipeline DA réel, registry NPM."
   updated: 2026-04-28
 ---
 
@@ -25,7 +30,7 @@ progress:
 
 Cette fiche extrait `Button` du périmètre de `architecture/monorepo-bootstrap` (où il était un placeholder pour valider la chaîne de build) et lui donne une vie propre.
 
-## État actuel (post-bootstrap)
+## État courant
 
 **Surface API** :
 
@@ -36,8 +41,8 @@ Cette fiche extrait `Button` du périmètre de `architecture/monorepo-bootstrap`
 ```
 
 **Variants livrés** :
-- `variant`: `primary` | `secondary` | `destructive` | `ghost` | `link`
-- `size`: `sm` | `md` | `lg`
+- `variant`: `primary` | `secondary` | `outline` | `destructive` | `ghost` | `link`
+- `size`: `xs` | `sm` | `md` | `lg` | `icon` | `icon-xs` | `icon-sm` | `icon-lg`
 - `asChild`: `boolean` (Radix Slot pour composition `<Button asChild><Link/></Button>`)
 - `iconLeft?: ReactNode` / `iconRight?: ReactNode` — slots icônes (ignorés si asChild=true ; wrappés en `<span aria-hidden>`)
 - `ref` : prop standard React 19 (cf. `front/migrate-react-19-ref-prop`)
@@ -45,18 +50,18 @@ Cette fiche extrait `Button` du périmètre de `architecture/monorepo-bootstrap`
 
 **Implémentation interne** :
 - Pattern `cva + cn + Slot asChild` (cf. `.ai/rules/tech-react.md` "Anatomie d'un composant primitif")
-- CSS scoped consommant les CSS vars `--fxp-color-brand-*`, `--fxp-radius-md`, `--fxp-space-*`, `--fxp-font-*`, `--fxp-transition-fast`
-- Focus ring via `--fxp-color-focus-ring`
+- CSS scoped consommant les CSS vars `--fxp-color-*`, `--fxp-button-*`, `--fxp-font-*`, `--fxp-line-height-*`, `--fxp-transition-fast`
+- Focus ring via border focus + `--fxp-color-focus-ring-muted`
+- États stylés : `hover`, `focus-visible`, `active`, `disabled`, `aria-invalid`, `aria-expanded`
+- Attributs de composition : `data-slot="button"` et `data-icon="inline-start|inline-end"`
 
-**Tests existants** (5 tests `Button.test.tsx`, unit + storybook via Playwright) :
-- Rendu variant primary par défaut
-- Variant secondary sur demande
-- `className` passthrough
-- `asChild` rend l'élément enfant
-- `disabled` respecté
+**Tests existants** :
+- `Button.test.tsx` : 28 tests unitaires (variants, tailles, icon sizing, slots, `data-slot`, `aria-invalid`, `aria-expanded`, loading, clavier, événements pointer/hover/focus)
+- `Button.stories.tsx` : 19 stories/test cases via Storybook + Playwright Chromium
 
-**Stories existantes** (5 stories `Button.stories.tsx`) :
-- `Primary`, `Secondary`, `Small`, `Disabled`, `AsChildLink`
+**Playground** :
+- `apps/playground` consomme `@fxp/react`, `@fxp/react/styles.css`, `@fxp/tokens/css/fxp.css`, `@fxp/tokens/css/fxp.dark.css`
+- Les thèmes tenants (`acme`, `stadium`, `nova`) modifient les tokens et donc le rendu Button sans changer le composant.
 
 ## Comportement attendu (long terme — roadmap)
 
@@ -66,15 +71,18 @@ Le `Button` doit, à maturité, couvrir l'ensemble des cas d'usage attendus d'un
 
 - [x] `primary` — action principale (CTA primaire)
 - [x] `secondary` — action secondaire (CTA secondaire / outline)
+- [x] `outline` — action secondaire bordée, menu trigger, export neutre
 - [x] `destructive` — action destructrice (suppression, irréversible) — **3 usages identifiés** : confirm-delete, leave-without-saving, force-logout
 - [x] `ghost` — action discrète (textuelle, sans fond)
 - [x] `link` — visuellement un lien mais sémantiquement un button (utile dans les `Toast`, `Banner`)
 
 ### Tailles
 
+- [x] `xs`
 - [x] `sm`
 - [x] `md`
 - [x] `lg` — pour CTA héros / hauteur 48px+
+- [x] `icon` / `icon-xs` / `icon-sm` / `icon-lg`
 
 ### États
 
@@ -103,16 +111,18 @@ Les apps tenant peuvent override ces vars pour personnaliser le `Button` sans to
 |---|---|
 | `--fxp-color-brand-500`, `--fxp-color-brand-500-hover` | background variant primary |
 | `--fxp-color-fg-on-brand` | texte sur fond brand |
-| `--fxp-color-fg-default` | texte variant secondary |
-| `--fxp-color-bg-default` | background variant secondary |
-| `--fxp-color-status-danger`, `--fxp-color-status-danger-hover` | background variant destructive |
-| `--fxp-color-fg-on-danger` | texte sur fond danger |
-| `--fxp-color-bg-subtle` | hover variant ghost |
-| `--fxp-color-focus-ring` | ring focus-visible |
-| `--fxp-radius-md` | border-radius |
-| `--fxp-space-2`/`-3`/`-4` | padding |
-| `--fxp-font-family-sans`, `--fxp-font-weight-medium`, `--fxp-font-size-sm`/`-md`/`-lg` | typographie |
+| `--fxp-color-secondary`, `--fxp-color-secondary-hover`, `--fxp-color-secondary-fg` | variant secondary |
+| `--fxp-color-fg-default`, `--fxp-color-bg-default`, `--fxp-color-bg-muted` | variants outline / ghost |
+| `--fxp-color-border-default`, `--fxp-color-border-input` | bordures neutres |
+| `--fxp-color-status-danger`, `--fxp-color-status-danger-bg`, `--fxp-color-status-danger-bg-hover`, `--fxp-color-status-danger-border`, `--fxp-color-status-danger-ring` | variant destructive + invalid |
+| `--fxp-color-focus-ring`, `--fxp-color-focus-ring-muted` | border/ring focus-visible |
+| `--fxp-space-0` | suppression padding link/icon |
+| `--fxp-font-family-sans`, `--fxp-font-weight-medium`, `--fxp-line-height-tight` | typographie commune |
 | `--fxp-transition-fast` | transition hover/focus |
+| `--fxp-button-height-*`, `--fxp-button-icon-only-size-*` | hauteurs / tailles icon-only |
+| `--fxp-button-padding-x-*`, `--fxp-button-padding-x-with-icon` | padding horizontal |
+| `--fxp-button-gap-*`, `--fxp-button-radius-*`, `--fxp-button-font-size-*`, `--fxp-button-icon-size-*` | sizing par taille |
+| `--fxp-button-border-width`, `--fxp-button-ring-width`, `--fxp-button-active-translate-y`, `--fxp-button-disabled-opacity`, `--fxp-button-link-underline-offset` | états interactifs |
 
 Tout ajout de var consommée = à documenter ici **dans le même commit**.
 
@@ -130,9 +140,10 @@ Tout ajout de var consommée = à documenter ici **dans le même commit**.
 
 - `architecture/monorepo-bootstrap` — fournit la structure et le placeholder initial
 - `front/migrate-react-19-ref-prop` — fournit le pattern `ref` as prop appliqué ici
+- `front/spinner-primitive` — fournit le `Spinner` consommé par `loading`
+- `front/playground-app` — vérifie la consommation réelle du Button avec CSS package + tokens + tenants
 - `architecture/visual-regression-testing` — tests stories Button via Playwright headless
 - À venir :
-  - `front/spinner-primitive` — préreq pour state `loading` du Button
   - `front/icon-button-pattern` — décline `Button` en mode iconOnly avec lint a11y
   - `architecture/lint-fxp-custom-guards` — guards `aria-label` requis pour iconOnly
 
@@ -147,6 +158,7 @@ Tout ajout de var consommée = à documenter ici **dans le même commit**.
 | 5 | State `loading` | S | Préreq `front/spinner-primitive` | ✅ 2026-04-28 |
 | 6 | Variant `link` | XS | Usage Banner / inline messages | ✅ 2026-04-28 |
 | 7 | Audit a11y formel + tests keyboard | S | Avant 1ʳᵉ release publique | ✅ 2026-04-28 |
+| 8 | Densification style shadcn-like (outline, xs, icon sizes, aria states) | S | Alignement UI demandé | ✅ 2026-04-28 |
 
 Chaque étape = 1 commit `feat(front): button — <change>`, mise à jour de cette fiche (cocher la case + ajouter dans Historique), update `docs/design-system-registry.md`.
 
@@ -162,15 +174,19 @@ Chaque étape = 1 commit `feat(front): button — <change>`, mise à jour de cet
 - **2026-04-28** — **Étape 5 roadmap livrée** : state `loading`. Prérequise par `front/spinner-primitive` (créé juste avant, commit `07679ef`). Quand `loading=true`, le Button : (a) est `disabled`, (b) expose `aria-busy="true"`, (c) remplace `iconLeft` par un `<Spinner>` à la même taille (sm/md/lg), (d) garde `children` visible et `iconRight` masqué. Spinner `aria-hidden="true"` pour éviter double annonce avec `aria-busy`. 2 nouveaux tests + 2 nouvelles stories (Loading, LoadingDestructive). Validation : test 14/14, test:storybook 13/13, build/lint/boundaries verts.
 - **2026-04-28** — **Étape 7 roadmap livrée — Button code-complete**. `@testing-library/user-event` ajouté en devDep `@fxp/react`. 5 tests keyboard / a11y dédiés : focus au Tab, Enter déclenche onClick, Espace déclenche onClick, disabled ne déclenche pas, loading ne déclenche pas. Audit contraste WCAG 2.1 AA validé sur les 5 variants.
 - **2026-04-28** — **DOD révisée pour intégrer les 5 dépendances transversales** (challenge utilisateur — *"sinon le composant ne sera jamais fonctionnel"*). Le précédent "production-ready" annoncé était un abus de langage : le Button est en réalité **code-complete mais prod-blocked**. La DOD est désormais structurée en 2 niveaux : Niveau 1 (code, atteint) + Niveau 2 (5 deps transversales : doc Astro, lint custom, visual regression hosted, pipeline DA, registry NPM). Le `status` reste `active` jusqu'à résolution des 5. Ces dépendances sont projet-wide et débloqueront tous les futurs composants primitifs en cascade.
+- **2026-04-28** — **Étape 8 roadmap livrée** : adaptation du style shadcn-like fourni. Ajout du variant `outline`, des tailles `xs` + `icon`/`icon-xs`/`icon-sm`/`icon-lg`, des états stylés `aria-invalid` et `aria-expanded`, du press effect `active`, du sizing automatique des SVG et des attributs `data-slot`/`data-icon`. Tokens `--fxp-button-*` ajoutés pour éviter les valeurs Tailwind en dur dans `Button.css`; dark overrides ajoutés côté tokens.
+- **2026-04-28** — **Couverture événements ajoutée** : tests explicites `onClick` pointer, `onMouseEnter`/`onMouseLeave`, `onFocus`/`onBlur`. Storybook expose ces handlers via Actions pour vérifier les callbacks dans le playground de stories.
 
-## Definition of Done (du placeholder actuel — déjà fait)
+## Definition of Done historique — placeholder initial
+
+Conservé pour historique. Cette checklist décrit l'état minimal livré au bootstrap ; l'état courant du composant est dans la DOD ci-dessous.
 
 - [x] `Button.tsx` exporte un composant fonctionnel React 19 (`ref` prop, pas `forwardRef`)
 - [x] Pattern `cva + cn + Slot` conforme à `.ai/rules/tech-react.md`
 - [x] CSS scoped, 100% CSS vars `--fxp-*` (aucune valeur en-dur)
-- [x] Tests unit Vitest (5 tests passing)
-- [x] Stories Storybook (5 stories — Primary, Secondary, Small, Disabled, AsChildLink)
-- [x] Tests storybook via Playwright headless (5/5 passing)
+- [x] Tests unit Vitest initiaux (5 tests au bootstrap)
+- [x] Stories Storybook initiales (5 stories au bootstrap — Primary, Secondary, Small, Disabled, AsChildLink)
+- [x] Tests storybook initiaux via Playwright headless (5/5 au bootstrap)
 - [x] Build dist (`@fxp/react/styles.css` extrait via tsup)
 - [x] Accessibilité de base (focus ring, disabled cursor)
 - [x] Fiche feature dédiée (cette fiche)
@@ -181,14 +197,14 @@ La DOD du Button distingue **2 niveaux** : le code lui-même (atteint), et la co
 
 ### Niveau 1 — Code complete (atteint ✅ 2026-04-28)
 
-- [x] 5 variants livrés (primary, secondary, ghost, destructive, link)
-- [x] 3 tailles livrées (sm, md, lg)
+- [x] 6 variants livrés (primary, secondary, outline, ghost, destructive, link)
+- [x] 8 tailles livrées (xs, sm, md, lg, icon, icon-xs, icon-sm, icon-lg)
 - [x] State `loading` implémenté (consomme `Spinner`)
 - [x] Slots `iconLeft`/`iconRight` (`ReactNode`-based)
 - [x] Pattern React 19 ref-as-prop + cva + cn + Slot asChild
 - [x] CSS vars exclusivement (aucune valeur en-dur)
-- [x] Tests unit Vitest (14/14)
-- [x] Tests stories Chromium headless (13/13 via Storybook 10 + addon-vitest, interaction + a11y axe-core)
+- [x] Tests unit Vitest (28 tests Button / 33 tests package avec Spinner)
+- [x] Tests stories Chromium headless (19 stories Button / 23 tests package avec Spinner via Storybook 10 + addon-vitest)
 - [x] Tests keyboard explicites (Tab, Enter, Espace, disabled, loading) — 5 tests dédiés
 - [x] Contraste WCAG 2.1 AA validé tous variants
 - [x] Inscrit dans `docs/design-system-registry.md`

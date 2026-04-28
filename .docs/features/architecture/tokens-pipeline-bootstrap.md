@@ -9,6 +9,9 @@ touches:
   - packages/tokens/package.json
   - packages/tokens/style-dictionary.config.mjs
   - packages/tokens/src/tokens.json
+  - packages/tokens/src/README.md
+  - packages/tokens/src/ROLES.md
+  - packages/tokens/src/tenants/**
   - turbo.json
 progress:
   phase: implement
@@ -86,6 +89,8 @@ Plus nécessaire — les exports TS viennent maintenant de `dist/tokens.js` gén
 
 - **2026-04-28** — Audit P2.4 a flaggué l'absence de pipeline. Décision : SD 4 minimal (1 source `tokens.json`, 2 platforms : css + js). `fxp.dark.css` reste copié source-only — dark via `$themes` SD reporté à la feature multi-tenant pour traiter les 2 (dark + tenants) cohéremment.
 - **Choix `tokens.js` + `tokens.d.ts`** plutôt que `tokens.ts` direct : SD 4 produit du JS + déclarations TS, la conso interne (Storybook globals, future doc) y accède en `import { tokens } from '@fxp/tokens'` typé.
+- **2026-04-28** — Extension tokens pour l'adaptation `Button` shadcn-like : couleurs `secondary`, `border`, focus muted, danger soft states, `space-0`, `line-height-*`, et namespace composant `--fxp-button-*` (heights, icon-only sizes, padding, gaps, radius, font/icon sizes, ring/active/disabled). Dark overrides source-only ajoutés pour les états neutres et destructive soft.
+- **2026-04-28** — Contrat de livraison DA documenté : `packages/tokens/src/README.md` pour le workflow Tokens Studio/DTCG, `ROLES.md` pour les responsabilités par rôle, `tenants/README.md` et `tenants/_TEMPLATE.md` pour les fiches tenant. La documentation est organisée par rôle et tenant, pas par intervenant individuel.
 
 ## Definition of Done
 
@@ -93,7 +98,7 @@ Plus nécessaire — les exports TS viennent maintenant de `dist/tokens.js` gén
 - [x] `style-dictionary.config.mjs` créé (2 platforms : css + js)
 - [x] `package.json` `@fxp/tokens` mis à jour (main/types/exports/files/scripts.build avec `--config ./style-dictionary.config.mjs` explicite)
 - [x] `turbo.json` racine : `storybook` task gagne `dependsOn: ["^build"]`
-- [x] `pnpm build` génère `dist/css/fxp.css` (16 vars), `dist/css/fxp.dark.css` (copié), `dist/tokens.js`, `dist/tokens.d.ts`
+- [x] `pnpm build` génère `dist/css/fxp.css` (tokens base + namespace `--fxp-button-*`), `dist/css/fxp.dark.css` (copié), `dist/tokens.js`, `dist/tokens.d.ts`
 - [x] `pnpm storybook:build` toujours vert (resolve `@fxp/tokens/css/fxp.css` post-build)
 - [x] `pnpm test` + `pnpm typecheck` + `pnpm lint` + `pnpm boundaries` toujours verts
 - [x] Commit `feat(architecture): pipeline tokens Style Dictionary 4 (DTCG → CSS + TS)` à venir
@@ -105,4 +110,4 @@ Plus nécessaire — les exports TS viennent maintenant de `dist/tokens.js` gén
   - `packages/tokens/src/index.ts` supprimé (obsolète, re-export TS vient maintenant de `dist/tokens.js`)
   - `packages/tokens/tsconfig.json` supprimé (plus de TS source ; `.d.ts` générés par SD)
   - `typecheck` script remplacé par echo no-op (cohérent avec absence de TS source)
-- CSS généré identique au stub manuel précédent (16 vars), aucun breaking côté Storybook ni Astro.
+- CSS généré depuis `tokens.json`; le nombre de vars a augmenté avec les tokens Button et les états multitenant. Aucun breaking attendu côté Storybook, Astro ou playground.

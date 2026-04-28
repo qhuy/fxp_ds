@@ -1,22 +1,69 @@
 .fxp-button {
+  --fxp-button-bg: transparent;
+  --fxp-button-bg-hover: transparent;
+  --fxp-button-color: var(--fxp-color-fg-default);
+  --fxp-button-border-color: transparent;
+  --fxp-button-border-color-focus: var(--fxp-color-focus-ring);
+  --fxp-button-ring-color: var(--fxp-color-focus-ring-muted);
+  --fxp-button-height: var(--fxp-button-height-md);
+  --fxp-button-padding-x: var(--fxp-button-padding-x-md);
+  --fxp-button-gap: var(--fxp-button-gap-md);
+  --fxp-button-radius: var(--fxp-button-radius-md);
+  --fxp-button-font-size: var(--fxp-button-font-size-md);
+  --fxp-button-icon-size: var(--fxp-button-icon-size-md);
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--fxp-space-2);
+  flex-shrink: 0;
+  min-width: 0;
+  height: var(--fxp-button-height);
+  padding-inline: var(--fxp-button-padding-x);
+  gap: var(--fxp-button-gap);
   font-family: var(--fxp-font-family-sans);
+  font-size: var(--fxp-button-font-size);
   font-weight: var(--fxp-font-weight-medium);
-  border-radius: var(--fxp-radius-md);
-  border: 1px solid transparent;
+  line-height: var(--fxp-line-height-tight);
+  white-space: nowrap;
+  color: var(--fxp-button-color);
+  background: var(--fxp-button-bg);
+  background-clip: padding-box;
+  border: var(--fxp-button-border-width) solid var(--fxp-button-border-color);
+  border-radius: var(--fxp-button-radius);
+  outline: none;
   cursor: pointer;
   user-select: none;
-  transition: background-color var(--fxp-transition-fast),
-              color var(--fxp-transition-fast),
-              border-color var(--fxp-transition-fast);
+  transition:
+    background-color var(--fxp-transition-fast),
+    color var(--fxp-transition-fast),
+    border-color var(--fxp-transition-fast),
+    box-shadow var(--fxp-transition-fast),
+    transform var(--fxp-transition-fast);
+}
+
+.fxp-button:hover:not(:disabled) {
+  background: var(--fxp-button-bg-hover);
 }
 
 .fxp-button:focus-visible {
-  outline: 2px solid var(--fxp-color-focus-ring);
-  outline-offset: 2px;
+  border-color: var(--fxp-button-border-color-focus);
+  box-shadow: 0 0 0 var(--fxp-button-ring-width) var(--fxp-button-ring-color);
+}
+
+.fxp-button:active:not(:disabled):not([aria-haspopup]) {
+  transform: translateY(var(--fxp-button-active-translate-y));
+}
+
+.fxp-button:disabled {
+  cursor: not-allowed;
+  opacity: var(--fxp-button-disabled-opacity);
+  pointer-events: none;
+}
+
+.fxp-button[aria-invalid='true'] {
+  --fxp-button-border-color: var(--fxp-color-status-danger);
+  --fxp-button-border-color-focus: var(--fxp-color-status-danger);
+  --fxp-button-ring-color: var(--fxp-color-status-danger-ring);
 }
 
 .fxp-button__icon {
@@ -24,65 +71,147 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  pointer-events: none;
 }
 
-.fxp-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
+.fxp-button__icon > svg,
+.fxp-button > svg {
+  width: var(--fxp-button-icon-size);
+  height: var(--fxp-button-icon-size);
+  flex-shrink: 0;
+  pointer-events: none;
 }
 
 /* variants */
 .fxp-button--primary {
-  background: var(--fxp-color-brand-500);
-  color: var(--fxp-color-fg-on-brand);
-}
-.fxp-button--primary:hover:not(:disabled) {
-  background: var(--fxp-color-brand-500-hover);
+  --fxp-button-bg: var(--fxp-color-brand-500);
+  --fxp-button-bg-hover: var(--fxp-color-brand-500-hover);
+  --fxp-button-color: var(--fxp-color-fg-on-brand);
 }
 
 .fxp-button--secondary {
-  background: var(--fxp-color-bg-default);
-  color: var(--fxp-color-fg-default);
-  border-color: var(--fxp-color-fg-default);
+  --fxp-button-bg: var(--fxp-color-secondary);
+  --fxp-button-bg-hover: var(--fxp-color-secondary-hover);
+  --fxp-button-color: var(--fxp-color-secondary-fg);
+}
+
+.fxp-button--outline {
+  --fxp-button-bg: var(--fxp-color-bg-default);
+  --fxp-button-bg-hover: var(--fxp-color-bg-muted);
+  --fxp-button-color: var(--fxp-color-fg-default);
+  --fxp-button-border-color: var(--fxp-color-border-default);
+}
+
+.fxp-button--outline[aria-expanded='true'] {
+  --fxp-button-bg: var(--fxp-color-bg-muted);
 }
 
 .fxp-button--destructive {
-  background: var(--fxp-color-status-danger);
-  color: var(--fxp-color-fg-on-danger);
-}
-.fxp-button--destructive:hover:not(:disabled) {
-  background: var(--fxp-color-status-danger-hover);
+  --fxp-button-bg: var(--fxp-color-status-danger-bg);
+  --fxp-button-bg-hover: var(--fxp-color-status-danger-bg-hover);
+  --fxp-button-color: var(--fxp-color-status-danger);
+  --fxp-button-border-color-focus: var(--fxp-color-status-danger-border);
+  --fxp-button-ring-color: var(--fxp-color-status-danger-ring);
 }
 
 .fxp-button--ghost {
-  background: transparent;
-  color: var(--fxp-color-fg-default);
+  --fxp-button-bg: transparent;
+  --fxp-button-bg-hover: var(--fxp-color-bg-muted);
+  --fxp-button-color: var(--fxp-color-fg-default);
 }
-.fxp-button--ghost:hover:not(:disabled) {
-  background: var(--fxp-color-bg-subtle);
+
+.fxp-button--ghost[aria-expanded='true'] {
+  --fxp-button-bg: var(--fxp-color-bg-muted);
 }
 
 .fxp-button--link {
-  background: transparent;
-  color: var(--fxp-color-brand-500);
-  text-decoration: underline;
-  padding: 0;
-  border: none;
+  --fxp-button-bg: transparent;
+  --fxp-button-bg-hover: transparent;
+  --fxp-button-color: var(--fxp-color-brand-500);
+  --fxp-button-height: auto;
+  --fxp-button-padding-x: var(--fxp-space-0);
+  --fxp-button-ring-width: var(--fxp-space-0);
+
+  text-decoration: none;
+  text-underline-offset: var(--fxp-button-link-underline-offset);
 }
+
 .fxp-button--link:hover:not(:disabled) {
-  color: var(--fxp-color-brand-500-hover);
+  text-decoration: underline;
 }
 
 /* sizes */
+.fxp-button--xs {
+  --fxp-button-height: var(--fxp-button-height-xs);
+  --fxp-button-padding-x: var(--fxp-button-padding-x-xs);
+  --fxp-button-gap: var(--fxp-button-gap-xs);
+  --fxp-button-radius: var(--fxp-button-radius-xs);
+  --fxp-button-font-size: var(--fxp-button-font-size-xs);
+  --fxp-button-icon-size: var(--fxp-button-icon-size-xs);
+}
+
 .fxp-button--sm {
-  padding: var(--fxp-space-2) var(--fxp-space-3);
-  font-size: var(--fxp-font-size-sm);
+  --fxp-button-height: var(--fxp-button-height-sm);
+  --fxp-button-padding-x: var(--fxp-button-padding-x-sm);
+  --fxp-button-gap: var(--fxp-button-gap-sm);
+  --fxp-button-radius: var(--fxp-button-radius-sm);
+  --fxp-button-font-size: var(--fxp-button-font-size-sm);
+  --fxp-button-icon-size: var(--fxp-button-icon-size-sm);
 }
+
 .fxp-button--md {
-  padding: var(--fxp-space-2) var(--fxp-space-4);
-  font-size: var(--fxp-font-size-md);
+  --fxp-button-height: var(--fxp-button-height-md);
+  --fxp-button-padding-x: var(--fxp-button-padding-x-md);
+  --fxp-button-gap: var(--fxp-button-gap-md);
+  --fxp-button-radius: var(--fxp-button-radius-md);
+  --fxp-button-font-size: var(--fxp-button-font-size-md);
+  --fxp-button-icon-size: var(--fxp-button-icon-size-md);
 }
+
 .fxp-button--lg {
-  padding: var(--fxp-space-3) var(--fxp-space-4);
-  font-size: var(--fxp-font-size-lg);
+  --fxp-button-height: var(--fxp-button-height-lg);
+  --fxp-button-padding-x: var(--fxp-button-padding-x-lg);
+  --fxp-button-gap: var(--fxp-button-gap-lg);
+  --fxp-button-radius: var(--fxp-button-radius-lg);
+  --fxp-button-font-size: var(--fxp-button-font-size-lg);
+  --fxp-button-icon-size: var(--fxp-button-icon-size-md);
+}
+
+.fxp-button--icon,
+.fxp-button--icon-xs,
+.fxp-button--icon-sm,
+.fxp-button--icon-lg {
+  width: var(--fxp-button-height);
+  padding-inline: var(--fxp-space-0);
+}
+
+.fxp-button--icon-xs {
+  --fxp-button-height: var(--fxp-button-icon-only-size-xs);
+  --fxp-button-radius: var(--fxp-button-radius-xs);
+  --fxp-button-icon-size: var(--fxp-button-icon-size-xs);
+}
+
+.fxp-button--icon-sm {
+  --fxp-button-height: var(--fxp-button-icon-only-size-sm);
+  --fxp-button-radius: var(--fxp-button-radius-sm);
+  --fxp-button-icon-size: var(--fxp-button-icon-size-sm);
+}
+
+.fxp-button--icon {
+  --fxp-button-height: var(--fxp-button-icon-only-size-md);
+  --fxp-button-icon-size: var(--fxp-button-icon-size-md);
+}
+
+.fxp-button--icon-lg {
+  --fxp-button-height: var(--fxp-button-icon-only-size-lg);
+  --fxp-button-radius: var(--fxp-button-radius-lg);
+  --fxp-button-icon-size: var(--fxp-button-icon-size-md);
+}
+
+.fxp-button:has([data-icon='inline-start']) {
+  padding-inline-start: var(--fxp-button-padding-x-with-icon);
+}
+
+.fxp-button:has([data-icon='inline-end']) {
+  padding-inline-end: var(--fxp-button-padding-x-with-icon);
 }

@@ -9,7 +9,7 @@ Entrée unique pour tout agent AI. Les shims à la racine (AGENTS.md, CLAUDE.md,
 À lire à chaque nouvelle tâche, avant toute action :
 
 1. Ce fichier (`.ai/index.md`)
-2. `.ai/quality/QUALITY_GATE.md` — critères BLOQUANTS avant DONE
+2. `.ai/quality/QUALITY_GATE.md` — critères BLOQUANTS avant DONE + checklist anti-oubli
 3. `.ai/guardrails.md` — non-goals + glossaire métier (si présent ; créé via `/aic-project-guardrails`)
 
 Puis **identifier le scope primaire** et charger :
@@ -64,6 +64,7 @@ Toute feature DOIT avoir son fichier sous `.docs/features/<scope>/<id>.md`.
 - **Un scope par tour** — si une tâche traverse plusieurs scopes, STOP + émettre un HANDOFF + attendre confirmation.
 - **Pas de pré-chargement** — charger uniquement ce que la tâche nécessite. Pas `grep -r`.
 - **Pas de full diffs par défaut** — présenter les changements ciblés.
+- **Checklist systématique** — avant DONE, repasser par `.ai/quality/QUALITY_GATE.md#checklist-systématique-anti-oubli` et expliciter toute validation pertinente non exécutée.
 - **Conventional Commits BLOQUANTS** — voir `.ai/quality/QUALITY_GATE.md` section Commits.
 - **Commits en français** (imposé par règles projet).
 

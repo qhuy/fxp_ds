@@ -71,7 +71,8 @@ Le CLI `storybook upgrade` applique les codemods nécessaires :
 ## Historique / décisions
 
 - **2026-04-28** — Audit P1.3 a flaggué SB 8.4 obsolète. Décision : upgrade direct vers SB 9 (effort S, codemods auto via CLI).
-- **2026-04-28** — Implémenté via `pnpm dlx storybook@latest upgrade --yes` qui a installé **SB 10.3.5** (au-delà de l'objectif initial — SB10 GA depuis l'audit). Codemods auto-appliqués : (a) `addon-essentials` remplacé par `@storybook/addon-docs`, (b) `.storybook/main.ts` utilise `getAbsolutePath` (workaround monorepo), (c) imports types passent à `@storybook/react-vite` (renderer-to-framework migration), (d) `parameters.backgrounds` → `initialGlobals.backgrounds` (globals API). `@types/node` ajouté pour `node:url`/`node:path` dans `.storybook/main.ts`. 1 warning Biome toléré (`any` dans helper auto-généré).
+- **2026-04-28** — Implémenté via `pnpm dlx storybook@latest upgrade --yes` qui a installé **SB 10.3.5** (au-delà de l'objectif initial — SB10 GA depuis l'audit). Codemods auto-appliqués : (a) `addon-essentials` remplacé par `@storybook/addon-docs`, (b) `.storybook/main.ts` utilise `getAbsolutePath` (workaround monorepo), (c) imports types passent à `@storybook/react-vite` (renderer-to-framework migration), (d) `parameters.backgrounds` → `initialGlobals.backgrounds` (globals API). `@types/node` ajouté pour `node:url`/`node:path` dans `.storybook/main.ts`.
+- **2026-04-28** — Dette lint supprimée : le helper `getAbsolutePath` retourne maintenant `string` au lieu de `any`. `pnpm lint` passe sans warning Storybook.
 
 ## Definition of Done
 
@@ -80,8 +81,8 @@ Le CLI `storybook upgrade` applique les codemods nécessaires :
 - [x] `.storybook/main.ts` migré (getAbsolutePath + framework path résolu)
 - [x] `.storybook/preview.ts` migré (initialGlobals API)
 - [x] `pnpm storybook:build` vert (3/3 turbo tasks)
-- [x] Stories `Button` (5 stories) rendent inchangées (imports types adaptés)
+- [x] Stories `Button` rendent et évoluent avec le composant (19 stories/test cases après enrichissements)
 - [x] `.ai/rules/tech-react.md` section Storybook updated (SB9+/10+ APIs)
 - [x] `pnpm typecheck` (6/6) + `pnpm test` (6/6) + `pnpm build` (4/4) toujours verts
-- [x] `pnpm lint` clean (1 warning toléré sur `any` dans helper Storybook auto-généré)
+- [x] `pnpm lint` clean (0 warning Storybook)
 - [x] Commit `feat(front): upgrade Storybook 8 → 10 (codemods auto, addons intégrés core)` à venir

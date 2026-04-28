@@ -76,6 +76,7 @@ Ne sont **pas** implémentées dans cette feature. Biome 2.x a un système de pl
 
 - **2026-04-28** — Audit P1.2 a flaggué l'absence de lint. Décision : Biome 2.x plutôt qu'ESLint+Prettier (performance + outil unique). Custom guards FXP reportés.
 - **2026-04-28** — Implémenté : `biome.json` racine, `@biomejs/biome 2.4.13` installé, `prettier` retiré. Scripts `lint`/`lint:fix`/`format`/`format:check` câblés. Auto-fix appliqué (9 fichiers reformatés : import order, trailing commas, quote style cohérent). Rules `monorepo-bootstrap.md` (table outillage) et `tech-react.md` (section Validation) mis à jour. Pas de turbo.json modif (Biome runs en root, pas per-package — plus rapide qu'un lint distribué pour ce volume).
+- **2026-04-28** — Ajustement compat Next App Router : override `noDefaultExport` ciblé sur les conventions `apps/*/app/{layout,page,template,error,loading,not-found}.tsx`, exclusion Biome de `.next/` (artefact généré). `pnpm lint` redevient vert après ajout du playground.
 
 ## Definition of Done
 

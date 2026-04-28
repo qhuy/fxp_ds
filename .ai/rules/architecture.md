@@ -9,6 +9,7 @@ Squelette : `.docs/FEATURE_TEMPLATE.md`. Enforcement : `.githooks/commit-msg` su
 
 ## Bloquants
 
+- Checklist transverse `.ai/quality/QUALITY_GATE.md#checklist-systématique-anti-oubli` passée, surtout pour tokens, theming, multitenant et contrat DA.
 - Feature doc architecture créée / à jour (contrats + Cross-refs vers les scopes impactés).
 - Pas de dépendance circulaire entre modules.
 - Layering respecté (ex : domain ne dépend pas de transport).

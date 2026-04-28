@@ -39,7 +39,7 @@ Le **vrai visual diff pixel-perfect** (Chromatic snapshot service ou Playwright 
 pnpm test:storybook  # Vitest + Playwright headless run sur toutes les stories
 ```
 
-Pour le `Button` actuel (5 stories) :
+Pour la suite Storybook actuelle (`Button` + `Spinner`) :
 - Chaque story rendue dans un browser Chromium headless
 - Aucune erreur de console / rendu / a11y
 - `play` functions exécutées si présentes
@@ -81,8 +81,8 @@ Pour le `Button` actuel (5 stories) :
 - [x] `vitest.config.ts` réécrit en `projects[]` (project `unit` happy-dom + project `storybook` Playwright Chromium headless)
 - [x] `.storybook/main.ts` enregistre `@storybook/addon-vitest`
 - [x] Script `test:storybook` câblé : `package.json` racine + `@fxp/react` ; turbo task `test:storybook` (dependsOn ^build)
-- [x] `pnpm test:storybook` vert : 5/5 stories Button passées en chromium headless
-- [x] `pnpm test` (unit Vitest) toujours vert : 5/5
+- [x] `pnpm test:storybook` vert : 23 stories/tests passées en chromium headless, dont 19 Button
+- [x] `pnpm test` (unit Vitest) toujours vert : 33 tests, dont 28 Button
 - [x] `pnpm typecheck` (6/6) + `pnpm build` (4/4) + `pnpm lint` (clean, 1 warning toléré) + `pnpm boundaries` toujours verts
 - [x] CI workflow `.github/workflows/ci.yml` enrichi : étape `playwright install --with-deps chromium` + `pnpm test:storybook` (cf. feature `architecture/ci-cd-pipeline`)
 - [x] Commit `feat(architecture): tests Storybook built-in (interaction + a11y via addon-vitest)` à venir

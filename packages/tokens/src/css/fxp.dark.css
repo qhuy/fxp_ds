@@ -4,4 +4,13 @@
 [data-theme='dark'] {
   --fxp-color-fg-default: #ededed;
   --fxp-color-bg-default: #0a0a0a;
+  --fxp-color-secondary: #1f2937;
+  --fxp-color-secondary-hover: #334155;
+  --fxp-color-secondary-fg: #f8fafc;
+  --fxp-color-bg-muted: #1f2937;
+  --fxp-color-border-default: #334155;
+  --fxp-color-border-input: #475569;
+  --fxp-color-status-danger-bg: #450a0a;
+  --fxp-color-status-danger-bg-hover: #7f1d1d;
+  --fxp-color-status-danger-ring: #991b1b;
 }

@@ -11,6 +11,7 @@
       "**/*.{ts,tsx,js,jsx,json,jsonc}",
       "!**/dist",
       "!**/.turbo",
+      "!**/.next",
       "!**/storybook-static",
       "!**/node_modules",
       "!pnpm-lock.yaml"
@@ -58,6 +59,16 @@
   "overrides": [
     {
       "includes": ["**/*.stories.{ts,tsx}", "**/*.config.{ts,mjs,js}", "**/.storybook/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noDefaultExport": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["apps/*/app/{layout,page,template,error,loading,not-found}.tsx"],
       "linter": {
         "rules": {
           "style": {

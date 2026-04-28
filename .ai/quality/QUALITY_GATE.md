@@ -2,6 +2,8 @@
 
 Critères **BLOQUANTS** avant de déclarer une tâche DONE. À lire avec `.ai/index.md`.
 
+Ce fichier est le point qualité unique : evidence, feature mesh, commits et checklist anti-oubli.
+
 ## Evidence (obligatoire)
 
 Avant DONE, fournir :
@@ -21,6 +23,70 @@ Lister explicitement :
 - Compatibilité arrière cassée ?
 
 Si une case est cochée → confirmation utilisateur avant merge.
+
+## Checklist systématique anti-oubli
+
+À passer avant d'annoncer qu'une tâche est terminée. Cette checklist complète les règles de scope sans les remplacer.
+
+### Scope et docs
+
+- Scope primaire identifié (`front`, `architecture`, `security`, etc.).
+- Feature `.docs/features/<scope>/<id>.md` créée ou mise à jour si le comportement change.
+- Historique et compteurs mis à jour quand les tests/stories évoluent.
+- Les anciennes valeurs restent uniquement si elles sont explicitement marquées comme historiques.
+
+### Composant `@fxp/react`
+
+Pour tout composant public :
+
+- Fiche `.docs/features/front/<component-id>.md` relue et synchronisée avec le code avant DONE.
+- Frontmatter `depends_on` synchronisé avec les dépendances réelles du composant, sans cycle.
+- Sections `État courant`, `Contrats`, `Accessibilité`, `Historique` et `Definition of Done` mises à jour si l'API, le style, les tokens, les tests ou les stories changent.
+- API React 19 typée, avec `ref` prop si pertinent.
+- Props natives React pass-through vérifiées (`onClick`, hover, focus/blur si interactif).
+- États couverts : `disabled`, `loading` si applicable, `focus-visible`, `active`, `aria-invalid`, `aria-expanded` si pertinent.
+- Accessibilité clavier couverte : Tab, Enter, Space pour les composants actionnables.
+- Storybook expose les variants, tailles, états et actions utiles.
+- Tests unitaires et tests Storybook reflètent l'état courant.
+- `docs/design-system-registry.md` mis à jour si composant ajouté ou enrichi.
+
+### Tokens, CSS et theming
+
+- Aucun style public n'utilise de valeur arbitraire si un token `--fxp-*` doit exister.
+- Les nouveaux styles passent par `packages/tokens/src/tokens.json` quand ils relèvent du design system.
+- CSS light, dark et tenant restent cohérents si la variable est themable.
+- L'app consommatrice importe les CSS requis dans l'ordre :
+  1. `@fxp/react/styles.css`
+  2. `@fxp/tokens/css/fxp.css`
+  3. `@fxp/tokens/css/fxp.dark.css`
+  4. CSS tenant éventuel
+
+### Multitenant
+
+- Le composant ne connaît pas les tenants en code React.
+- Les différences tenant passent par des overrides de CSS vars.
+- Le playground vérifie au moins un tenant non-default si la tâche touche les styles, tokens ou thèmes.
+
+### Contrat DA
+
+Si la tâche touche les tokens ou un thème, vérifier que la documentation précise ce que la DA doit fournir :
+
+- Tokens DTCG ou mapping explicite vers tokens.
+- Valeurs light/dark si concernées.
+- Overrides tenant si concernées.
+- États composant : default, hover, active, focus, disabled, invalid, loading.
+
+### Validation avant DONE
+
+Exécuter le minimum pertinent :
+
+- `pnpm lint`
+- `pnpm typecheck` si TS/API touchée.
+- Tests unitaires ciblés.
+- `pnpm test:storybook` si stories ou rendu composant changent.
+- Checks `.ai` : `check-ai-references`, `check-features`, et `check-feature-coverage` si documentation/feature mesh modifiés.
+
+Ne pas annoncer "terminé" si une validation pertinente n'a pas été exécutée ou si son résultat n'est pas explicité.
 
 ## Feature mesh (BLOQUANT — aucune dérogation)
 
