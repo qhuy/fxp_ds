@@ -36,7 +36,7 @@ Cette fiche extrait `Button` du périmètre de `architecture/monorepo-bootstrap`
 ```
 
 **Variants livrés** :
-- `variant`: `primary` | `secondary`
+- `variant`: `primary` | `secondary` | `destructive`
 - `size`: `sm` | `md`
 - `asChild`: `boolean` (Radix Slot pour composition `<Button asChild><Link/></Button>`)
 - `ref` : prop standard React 19 (cf. `front/migrate-react-19-ref-prop`)
@@ -65,8 +65,8 @@ Le `Button` doit, à maturité, couvrir l'ensemble des cas d'usage attendus d'un
 
 - [x] `primary` — action principale (CTA primaire)
 - [x] `secondary` — action secondaire (CTA secondaire / outline)
+- [x] `destructive` — action destructrice (suppression, irréversible) — **3 usages identifiés** : confirm-delete, leave-without-saving, force-logout
 - [ ] `ghost` — action discrète (textuelle, sans fond)
-- [ ] `destructive` — action destructrice (suppression, irréversible) — **3 usages identifiés** : confirm-delete, leave-without-saving, force-logout
 - [ ] `link` — visuellement un lien mais sémantiquement un button (utile dans les `Toast`, `Banner`)
 
 ### Tailles
@@ -104,6 +104,8 @@ Les apps tenant peuvent override ces vars pour personnaliser le `Button` sans to
 | `--fxp-color-fg-on-brand` | texte sur fond brand |
 | `--fxp-color-fg-default` | texte variant secondary |
 | `--fxp-color-bg-default` | background variant secondary |
+| `--fxp-color-status-danger`, `--fxp-color-status-danger-hover` | background variant destructive |
+| `--fxp-color-fg-on-danger` | texte sur fond danger |
 | `--fxp-color-focus-ring` | ring focus-visible |
 | `--fxp-radius-md` | border-radius |
 | `--fxp-space-2`/`-3`/`-4` | padding |
@@ -132,10 +134,10 @@ Tout ajout de var consommée = à documenter ici **dans le même commit**.
 
 ## Roadmap d'enrichissement (séquencement)
 
-| Étape | Contenu | Effort | Trigger |
-|---|---|---|---|
-| 1 | Variant `destructive` + 3 stories | XS | Premier vrai usage app (confirmation suppression) |
-| 2 | Variant `ghost` | XS | Usage Modal footer / Toolbar |
+| Étape | Contenu | Effort | Trigger | Statut |
+|---|---|---|---|---|
+| 1 | Variant `destructive` + 1 story + 1 test | XS | Premier vrai usage app (confirmation suppression) | ✅ 2026-04-28 |
+| 2 | Variant `ghost` | XS | Usage Modal footer / Toolbar | — |
 | 3 | Taille `lg` + `font-size-lg` token | XS | Page hero CTA |
 | 4 | Slots `iconLeft`/`iconRight` | S | Préreq `front/icon-button-pattern` |
 | 5 | State `loading` | S | Préreq `front/spinner-primitive` |
@@ -150,6 +152,7 @@ Chaque étape = 1 commit `feat(front): button — <change>`, mise à jour de cet
 - **2026-04-28** — Migré vers React 19 ref-as-prop (commit `7179aa9`, feature `front/migrate-react-19-ref-prop`).
 - **2026-04-28** — Storybook 10 + addon-vitest activés → 5 stories testées en Chromium headless (commit `180b13c`, `7530694`).
 - **2026-04-28** — **Fiche feature dédiée créée** (cette fiche) — extraction depuis bootstrap pour donner une vie propre au composant. Aucun change de code dans cette extraction (`docs:` only).
+- **2026-04-28** — **Étape 1 roadmap livrée** : variant `destructive`. Tokens ajoutés dans `packages/tokens/src/tokens.json` (`color.status.danger`, `color.status.danger-hover`, `color.fg.on-danger`) → regénérés via SD dans `dist/css/fxp.css`. `Button.css` enrichi (3 lignes CSS variant + hover). 1 test unitaire + 1 story Storybook. Validation : test 6/6, test:storybook 6/6 (Chromium headless), build/typecheck/lint/boundaries verts.
 
 ## Definition of Done (du placeholder actuel — déjà fait)
 

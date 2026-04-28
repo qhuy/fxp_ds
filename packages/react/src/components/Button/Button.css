@@ -39,6 +39,14 @@
   border-color: var(--fxp-color-fg-default);
 }
 
+.fxp-button--destructive {
+  background: var(--fxp-color-status-danger);
+  color: var(--fxp-color-fg-on-danger);
+}
+.fxp-button--destructive:hover:not(:disabled) {
+  background: var(--fxp-color-status-danger-hover);
+}
+
 /* sizes */
 .fxp-button--sm {
   padding: var(--fxp-space-2) var(--fxp-space-3);

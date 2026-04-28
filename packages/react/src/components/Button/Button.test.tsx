@@ -15,6 +15,11 @@ describe('Button', () => {
     expect(screen.getByRole('button').className).toContain('fxp-button--secondary')
   })
 
+  it('applique le variant destructive quand demandé', () => {
+    render(<Button variant="destructive">Supprimer</Button>)
+    expect(screen.getByRole('button').className).toContain('fxp-button--destructive')
+  })
+
   it('passthrough la prop className', () => {
     render(<Button className="custom-class">x</Button>)
     expect(screen.getByRole('button').className).toContain('custom-class')
