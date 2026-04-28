@@ -20,8 +20,11 @@ Garder chaque entrée courte (1-4 lignes max). Détails d'implémentation = lire
 
 ## Primitives (atomes)
 
-- **Button** : action utilisateur (click). Variants `primary` (CTA principal) / `secondary` (CTA secondaire outline) / `destructive` (action irréversible — fond rouge `--fxp-color-status-danger`). Tailles `sm` / `md`. Prop `asChild` (Radix Slot) pour rendre l'enfant à la place du `<button>` (`<Button asChild><Link href="…">Aller</Link></Button>`). Focus ring auto via `--fxp-color-focus-ring`. ref = prop standard React 19, plus de `forwardRef`.
+- **Button** : action utilisateur (click). 5 variants (`primary` / `secondary` / `destructive` / `ghost` / `link`) × 3 tailles (`sm` / `md` / `lg`). Slots `iconLeft` / `iconRight` (`ReactNode`). Prop `loading` qui désactive + remplace `iconLeft` par `<Spinner>` + expose `aria-busy="true"`. Prop `asChild` (Radix Slot) pour composition (`<Button asChild><Link/></Button>` — slots et loading ignorés). Focus ring `--fxp-color-focus-ring`. ref = prop standard React 19. Contraste WCAG 2.1 AA validé tous variants.
   → Fiche : [.docs/features/front/button-primitive.md](../.docs/features/front/button-primitive.md)
+
+- **Spinner** : feedback de chargement. Tailles `sm` / `md` / `lg`. `role="status"` + `aria-label` overridable (fallback `"Loading"`). Animation CSS pure (rotation 1s linear ; ralentie à 3s en `prefers-reduced-motion`). Couleur via `currentColor` (override par parent CSS). Consommé par `Button` loading state ; futur `DataGrid`, `EmptyState`.
+  → Fiche : [.docs/features/front/spinner-primitive.md](../.docs/features/front/spinner-primitive.md)
 
 ## Composites (molécules / organismes)
 
