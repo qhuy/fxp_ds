@@ -160,7 +160,8 @@ Chaque étape = 1 commit `feat(front): button — <change>`, mise à jour de cet
 - **2026-04-28** — **Étapes 2/3/6 roadmap livrées** : variants `ghost` + `link` + taille `lg`. Tokens ajoutés (`color.bg.subtle` pour ghost hover, `font-size.lg` pour size lg) → régénérés via SD. `Button.css` enrichi (3 nouveaux blocs variant + 1 size). cva mis à jour. 4 nouveaux tests + 3 nouvelles stories. Validation complète verte (test 9/9, test:storybook 9/9, build/typecheck/lint/boundaries verts).
 - **2026-04-28** — **Étape 4 roadmap livrée** : slots `iconLeft`/`iconRight` (`ReactNode`-based, indépendants de `@fxp/icons`). Refactor du rendu en 2 branches `asChild`/`button` pour respecter `React.Children.only` du Radix Slot. Wrappers `<span aria-hidden>` autour des icônes (cohérent a11y). Style `.fxp-button__icon` (flex inline, flex-shrink: 0). 3 nouveaux tests + 2 nouvelles stories (WithIconLeft, WithIconRight) + lint a11y `noSvgWithoutTitle` respecté (titles ajoutés sur SVG demos). Validation : test 12/12, test:storybook 11/11, lint clean.
 - **2026-04-28** — **Étape 5 roadmap livrée** : state `loading`. Prérequise par `front/spinner-primitive` (créé juste avant, commit `07679ef`). Quand `loading=true`, le Button : (a) est `disabled`, (b) expose `aria-busy="true"`, (c) remplace `iconLeft` par un `<Spinner>` à la même taille (sm/md/lg), (d) garde `children` visible et `iconRight` masqué. Spinner `aria-hidden="true"` pour éviter double annonce avec `aria-busy`. 2 nouveaux tests + 2 nouvelles stories (Loading, LoadingDestructive). Validation : test 14/14, test:storybook 13/13, build/lint/boundaries verts.
-- **2026-04-28** — **Étape 7 roadmap livrée — Button production-ready**. `@testing-library/user-event` ajouté en devDep `@fxp/react`. 5 tests keyboard / a11y dédiés : focus au Tab, Enter déclenche onClick, Espace déclenche onClick, disabled ne déclenche pas, loading ne déclenche pas. Audit contraste WCAG 2.1 AA validé sur les 5 variants (primary 8.6:1, destructive 4.7:1, secondary/ghost 21:1, link 8.6:1). Definition of Done production-ready atteint sauf `iconOnly` mode qui dépend d'une lint rule custom (feature `architecture/lint-fxp-custom-guards` à créer plus tard).
+- **2026-04-28** — **Étape 7 roadmap livrée — Button code-complete**. `@testing-library/user-event` ajouté en devDep `@fxp/react`. 5 tests keyboard / a11y dédiés : focus au Tab, Enter déclenche onClick, Espace déclenche onClick, disabled ne déclenche pas, loading ne déclenche pas. Audit contraste WCAG 2.1 AA validé sur les 5 variants.
+- **2026-04-28** — **DOD révisée pour intégrer les 5 dépendances transversales** (challenge utilisateur — *"sinon le composant ne sera jamais fonctionnel"*). Le précédent "production-ready" annoncé était un abus de langage : le Button est en réalité **code-complete mais prod-blocked**. La DOD est désormais structurée en 2 niveaux : Niveau 1 (code, atteint) + Niveau 2 (5 deps transversales : doc Astro, lint custom, visual regression hosted, pipeline DA, registry NPM). Le `status` reste `active` jusqu'à résolution des 5. Ces dépendances sont projet-wide et débloqueront tous les futurs composants primitifs en cascade.
 
 ## Definition of Done (du placeholder actuel — déjà fait)
 
@@ -174,16 +175,34 @@ Chaque étape = 1 commit `feat(front): button — <change>`, mise à jour de cet
 - [x] Accessibilité de base (focus ring, disabled cursor)
 - [x] Fiche feature dédiée (cette fiche)
 
-## Definition of Done (cible production-ready)
+## Definition of Done
+
+La DOD du Button distingue **2 niveaux** : le code lui-même (atteint), et la consommabilité réelle en production par une app FXP (bloquée par 5 dépendances transversales). Tant que les 5 dépendances ne sont pas livrées, le Button **n'est pas DONE** et son `status` reste `active`.
+
+### Niveau 1 — Code complete (atteint ✅ 2026-04-28)
 
 - [x] 5 variants livrés (primary, secondary, ghost, destructive, link)
 - [x] 3 tailles livrées (sm, md, lg)
 - [x] State `loading` implémenté (consomme `Spinner`)
-- [x] Slots `iconLeft`/`iconRight` (`ReactNode`-based, indépendants de `@fxp/icons`)
-- [x] Tests a11y axe-core actifs via Storybook 10 + addon-vitest (Playwright Chromium headless)
-- [x] Tests keyboard (Tab, Enter, Espace) explicites — 5 tests dédiés
-- [x] Inscrit dans `docs/design-system-registry.md` avec rôle + variants
-- [ ] Documentation dans Astro doc-site avec preview live (à venir avec feature dédiée)
-- [x] CSS vars consommées documentées (cf. tableau ci-dessus dans cette fiche)
+- [x] Slots `iconLeft`/`iconRight` (`ReactNode`-based)
+- [x] Pattern React 19 ref-as-prop + cva + cn + Slot asChild
+- [x] CSS vars exclusivement (aucune valeur en-dur)
+- [x] Tests unit Vitest (14/14)
+- [x] Tests stories Chromium headless (13/13 via Storybook 10 + addon-vitest, interaction + a11y axe-core)
+- [x] Tests keyboard explicites (Tab, Enter, Espace, disabled, loading) — 5 tests dédiés
+- [x] Contraste WCAG 2.1 AA validé tous variants
+- [x] Inscrit dans `docs/design-system-registry.md`
+- [x] CSS vars consommées documentées (engagement multi-tenant)
 
-→ **Statut : production-ready** modulo doc Astro et lint rule custom `iconOnly` (toutes deux non-bloquantes pour la 1ʳᵉ release).
+### Niveau 2 — Production-DONE (BLOQUÉ — 5 dépendances transversales)
+
+Le composant ne peut pas être déclaré DONE tant que ces 5 items, qui conditionnent sa consommabilité réelle, ne sont pas livrés. Chaque item est une feature dédiée du mesh — leur livraison débloque automatiquement TOUS les composants primitifs (Button, Spinner, et futurs Input/Select/Modal/...) en parallèle.
+
+- [ ] **Doc Astro preview live** (`apps/docs/`) — sans ça, les apps consommatrices ne savent pas comment l'utiliser. Feature à créer : `front/docs-site-component-pages` (ou par composant : `front/docs-button-page`).
+- [ ] **Lint rule custom `iconOnly` → `aria-label` requis** — sans ça, trou a11y silencieux quand un app fait `<Button iconLeft={<X/>}/>` sans label visible. Feature à créer : `architecture/lint-fxp-custom-guards`.
+- [ ] **Pixel-diff visual regression hosted** (Chromatic ou Playwright VRT screenshots) — sans ça, n'importe quelle modif silencieuse de Button.css casse la cohérence sans alerte. Feature à créer : `architecture/visual-snapshots-{chromatic|playwright-vrt}`.
+- [ ] **Pipeline tokens DA réel** — actuellement `tokens.json` = stub manuel. Quand la DA livre via Tokens Studio + `$themes` multi-tenant, le Button s'auto-update. Bloqué côté DA, pas côté FXP. Tracé dans `architecture/tokens-pipeline-bootstrap` Historique.
+- [ ] **Registry NPM tranché + `NPM_TOKEN` provisionné** — sans ça, le package `@fxp/react` n'est pas publiable et donc inutilisable par les apps. Bloqué dans `architecture/ci-cd-pipeline` blockers.
+
+→ **Statut actuel** : `active` (code-complete, prod-blocked).
+→ **Bascule en `done`** : automatique quand les 5 cases ci-dessus sont cochées (les hooks ne savent pas inférer ça — passage manuel via `/aic force done` ou `aic-feature-done`).

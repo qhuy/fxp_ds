@@ -14,7 +14,7 @@ progress:
   step: "primitive minimale livrée — taille variante, a11y conforme, animation CSS"
   blockers: []
   resume_hint: "Spinner livré comme primitive autonome. Sera consommé par Button loading (étape 5 roadmap button-primitive) et plus tard par DataGrid loading state."
-  updated: "2026-04-28"
+  updated: 2026-04-28
 ---
 
 # Spinner — primitive de chargement

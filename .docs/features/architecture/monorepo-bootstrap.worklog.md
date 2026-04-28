@@ -25,3 +25,18 @@
   - packages/react/src/components/Button/Button.test.tsx
   - packages/react/src/components/Button/Button.tsx
   - packages/tokens/src/tokens.json
+
+## 2026-04-28 17:09 — auto
+- Fichiers modifiés :
+  - packages/react/package.json
+  - packages/react/src/components/Button/Button.css
+  - packages/react/src/components/Button/Button.stories.tsx
+  - packages/react/src/components/Button/Button.test.tsx
+  - packages/react/src/components/Button/Button.tsx
+  - packages/react/src/components/Spinner/Spinner.css
+  - packages/react/src/components/Spinner/Spinner.stories.tsx
+  - packages/react/src/components/Spinner/Spinner.test.tsx
+  - packages/react/src/components/Spinner/Spinner.tsx
+  - packages/react/src/components/Spinner/index.ts
+  - packages/react/src/index.ts
+  - packages/tokens/src/tokens.json

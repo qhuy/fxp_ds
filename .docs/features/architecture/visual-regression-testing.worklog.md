@@ -5,3 +5,7 @@
 - Fichiers modifiés :
   - packages/react/package.json
   - packages/react/vitest.config.ts
+
+## 2026-04-28 17:09 — auto
+- Fichiers modifiés :
+  - packages/react/package.json
