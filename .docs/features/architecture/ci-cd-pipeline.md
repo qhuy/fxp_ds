@@ -18,7 +18,7 @@ progress:
   blockers:
     - "Registry NPM non configuré (interne FXP via Verdaccio/JFrog/GitHub Packages, ou public npmjs) — release.yml utilise un placeholder; à finaliser quand le registry est tranché."
   resume_hint: "CI runs sur PR + push main. Release sur push main exécute changeset publish via NPM_TOKEN secret (à provisionner)."
-  updated: "2026-04-28"
+  updated: 2026-04-28
 ---
 
 # CI/CD pipeline

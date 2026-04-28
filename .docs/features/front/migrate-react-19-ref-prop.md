@@ -13,7 +13,7 @@ progress:
   step: "audit P1.1 — exécution autopilot"
   blockers: []
   resume_hint: "Refactor Button + update rule anatomie composant. Nouveaux composants primitifs adopteront le pattern."
-  updated: "2026-04-28"
+  updated: 2026-04-28
 ---
 
 # Migration forwardRef → ref as prop (React 19)

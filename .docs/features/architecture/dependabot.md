@@ -12,7 +12,7 @@ progress:
   step: "audit P2.6 — exécution autopilot"
   blockers: []
   resume_hint: "Dependabot config en place. Première PR auto à attendre dans 24h après push origin."
-  updated: "2026-04-28"
+  updated: 2026-04-28
 ---
 
 # Dependabot

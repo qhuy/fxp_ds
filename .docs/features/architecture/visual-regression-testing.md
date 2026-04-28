@@ -17,7 +17,7 @@ progress:
   blockers:
     - "Visual regression à proprement parler (snapshots pixel-diff hosted) → feature dédiée Chromatic OU Playwright-VRT à venir. Cette feature pose les fondations : interaction + a11y tests built-in via @storybook/addon-vitest + Playwright headless."
   resume_hint: "addon-vitest installé, smoke test sur Button stories. Visual snapshots = next step."
-  updated: "2026-04-28"
+  updated: 2026-04-28
 ---
 
 # Tests Storybook built-in (visual regression P0)

@@ -22,7 +22,7 @@ progress:
   step: "scaffold complet — chaîne pnpm install/typecheck/test/build/storybook:build validée"
   blockers: []
   resume_hint: "Squelette posé. Prochaines features candidates : architecture/tokens-pipeline-bootstrap (Style Dictionary + livraison DA), front/button-primitive-final (variants destructive/ghost + tailles supplémentaires), architecture/ci-cd-pipeline (GitHub Actions release Changesets)."
-  updated: "2026-04-28"
+  updated: 2026-04-28
 ---
 
 # Bootstrap monorepo Turbo

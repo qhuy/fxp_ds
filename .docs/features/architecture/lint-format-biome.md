@@ -17,7 +17,7 @@ progress:
   step: "audit P1.2 — exécution autopilot"
   blockers: []
   resume_hint: "Biome installé en racine, scripts lint/format câblés. Custom FXP guards (no-next-import, no-hardcoded-strings) reportés à une feature dédiée si besoin."
-  updated: "2026-04-28"
+  updated: 2026-04-28
 ---
 
 # Lint + Format via Biome

@@ -15,7 +15,7 @@ progress:
   step: "audit P2.4 — exécution autopilot"
   blockers: []
   resume_hint: "SD4 génère dist/css/fxp.css + dist/tokens.{js,d.ts} depuis src/tokens.json. fxp.dark.css copié post-build (dark variant via $themes à itérer plus tard)."
-  updated: "2026-04-28"
+  updated: 2026-04-28
 ---
 
 # Pipeline tokens Style Dictionary 4

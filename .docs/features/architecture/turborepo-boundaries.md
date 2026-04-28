@@ -16,7 +16,7 @@ progress:
   step: "audit P2.3 — exécution autopilot"
   blockers: []
   resume_hint: "Tags par package + rules root. Layering enforcé : tokens/icons indépendants, react ↛ apps."
-  updated: "2026-04-28"
+  updated: 2026-04-28
 ---
 
 # Turborepo Boundaries

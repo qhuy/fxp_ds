@@ -16,7 +16,7 @@ progress:
   step: "audit P1.3 — exécution autopilot"
   blockers: []
   resume_hint: "Upgrade via pnpm dlx storybook@latest upgrade. Vérifier story Button rend toujours, storybook:build vert."
-  updated: "2026-04-28"
+  updated: 2026-04-28
 ---
 
 # Upgrade Storybook 8 → 9
