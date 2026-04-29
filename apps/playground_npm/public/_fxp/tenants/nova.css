@@ -1,0 +1,24 @@
+[data-tenant='nova'] {
+  --fxp-color-brand-500: #9d174d;
+  --fxp-color-brand-500-hover: #831843;
+  --fxp-color-fg-on-brand: #ffffff;
+  --fxp-color-secondary: #fdf2f8;
+  --fxp-color-secondary-hover: #fce7f3;
+  --fxp-color-secondary-fg: #831843;
+  --fxp-color-bg-default: #fffafb;
+  --fxp-color-bg-muted: #fdf2f8;
+  --fxp-color-fg-default: #3b1025;
+  --fxp-color-border-default: #f9a8d4;
+  --fxp-color-border-input: #f472b6;
+  --fxp-color-focus-ring: #db2777;
+  --fxp-color-focus-ring-muted: #fbcfe8;
+  --fxp-color-status-danger: #be123c;
+  --fxp-color-status-danger-bg: #fff1f2;
+  --fxp-color-status-danger-bg-hover: #ffe4e6;
+  --fxp-color-status-danger-border: #fb7185;
+  --fxp-color-status-danger-ring: #fecdd3;
+  --fxp-button-radius-xs: 0.5rem;
+  --fxp-button-radius-sm: 0.625rem;
+  --fxp-button-radius-md: 0.875rem;
+  --fxp-button-radius-lg: 1rem;
+}

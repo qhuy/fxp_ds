@@ -1,0 +1,24 @@
+[data-tenant='stadium'] {
+  --fxp-color-brand-500: #007a5a;
+  --fxp-color-brand-500-hover: #005f47;
+  --fxp-color-fg-on-brand: #ffffff;
+  --fxp-color-secondary: #e7f8ef;
+  --fxp-color-secondary-hover: #cef0dd;
+  --fxp-color-secondary-fg: #063f2b;
+  --fxp-color-bg-default: #fbfffd;
+  --fxp-color-bg-muted: #eaf7f0;
+  --fxp-color-fg-default: #052e22;
+  --fxp-color-border-default: #a9ddc2;
+  --fxp-color-border-input: #80cda8;
+  --fxp-color-focus-ring: #00996f;
+  --fxp-color-focus-ring-muted: #b7efd6;
+  --fxp-color-status-danger: #b42318;
+  --fxp-color-status-danger-bg: #fff0ee;
+  --fxp-color-status-danger-bg-hover: #ffd8d3;
+  --fxp-color-status-danger-border: #f97066;
+  --fxp-color-status-danger-ring: #ffc9c3;
+  --fxp-button-radius-xs: 999px;
+  --fxp-button-radius-sm: 999px;
+  --fxp-button-radius-md: 999px;
+  --fxp-button-radius-lg: 999px;
+}
