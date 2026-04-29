@@ -1,6 +1,6 @@
 # Atomic Design Map
 
-Cartographie atomique de l'UI exposée par `@fxp/react` et des surfaces applicatives de demo.
+Cartographie atomique de l'UI exposée par `@qhuy/react` et des surfaces applicatives de demo.
 
 Scope courant : `packages/react/src/components/**`, `apps/docs/**`, `apps/playground/**`.
 
@@ -13,7 +13,7 @@ Scope courant : `packages/react/src/components/**`, `apps/docs/**`, `apps/playgr
 
 - Classification initiale basée sur la structure et le nommage ; affiner au fil du refactor.
 - Les primitives FXP vivent dans `packages/react/src/components/*`.
-- Les apps `apps/*` consomment `@fxp/react` via le barrel public et importent `@fxp/react/styles.css` une seule fois à la racine.
+- Les apps `apps/*` consomment `@qhuy/react` via le barrel public et importent `@qhuy/react/styles.css` une seule fois à la racine.
 
 ## Summary
 

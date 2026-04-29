@@ -1,5 +1,5 @@
 'use client'
-import { Button, Spinner } from '@fxp/react'
+import { Button, Spinner } from '@qhuy/react'
 import { useEffect, useState } from 'react'
 import { DEFAULT_TENANT, isTenantId, TENANTS, type TenantId } from './tenant-config'
 
@@ -53,7 +53,7 @@ export default function PlaygroundPage() {
         <div>
           <h1>FXP Playground</h1>
           <p>
-            Terrain de jeu local pour <code>@fxp/react</code> via <code>workspace:*</code> (pas
+            Terrain de jeu local pour <code>@qhuy/react</code> via <code>workspace:*</code> (pas
             encore publié sur registry).
           </p>
         </div>

@@ -3,7 +3,7 @@
  *
  * Source : `src/tokens.json` (format DTCG W3C natif, $value/$type)
  * Outputs :
- *   - dist/css/fxp.css        → CSS vars `:root { --fxp-* }` (consommé par @fxp/react)
+ *   - dist/css/fxp.css        → CSS vars `:root { --fxp-* }` (consommé par @qhuy/react)
  *   - dist/tokens.js          → const { color, space, ... } pour code interne
  *   - dist/tokens.d.ts        → déclarations TS associées
  *

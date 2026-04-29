@@ -60,7 +60,7 @@ Cette fiche extrait `Button` du périmètre de `architecture/monorepo-bootstrap`
 - `Button.stories.tsx` : 19 stories/test cases via Storybook + Playwright Chromium
 
 **Playground** :
-- `apps/playground` consomme `@fxp/react`, `@fxp/react/styles.css`, `@fxp/tokens/css/fxp.css`, `@fxp/tokens/css/fxp.dark.css`
+- `apps/playground` consomme `@qhuy/react`, `@qhuy/react/styles.css`, `@qhuy/tokens/css/fxp.css`, `@qhuy/tokens/css/fxp.dark.css`
 - Les thèmes tenants (`acme`, `stadium`, `nova`) modifient les tokens et donc le rendu Button sans changer le composant.
 
 ## Comportement attendu (long terme — roadmap)
@@ -92,7 +92,7 @@ Le `Button` doit, à maturité, couvrir l'ensemble des cas d'usage attendus d'un
 ### Composition / slots
 
 - [x] `asChild` (Radix Slot)
-- [x] `iconLeft?: ReactNode` / `iconRight?: ReactNode` — slots typés ; ReactNode-based (n'importe quelle source d'icônes : `@fxp/icons`, `lucide-react` direct, SVG inline)
+- [x] `iconLeft?: ReactNode` / `iconRight?: ReactNode` — slots typés ; ReactNode-based (n'importe quelle source d'icônes : `@qhuy/icons`, `lucide-react` direct, SVG inline)
 - [ ] `iconOnly` mode — `aria-label` obligatoire si pas de texte visible (lint rule à coder)
 
 ## Contrats
@@ -170,9 +170,9 @@ Chaque étape = 1 commit `feat(front): button — <change>`, mise à jour de cet
 - **2026-04-28** — **Fiche feature dédiée créée** (cette fiche) — extraction depuis bootstrap pour donner une vie propre au composant. Aucun change de code dans cette extraction (`docs:` only).
 - **2026-04-28** — **Étape 1 roadmap livrée** : variant `destructive`. Tokens ajoutés dans `packages/tokens/src/tokens.json` (`color.status.danger`, `color.status.danger-hover`, `color.fg.on-danger`) → regénérés via SD dans `dist/css/fxp.css`. `Button.css` enrichi (3 lignes CSS variant + hover). 1 test unitaire + 1 story Storybook. Validation : test 6/6, test:storybook 6/6 (Chromium headless), build/typecheck/lint/boundaries verts.
 - **2026-04-28** — **Étapes 2/3/6 roadmap livrées** : variants `ghost` + `link` + taille `lg`. Tokens ajoutés (`color.bg.subtle` pour ghost hover, `font-size.lg` pour size lg) → régénérés via SD. `Button.css` enrichi (3 nouveaux blocs variant + 1 size). cva mis à jour. 4 nouveaux tests + 3 nouvelles stories. Validation complète verte (test 9/9, test:storybook 9/9, build/typecheck/lint/boundaries verts).
-- **2026-04-28** — **Étape 4 roadmap livrée** : slots `iconLeft`/`iconRight` (`ReactNode`-based, indépendants de `@fxp/icons`). Refactor du rendu en 2 branches `asChild`/`button` pour respecter `React.Children.only` du Radix Slot. Wrappers `<span aria-hidden>` autour des icônes (cohérent a11y). Style `.fxp-button__icon` (flex inline, flex-shrink: 0). 3 nouveaux tests + 2 nouvelles stories (WithIconLeft, WithIconRight) + lint a11y `noSvgWithoutTitle` respecté (titles ajoutés sur SVG demos). Validation : test 12/12, test:storybook 11/11, lint clean.
+- **2026-04-28** — **Étape 4 roadmap livrée** : slots `iconLeft`/`iconRight` (`ReactNode`-based, indépendants de `@qhuy/icons`). Refactor du rendu en 2 branches `asChild`/`button` pour respecter `React.Children.only` du Radix Slot. Wrappers `<span aria-hidden>` autour des icônes (cohérent a11y). Style `.fxp-button__icon` (flex inline, flex-shrink: 0). 3 nouveaux tests + 2 nouvelles stories (WithIconLeft, WithIconRight) + lint a11y `noSvgWithoutTitle` respecté (titles ajoutés sur SVG demos). Validation : test 12/12, test:storybook 11/11, lint clean.
 - **2026-04-28** — **Étape 5 roadmap livrée** : state `loading`. Prérequise par `front/spinner-primitive` (créé juste avant, commit `07679ef`). Quand `loading=true`, le Button : (a) est `disabled`, (b) expose `aria-busy="true"`, (c) remplace `iconLeft` par un `<Spinner>` à la même taille (sm/md/lg), (d) garde `children` visible et `iconRight` masqué. Spinner `aria-hidden="true"` pour éviter double annonce avec `aria-busy`. 2 nouveaux tests + 2 nouvelles stories (Loading, LoadingDestructive). Validation : test 14/14, test:storybook 13/13, build/lint/boundaries verts.
-- **2026-04-28** — **Étape 7 roadmap livrée — Button code-complete**. `@testing-library/user-event` ajouté en devDep `@fxp/react`. 5 tests keyboard / a11y dédiés : focus au Tab, Enter déclenche onClick, Espace déclenche onClick, disabled ne déclenche pas, loading ne déclenche pas. Audit contraste WCAG 2.1 AA validé sur les 5 variants.
+- **2026-04-28** — **Étape 7 roadmap livrée — Button code-complete**. `@testing-library/user-event` ajouté en devDep `@qhuy/react`. 5 tests keyboard / a11y dédiés : focus au Tab, Enter déclenche onClick, Espace déclenche onClick, disabled ne déclenche pas, loading ne déclenche pas. Audit contraste WCAG 2.1 AA validé sur les 5 variants.
 - **2026-04-28** — **DOD révisée pour intégrer les 5 dépendances transversales** (challenge utilisateur — *"sinon le composant ne sera jamais fonctionnel"*). Le précédent "production-ready" annoncé était un abus de langage : le Button est en réalité **code-complete mais prod-blocked**. La DOD est désormais structurée en 2 niveaux : Niveau 1 (code, atteint) + Niveau 2 (5 deps transversales : doc Astro, lint custom, visual regression hosted, pipeline DA, registry NPM). Le `status` reste `active` jusqu'à résolution des 5. Ces dépendances sont projet-wide et débloqueront tous les futurs composants primitifs en cascade.
 - **2026-04-28** — **Étape 8 roadmap livrée** : adaptation du style shadcn-like fourni. Ajout du variant `outline`, des tailles `xs` + `icon`/`icon-xs`/`icon-sm`/`icon-lg`, des états stylés `aria-invalid` et `aria-expanded`, du press effect `active`, du sizing automatique des SVG et des attributs `data-slot`/`data-icon`. Tokens `--fxp-button-*` ajoutés pour éviter les valeurs Tailwind en dur dans `Button.css`; dark overrides ajoutés côté tokens.
 - **2026-04-28** — **Couverture événements ajoutée** : tests explicites `onClick` pointer, `onMouseEnter`/`onMouseLeave`, `onFocus`/`onBlur`. Storybook expose ces handlers via Actions pour vérifier les callbacks dans le playground de stories.
@@ -187,7 +187,7 @@ Conservé pour historique. Cette checklist décrit l'état minimal livré au boo
 - [x] Tests unit Vitest initiaux (5 tests au bootstrap)
 - [x] Stories Storybook initiales (5 stories au bootstrap — Primary, Secondary, Small, Disabled, AsChildLink)
 - [x] Tests storybook initiaux via Playwright headless (5/5 au bootstrap)
-- [x] Build dist (`@fxp/react/styles.css` extrait via tsup)
+- [x] Build dist (`@qhuy/react/styles.css` extrait via tsup)
 - [x] Accessibilité de base (focus ring, disabled cursor)
 - [x] Fiche feature dédiée (cette fiche)
 
@@ -218,7 +218,7 @@ Le composant ne peut pas être déclaré DONE tant que ces 5 items, qui conditio
 - [ ] **Lint rule custom `iconOnly` → `aria-label` requis** — sans ça, trou a11y silencieux quand un app fait `<Button iconLeft={<X/>}/>` sans label visible. Feature à créer : `architecture/lint-fxp-custom-guards`.
 - [ ] **Pixel-diff visual regression hosted** (Chromatic ou Playwright VRT screenshots) — sans ça, n'importe quelle modif silencieuse de Button.css casse la cohérence sans alerte. Feature à créer : `architecture/visual-snapshots-{chromatic|playwright-vrt}`.
 - [ ] **Pipeline tokens DA réel** — actuellement `tokens.json` = stub manuel. Quand la DA livre via Tokens Studio + `$themes` multi-tenant, le Button s'auto-update. Bloqué côté DA, pas côté FXP. Tracé dans `architecture/tokens-pipeline-bootstrap` Historique.
-- [ ] **Registry NPM tranché + `NPM_TOKEN` provisionné** — sans ça, le package `@fxp/react` n'est pas publiable et donc inutilisable par les apps. Bloqué dans `architecture/ci-cd-pipeline` blockers.
+- [ ] **`NPM_TOKEN` provisionné + publication npm effectuée** — le registry est tranché sous scope public `@qhuy`, mais le package `@qhuy/react` reste inutilisable par les apps tant que la publication n'a pas été faite.
 
 → **Statut actuel** : `active` (code-complete, prod-blocked).
 → **Bascule en `done`** : automatique quand les 5 cases ci-dessus sont cochées (les hooks ne savent pas inférer ça — passage manuel via `/aic force done` ou `aic-feature-done`).

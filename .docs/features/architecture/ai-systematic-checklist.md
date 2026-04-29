@@ -34,7 +34,7 @@ Capitaliser les oublis détectés pendant l'implémentation Button + tokens + pl
 La checklist couvre :
 
 - Scope et feature mesh.
-- Composants `@fxp/react` interactifs.
+- Composants `@qhuy/react` interactifs.
 - Fiches composants front maintenues comme documents vivants, synchronisées avec API, dépendances, tokens, tests et stories.
 - Tokens CSS vars, dark mode et tenant overrides.
 - Contrat de livraison DA.

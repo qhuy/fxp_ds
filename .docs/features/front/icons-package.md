@@ -1,39 +1,39 @@
 ---
 id: icons-package
 scope: front
-title: "@fxp/icons — set d'icônes (placeholder + roadmap)"
+title: "@qhuy/icons — set d'icônes (placeholder + roadmap)"
 status: active
 depends_on:
   - architecture/monorepo-bootstrap
 touches:
   - packages/icons/**
 progress:
-  phase: spec
+  phase: implement
   step: "placeholder en place — choix re-export lucide-react vs SVG sprite custom à trancher"
   blockers:
     - "Décision pending : re-export sélectif lucide-react (rapide) vs SVG sprite custom (plus contrôle, plus d'effort)."
   resume_hint: "Trigger : 1er composant FXP qui consomme une icône (probablement Button avec slots iconLeft/iconRight, étape 4 de button-primitive). À ce moment, trancher la stratégie."
-  updated: "2026-04-28"
+  updated: 2026-04-29
 ---
 
-# @fxp/icons — set d'icônes
+# @qhuy/icons — set d'icônes
 
 ## Objectif
 
-`@fxp/icons` est l'un des 3 packages publics de FXP DS (avec `@fxp/tokens` et `@fxp/react`). Il fournit aux apps consommatrices les icônes utilisées par les composants FXP **et** celles exposées pour usage applicatif direct.
+`@qhuy/icons` est l'un des 3 packages publics de FXP DS (avec `@qhuy/tokens` et `@qhuy/react`). Il fournit aux apps consommatrices les icônes utilisées par les composants FXP **et** celles exposées pour usage applicatif direct.
 
 Cette fiche extrait `icons-package` du périmètre de `architecture/monorepo-bootstrap` (où il était un placeholder vide pour valider la structure workspace) et lui donne une vie propre.
 
 ## État actuel (post-bootstrap)
 
-Le package `@fxp/icons` est un **stub volontaire** :
+Le package `@qhuy/icons` est un **stub volontaire** :
 
 ```ts
 // packages/icons/src/index.ts
 export const __PLACEHOLDER__ = true
 ```
 
-- `package.json` configuré (name `@fxp/icons`, peerDep React, scripts placeholder)
+- `package.json` configuré (name `@qhuy/icons`, peerDep React, build `tsup`)
 - Tag Turbo `icons-layer` (cf. `architecture/turborepo-boundaries`)
 - Pas de code applicatif, pas de tests, pas de stories
 
@@ -103,7 +103,7 @@ Re-export `lucide-react` pour le **80% générique** + composant `Icon` custom p
 
 ```tsx
 // App consommatrice
-import { ChevronRight, Check } from '@fxp/icons'
+import { ChevronRight, Check } from '@qhuy/icons'
 
 <ChevronRight className="text-blue-500" size={16} />
 ```
@@ -120,7 +120,7 @@ API stable (peerDep React seul) ; aucun runtime FXP autre que les SVGs.
 ### Naming
 
 - Composants en `PascalCase` (cohérent avec lucide-react) : `<ChevronRight />`, `<Check />`, etc.
-- Pas de préfixe `Fxp` (déjà namespacé via le package `@fxp/icons`).
+- Pas de préfixe `Fxp` (déjà namespacé via le package `@qhuy/icons`).
 
 ### Tests / Storybook
 
@@ -141,7 +141,7 @@ API stable (peerDep React seul) ; aucun runtime FXP autre que les SVGs.
 
 ## Definition of Done (placeholder actuel)
 
-- [x] Package résolvable dans le workspace (`@fxp/icons` workspace:*)
+- [x] Package résolvable dans le workspace (`@qhuy/icons` workspace:*)
 - [x] Tag Turbo `icons-layer` correct
 - [x] Build/typecheck/test scripts placeholders verts
 - [x] Fiche feature dédiée (cette fiche)

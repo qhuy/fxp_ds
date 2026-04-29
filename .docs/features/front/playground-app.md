@@ -1,7 +1,7 @@
 ---
 id: playground-app
 scope: front
-title: apps/playground — consumer Next.js pour tester @fxp/react localement
+title: apps/playground — consumer Next.js pour tester @qhuy/react localement
 status: active
 depends_on:
   - architecture/monorepo-bootstrap
@@ -12,7 +12,7 @@ touches:
   - turbo.json
 progress:
   phase: implement
-  step: "scaffold Next.js minimal — consomme @fxp/react via workspace:* pour valider le DX import"
+  step: "scaffold Next.js minimal — consomme @qhuy/react via workspace:* pour valider le DX import"
   blockers: []
   resume_hint: "Permet de tester le DX consumer avant que le registry NPM ne soit tranché. Itérer ici pour valider chaque nouveau composant primitif."
   updated: "2026-04-28"
@@ -25,8 +25,8 @@ progress:
 Débloquer le test concret du DX consumer **sans dépendre d'un registry NPM** (qui n'est pas encore tranché — cf. blocker P2 du Button DOD Niv. 2 et `architecture/ci-cd-pipeline` blockers).
 
 L'app `apps/playground/` :
-- Consomme `@fxp/react` via `workspace:*` (pnpm symlink interne au monorepo)
-- Importe les CSS tokens (`@fxp/tokens/css/fxp.css`)
+- Consomme `@qhuy/react` via `workspace:*` (pnpm symlink interne au monorepo)
+- Importe les CSS tokens (`@qhuy/tokens/css/fxp.css`)
 - Charge un CSS tenant dynamique (`public/_fxp/tenants/<tenant>.css`) et pose `data-tenant` sur `<html>`
 - Présente un terrain de jeu de chaque composant primitif livré (actuellement Button + Spinner)
 - Sert de **preuve visuelle** que le packaging exposé fonctionne dans un vrai consumer Next.js (App Router + RSC + `"use client"`)
@@ -36,8 +36,8 @@ Reste **strictement interne au monorepo** — pas publié, pas accessible aux ap
 ## Comportement attendu
 
 ```bash
-pnpm --filter @fxp/playground dev    # → http://localhost:3000 avec preview Button + Spinner
-pnpm --filter @fxp/playground build  # → build static / SSR Next.js
+pnpm --filter @qhuy/playground dev    # → http://localhost:3000 avec preview Button + Spinner
+pnpm --filter @qhuy/playground build  # → build static / SSR Next.js
 ```
 
 Multitenant local :
@@ -64,19 +64,19 @@ Cas testés visuellement :
 - **React 19** (via catalog)
 - **TypeScript strict** (extends `tsconfig.base.json`)
 - Pas de Tailwind côté playground (test la consommation pure CSS de FXP)
-- Pas de tests automatisés ici (les tests vivent dans `@fxp/react`)
+- Pas de tests automatisés ici (les tests vivent dans `@qhuy/react`)
 
 ### Structure
 
 ```
 apps/playground/
-├── package.json          ← name: "@fxp/playground", deps: workspace:* + next/react/react-dom
+├── package.json          ← name: "@qhuy/playground", deps: workspace:* + next/react/react-dom
 ├── next.config.mjs
 ├── tsconfig.json         ← extends tsconfig.base.json + Next.js conventions
 ├── turbo.json            ← tag app-layer (cohérent avec apps/docs)
 ├── app/                  ← App Router Next.js
 │   ├── tenant-config.ts  ← tenants autorisés + default
-│   ├── layout.tsx        ← import @fxp/tokens/css + html data-theme/data-tenant + CSS tenant
+│   ├── layout.tsx        ← import @qhuy/tokens/css + html data-theme/data-tenant + CSS tenant
 │   ├── globals.css       ← reset minimal + styles playground
 │   └── page.tsx          ← terrain de jeu Button + Spinner + switch tenant ("use client")
 └── public/_fxp/tenants/  ← CSS tenants statiques
@@ -87,7 +87,7 @@ apps/playground/
 
 ### Dépendances Turbo
 
-Tag `app-layer` (cohérent avec `apps/docs`). Peut consommer `@fxp/react` (`components-layer`), `@fxp/tokens` (`tokens-layer`), `@fxp/icons` (`icons-layer`). Aucune dépendance inverse autorisée.
+Tag `app-layer` (cohérent avec `apps/docs`). Peut consommer `@qhuy/react` (`components-layer`), `@qhuy/tokens` (`tokens-layer`), `@qhuy/icons` (`icons-layer`). Aucune dépendance inverse autorisée.
 
 ### Cohérence avec layering existant
 
@@ -118,8 +118,8 @@ Le Turbo `boundaries.tags` actuel autorise `app-layer` → `*-layer` (sans restr
 - [x] Résolution tenant par cookie + `data-tenant` SSR
 - [x] Sélecteur tenant dans le playground
 - [ ] `pnpm install` clean
-- [x] `pnpm --filter @fxp/playground build` vert
+- [x] `pnpm --filter @qhuy/playground build` vert
 - [x] `pnpm boundaries` toujours vert (51 files)
 - [x] `pnpm lint` toujours clean
-- [ ] Commit `feat(front): crée apps/playground (Next.js consumer pour tester @fxp/react)`
-- [ ] (Manuel post-commit) `pnpm --filter @fxp/playground dev` boot et affiche les composants
+- [ ] Commit `feat(front): crée apps/playground (Next.js consumer pour tester @qhuy/react)`
+- [ ] (Manuel post-commit) `pnpm --filter @qhuy/playground dev` boot et affiche les composants

@@ -6,9 +6,9 @@ Ce README est la porte d'entrée humaine du projet. Si une personne ou une IA li
 
 ## Ce que produit ce repo
 
-- `@fxp/react` : composants React compilés, basés sur des primitives accessibles et pilotés par tokens.
-- `@fxp/tokens` : tokens DTCG compilés en CSS variables `--fxp-*`.
-- `@fxp/icons` : package d'icônes React.
+- `@qhuy/react` : composants React compilés, basés sur des primitives accessibles et pilotés par tokens.
+- `@qhuy/tokens` : tokens DTCG compilés en CSS variables `--fxp-*`.
+- `@qhuy/icons` : package d'icônes React.
 - `apps/docs` : documentation publique du design system.
 - `apps/playground` : playground Next.js pour tester les composants, thèmes et tenants.
 
@@ -55,7 +55,7 @@ Avant de coder :
 4. Ouvrir ou mettre à jour la fiche `.docs/features/<scope>/<id>.md`.
 5. Vérifier le [Quality Gate](.ai/quality/QUALITY_GATE.md).
 
-Pour un composant `@fxp/react`, livrer systématiquement :
+Pour un composant `@qhuy/react`, livrer systématiquement :
 
 - API typée React 19.
 - Props natives React pass-through si composant interactif (`onClick`, hover, focus/blur).
@@ -72,15 +72,15 @@ Pour un composant `@fxp/react`, livrer systématiquement :
 Installer les packages publiés :
 
 ```bash
-pnpm add @fxp/react @fxp/tokens @fxp/icons
+pnpm add @qhuy/react @qhuy/tokens @qhuy/icons
 ```
 
 Importer les CSS au root de l'application :
 
 ```ts
-import '@fxp/react/styles.css'
-import '@fxp/tokens/css/fxp.css'
-import '@fxp/tokens/css/fxp.dark.css'
+import '@qhuy/react/styles.css'
+import '@qhuy/tokens/css/fxp.css'
+import '@qhuy/tokens/css/fxp.dark.css'
 ```
 
 Charger ensuite le CSS tenant au runtime :
@@ -126,9 +126,9 @@ fanxp-design-system/
 │   ├── docs/          # Documentation Astro
 │   └── playground/    # Playground Next.js multi-tenant
 ├── packages/
-│   ├── react/         # @fxp/react
-│   ├── tokens/        # @fxp/tokens
-│   └── icons/         # @fxp/icons
+│   ├── react/         # @qhuy/react
+│   ├── tokens/        # @qhuy/tokens
+│   └── icons/         # @qhuy/icons
 ├── docs/              # Registry et docs transverses lisibles humainement
 ├── .docs/features/    # Suivi des features par scope
 └── .ai/               # Contexte obligatoire pour agents IA
@@ -172,13 +172,13 @@ bash .ai/scripts/check-shims.sh
 Playground seul :
 
 ```bash
-pnpm --filter @fxp/playground dev
+pnpm --filter @qhuy/playground dev
 ```
 
 Build tokens :
 
 ```bash
-pnpm --filter @fxp/tokens build
+pnpm --filter @qhuy/tokens build
 ```
 
 ## Règles tokens et theming

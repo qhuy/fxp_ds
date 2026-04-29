@@ -35,7 +35,7 @@ Si une case est cochée → confirmation utilisateur avant merge.
 - Historique et compteurs mis à jour quand les tests/stories évoluent.
 - Les anciennes valeurs restent uniquement si elles sont explicitement marquées comme historiques.
 
-### Composant `@fxp/react`
+### Composant `@qhuy/react`
 
 Pour tout composant public :
 
@@ -56,9 +56,9 @@ Pour tout composant public :
 - Les nouveaux styles passent par `packages/tokens/src/tokens.json` quand ils relèvent du design system.
 - CSS light, dark et tenant restent cohérents si la variable est themable.
 - L'app consommatrice importe les CSS requis dans l'ordre :
-  1. `@fxp/react/styles.css`
-  2. `@fxp/tokens/css/fxp.css`
-  3. `@fxp/tokens/css/fxp.dark.css`
+  1. `@qhuy/react/styles.css`
+  2. `@qhuy/tokens/css/fxp.css`
+  3. `@qhuy/tokens/css/fxp.dark.css`
   4. CSS tenant éventuel
 
 ### Multitenant

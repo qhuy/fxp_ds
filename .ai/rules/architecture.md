@@ -29,11 +29,11 @@ Structure verrouillée :
 ```
 fanxp-design-system/
 ├── packages/
-│   ├── tokens/           # @fxp/tokens — DTCG → CSS vars + TS exports
-│   ├── react/            # @fxp/react — composants compilés
-│   └── icons/            # @fxp/icons — re-export lucide-react ou custom
+│   ├── tokens/           # @qhuy/tokens — DTCG → CSS vars + TS exports
+│   ├── react/            # @qhuy/react — composants compilés
+│   └── icons/            # @qhuy/icons — re-export lucide-react ou custom
 ├── apps/
-│   └── docs/             # site Astro (consomme @fxp/react)
+│   └── docs/             # site Astro (consomme @qhuy/react)
 ├── .changeset/           # Changesets (déjà initialisé)
 ├── turbo.json            # pipelines build/lint/test
 └── package.json          # workspace root (pnpm)
@@ -45,19 +45,19 @@ Outillage : **Turborepo** + **pnpm workspaces** + **Changesets**.
 
 ## Distribution — NPM compilé
 
-Stratégie A retenue (cf. ADR à créer) : `@fxp/react` est une lib NPM compilée, **pas** un registry copy/paste. "Shadcn-like" = philosophie (Radix + tokens-driven), pas mécanisme de distribution.
+Stratégie A retenue (cf. ADR à créer) : `@qhuy/react` est une lib NPM compilée, **pas** un registry copy/paste. "Shadcn-like" = philosophie (Radix + tokens-driven), pas mécanisme de distribution.
 
 | Package | Format | Peer deps |
 |---|---|---|
-| `@fxp/tokens` | CSS + TS + (interne) Tailwind preset | — |
-| `@fxp/react` | ESM + CJS + `.d.ts` | `react@^18 \|\| ^19`, `react-dom` |
-| `@fxp/icons` | ESM + CJS + `.d.ts` | `react@^18 \|\| ^19` |
+| `@qhuy/tokens` | CSS + TS + (interne) Tailwind preset | — |
+| `@qhuy/react` | ESM + CJS + `.d.ts` | `react@^18 \|\| ^19`, `react-dom` |
+| `@qhuy/icons` | ESM + CJS + `.d.ts` | `react@^18 \|\| ^19` |
 
 - **Build** : `tsup` (zero-config ESM + CJS + types).
 - **`sideEffects: false`** dans chaque `package.json` → tree-shaking agressif.
-- **Styles livrés** : `@fxp/react/styles.css` (un seul import à la racine de l'app consommatrice). Pas de Tailwind preset obligatoire pour les consommateurs (couplage fragile). Tailwind utilisé **en interne** au build de `packages/react` uniquement.
+- **Styles livrés** : `@qhuy/react/styles.css` (un seul import à la racine de l'app consommatrice). Pas de Tailwind preset obligatoire pour les consommateurs (couplage fragile). Tailwind utilisé **en interne** au build de `packages/react` uniquement.
 - **`"use client"` par défaut** sur tout composant exporté → 100% RSC-compatible. Détail dans `.ai/rules/tech-react.md`.
-- **Registry NPM** : à confirmer avant 1ʳᵉ release (interne FXP via Verdaccio/JFrog/GitHub Packages, ou public npmjs sous scope `@fxp`).
+- **Registry NPM** : première publication via npm public sous scope `@qhuy`. Le scope `@fxp` reste une cible future éventuelle si une organisation npm dédiée est créée.
 
 ## Theming — niveau 3 (multi-tenant DTCG)
 
@@ -94,7 +94,7 @@ packages/tokens/dist/
 
 - **Source de vérité** : Tokens Studio côté DA, exporté en JSON DTCG W3C, committé dans `packages/tokens/src/` via PR.
 - **Builder** : [Style Dictionary](https://styledictionary.com) (Salesforce) — standard de facto, supporte natif les `$themes` Tokens Studio (1 base + N tenants → N fichiers CSS scopés).
-- **Pas de runtime token resolution** côté `@fxp/react` — tokens compilés au build, exposés en CSS vars. Les composants ne savent rien des tenants.
+- **Pas de runtime token resolution** côté `@qhuy/react` — tokens compilés au build, exposés en CSS vars. Les composants ne savent rien des tenants.
 
 ### Convention de naming CSS vars (figée — rename = breaking major)
 
@@ -136,7 +136,7 @@ Le CDN sert les fichiers `tenants/<id>.css` générés par Style Dictionary. Ver
 
 **Seul mécanisme supporté** : redéfinir `--fxp-*` (via Tokens Studio + Style Dictionary, ou exceptionnellement directement dans le CSS de l'app).
 
-**Pas** d'override de markup, comportement, API publique, ou code source des composants — cf. [`.ai/guardrails.md`](../guardrails.md) non-goal "Customisation au-delà des tokens DTCG". Si un besoin sort de ce périmètre → PR upstream sur `@fxp/react` ou composant applicatif local non-FXP.
+**Pas** d'override de markup, comportement, API publique, ou code source des composants — cf. [`.ai/guardrails.md`](../guardrails.md) non-goal "Customisation au-delà des tokens DTCG". Si un besoin sort de ce périmètre → PR upstream sur `@qhuy/react` ou composant applicatif local non-FXP.
 
 ### Gouvernance tokens (à formaliser en ADR)
 
@@ -153,12 +153,12 @@ Le CDN sert les fichiers `tenants/<id>.css` générés par Style Dictionary. Ver
 - **Changesets** (déjà sous `.changeset/`) : chaque PR avec impact public ajoute un `.changeset/*.md` (level + résumé). Release CI génère le CHANGELOG et bump les versions automatiquement.
 - **`MIGRATION.md`** racine repo, mis à jour par major (1-2 h de rédaction → économise 50 h aux apps consommatrices).
 - **Cycle de dépréciation** : `@deprecated` JSDoc dans la major en cours → suppression à la major suivante. Les IDE warnent les consommateurs en temps réel.
-- **Codemods** (optionnel, pour majors lourdes) : `@fxp/codemods/vN-to-vM` via `jscodeshift`.
-- **Coexistence** rare mais possible via alias npm : `npm install @fxp/react-legacy@npm:@fxp/react@1`. **Jamais** de composant suffixé numériquement — anti-pattern formel (cf. `.ai/guardrails.md` non-goal `Button2`).
+- **Codemods** (optionnel, pour majors lourdes) : `@qhuy/codemods/vN-to-vM` via `jscodeshift`.
+- **Coexistence** rare mais possible via alias npm : `npm install @qhuy/react-legacy@npm:@qhuy/react@1`. **Jamais** de composant suffixé numériquement — anti-pattern formel (cf. `.ai/guardrails.md` non-goal `Button2`).
 
 ## Tests & régression visuelle
 
-- **Régression visuelle obligatoire** sur tout composant `@fxp/react` exporté avant 1ʳᵉ release publique. Outil à trancher dans une feature dédiée (`Storybook + Chromatic` vs `Playwright VRT`).
+- **Régression visuelle obligatoire** sur tout composant `@qhuy/react` exporté avant 1ʳᵉ release publique. Outil à trancher dans une feature dédiée (`Storybook + Chromatic` vs `Playwright VRT`).
 - **Tests unitaires** : Vitest + React Testing Library.
 - **Type checking** : `tsc --noEmit` strict en CI, bloquant.
 

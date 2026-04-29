@@ -1,5 +1,5 @@
 {
-  "name": "@fxp/playground",
+  "name": "@qhuy/playground",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -12,8 +12,8 @@
     "lint": "echo \"no lint yet (handled at workspace root)\""
   },
   "dependencies": {
-    "@fxp/react": "workspace:*",
-    "@fxp/tokens": "workspace:*",
+    "@qhuy/react": "workspace:*",
+    "@qhuy/tokens": "workspace:*",
     "next": "^15.1.0",
     "react": "catalog:",
     "react-dom": "catalog:"

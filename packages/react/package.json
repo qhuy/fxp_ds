@@ -1,7 +1,6 @@
 {
-  "name": "@fxp/react",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@qhuy/react",
+  "version": "0.1.0",
   "license": "UNLICENSED",
   "description": "Composants React FXP — primitives + composites + patterns UX. Lib NPM compilée.",
   "type": "module",
@@ -19,6 +18,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "sideEffects": [
     "**/*.css"
   ],
@@ -45,7 +47,7 @@
     "tailwind-merge": "^2.5.5"
   },
   "devDependencies": {
-    "@fxp/tokens": "workspace:*",
+    "@qhuy/tokens": "workspace:*",
     "@storybook/addon-docs": "^10.3.5",
     "@storybook/addon-vitest": "^10.3.5",
     "@storybook/react": "^10.3.5",

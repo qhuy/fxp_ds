@@ -1,14 +1,14 @@
 import { cookies } from 'next/headers'
 import type { ReactNode } from 'react'
-import '@fxp/react/styles.css'
-import '@fxp/tokens/css/fxp.css'
-import '@fxp/tokens/css/fxp.dark.css'
+import '@qhuy/react/styles.css'
+import '@qhuy/tokens/css/fxp.css'
+import '@qhuy/tokens/css/fxp.dark.css'
 import './globals.css'
 import { DEFAULT_TENANT, isTenantId } from './tenant-config'
 
 export const metadata = {
   title: 'FXP Playground',
-  description: 'Terrain de jeu pour tester @fxp/react en consumer Next.js réel',
+  description: 'Terrain de jeu pour tester @qhuy/react en consumer Next.js réel',
 }
 
 export default async function RootLayout({ children }: { children: ReactNode }) {

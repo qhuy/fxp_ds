@@ -1,5 +1,5 @@
 {
-  "name": "@fxp/docs",
+  "name": "@qhuy/docs",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
-    "@fxp/react": "workspace:*",
-    "@fxp/tokens": "workspace:*",
+    "@qhuy/react": "workspace:*",
+    "@qhuy/tokens": "workspace:*",
     "astro": "^5.0.5",
     "typescript": "catalog:"
   }

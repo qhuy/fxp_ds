@@ -43,7 +43,7 @@ Au sortir du scaffold, l'environnement local doit permettre :
 | `pnpm typecheck` | `tsc --noEmit` vert sur tous les packages |
 | `pnpm lint` | Biome check vert (lint + format check, cf. feature `architecture/lint-format-biome`) |
 | `pnpm test` | Vitest vert (suite vide ou test placeholder OK) |
-| `pnpm build` | `tsup` build OK pour `@fxp/tokens`, `@fxp/react`, `@fxp/icons` ; Astro build OK pour `apps/docs` |
+| `pnpm build` | `tsup` build OK pour `@qhuy/tokens`, `@qhuy/react`, `@qhuy/icons` ; Astro build OK pour `apps/docs` |
 | `pnpm storybook` | Storybook boot avec au moins un composant placeholder (`Button`) visible |
 | `pnpm changeset` | Wizard Changesets fonctionnel (déjà initialisé via `.changeset/`) |
 
@@ -64,7 +64,7 @@ fanxp-design-system/
 ├── .changeset/                   ← déjà initialisé
 ├── packages/
 │   ├── tokens/
-│   │   ├── package.json          ← name: "@fxp/tokens", version: "0.0.0", private (publish later)
+│   │   ├── package.json          ← name: "@qhuy/tokens", version: "0.0.0", private (publish later)
 │   │   ├── tsconfig.json         ← extends tsconfig.base.json
 │   │   ├── tsup.config.ts        ← build ESM + CJS + .d.ts
 │   │   ├── style-dictionary.config.ts  ← stub minimal (DA pas encore livré tokens.json)
@@ -72,12 +72,12 @@ fanxp-design-system/
 │   │       ├── tokens.json       ← DTCG W3C, stub avec 3-4 vars minimales (color brand, radius md)
 │   │       └── index.ts          ← export const tokens = require('./tokens.json')
 │   ├── react/
-│   │   ├── package.json          ← name: "@fxp/react", peerDeps react@^18 || ^19, react-dom
+│   │   ├── package.json          ← name: "@qhuy/react", peerDeps react@^18 || ^19, react-dom
 │   │   ├── tsconfig.json
 │   │   ├── tsup.config.ts        ← ESM + CJS + .d.ts + CSS extraction
 │   │   ├── .storybook/           ← config Storybook 8+
 │   │   │   ├── main.ts
-│   │   │   └── preview.ts        ← import @fxp/tokens/css/fxp.css
+│   │   │   └── preview.ts        ← import @qhuy/tokens/css/fxp.css
 │   │   └── src/
 │   │       ├── components/
 │   │       │   └── Button/
@@ -90,7 +90,7 @@ fanxp-design-system/
 │   │       │   └── cn.ts                   ← clsx + tailwind-merge wrapper
 │   │       └── index.ts                    ← barrel: export { Button }
 │   └── icons/
-│       ├── package.json          ← name: "@fxp/icons"
+│       ├── package.json          ← name: "@qhuy/icons"
 │       ├── tsconfig.json
 │       └── src/
 │           └── index.ts          ← re-export lucide-react sélectif (placeholder)
@@ -123,7 +123,7 @@ fanxp-design-system/
 
 ### Naming convention NPM
 
-- Scope `@fxp/*` (à confirmer côté registry — interne ou public).
+- Scope `@qhuy/*` (à confirmer côté registry — interne ou public).
 - Versions initiales : toutes en `0.0.0`, bumps via Changesets dès la 1ʳᵉ feature non-bootstrap.
 - `private: true` dans `package.json` racine + apps/. Packages publiables : tokens, react, icons.
 

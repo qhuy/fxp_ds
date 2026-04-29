@@ -1,6 +1,6 @@
-# Design System Registry (`@fxp/react`)
+# Design System Registry (`@qhuy/react`)
 
-Source de vérité unique sur les composants UI exposés par `@fxp/react` aux apps consommatrices, leur rôle fonctionnel et leurs règles de comportement.
+Source de vérité unique sur les composants UI exposés par `@qhuy/react` aux apps consommatrices, leur rôle fonctionnel et leurs règles de comportement.
 
 ## Règle mandatory
 

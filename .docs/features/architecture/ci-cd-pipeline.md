@@ -16,9 +16,9 @@ progress:
   phase: implement
   step: "audit P2.1 — exécution autopilot"
   blockers:
-    - "Registry NPM non configuré (interne FXP via Verdaccio/JFrog/GitHub Packages, ou public npmjs) — release.yml utilise un placeholder; à finaliser quand le registry est tranché."
+    - "NPM_TOKEN à provisionner en CI pour publier sous scope npm public @qhuy."
   resume_hint: "CI runs sur PR + push main. Release sur push main exécute changeset publish via NPM_TOKEN secret (à provisionner)."
-  updated: 2026-04-28
+  updated: 2026-04-29
 ---
 
 # CI/CD pipeline
@@ -89,7 +89,7 @@ Ajouter ecosystem `github-actions` pour bumper les versions des actions tierces.
 ## Historique / décisions
 
 - **2026-04-28** — Audit P2.1 a flaggué l'absence de CI réelle. Décision : 2 workflows séparés (`ci.yml` + `release.yml`) plutôt qu'un mono-workflow (séparation responsabilités, déclencheurs distincts).
-- **Blocker explicite** : registry NPM non tranché (cf. `.ai/rules/architecture.md` "Distribution"). `release.yml` utilise `NPM_TOKEN` placeholder — à provisionner et tester end-to-end après push origin.
+- **Blocker explicite** : registry npm public tranché sous scope `@qhuy`, mais `NPM_TOKEN` reste à provisionner et tester end-to-end après push origin.
 
 ## Definition of Done
 
@@ -100,9 +100,10 @@ Ajouter ecosystem `github-actions` pour bumper les versions des actions tierces.
 - [x] Commit `feat(architecture): ci/cd pipeline (PR validation + release Changesets)` à venir
 - [ ] (Post-push, hors scope local) Premier run CI vert sur la PR du push initial
 - [ ] (Post-push) `NPM_TOKEN` secret provisionné par admin
-- [ ] (Post-push) `registry-url` à fixer dans `release.yml` quand registry tranché
+- [x] (Post-push) Registry tranché : npm public sous scope `@qhuy`
 
 ## Historique / suite
 
 - **2026-04-28** — Implémenté : 2 workflows + dependabot enrichi. Validation YAML locale OK. Runtime test → post-push GitHub.
 - **2026-04-28 (post Point #8)** — `ci.yml` enrichi par la feature `architecture/visual-regression-testing` : ajout étape `playwright install --with-deps chromium` + step `pnpm test:storybook` après le `pnpm test` unit. Le runner GitHub Actions doit installer Chromium (~150 Mo) avant chaque CI ; cache Playwright à envisager si CI devient lent.
+- **2026-04-29** — Registry cible tranché : npm public sous scope `@qhuy` (feature `architecture/npm-qhuy-publication`). Reste à provisionner `NPM_TOKEN`.

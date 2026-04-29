@@ -1,6 +1,6 @@
 # AI Context Index — fanxp-design-system
 
-> Design system FanXp — composants React (basés Radix/Shadcn) + tokens DTCG, exposés via NPM (`@fxp/react`, `@fxp/tokens`). Site de doc Astro.
+> Design system FanXp — composants React (basés Radix/Shadcn) + tokens DTCG, exposés via NPM (`@qhuy/react`, `@qhuy/tokens`). Site de doc Astro.
 
 Entrée unique pour tout agent AI. Les shims à la racine (AGENTS.md, CLAUDE.md, …) pointent ici. Ne jamais dupliquer de règles en dehors de `.ai/`.
 

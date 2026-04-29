@@ -29,14 +29,14 @@ La page `http://localhost:4321/` affiche :
 
 - Positionnement du design system.
 - Instructions synthétiques par profil : DA, dev DS, dev app.
-- Aperçu visuel du Button rendu avec les CSS réels `@fxp/react` et `@fxp/tokens`.
+- Aperçu visuel du Button rendu avec les CSS réels `@qhuy/react` et `@qhuy/tokens`.
 - Commandes utiles pour docs, Storybook et validation.
 - Kit DA téléchargeable : exemple tokens DTCG, brief tenant, checklist livraison.
 
 ## Contrats
 
 - Astro reste statique.
-- La page importe `@fxp/react/styles.css`, `@fxp/tokens/css/fxp.css` et `@fxp/tokens/css/fxp.dark.css`.
+- La page importe `@qhuy/react/styles.css`, `@qhuy/tokens/css/fxp.css` et `@qhuy/tokens/css/fxp.dark.css`.
 - L'aperçu Button est une preview visuelle de docs ; Storybook reste la source interactive complète.
 - Les fichiers d'exemple DA sont servis depuis `apps/docs/public/examples/da/`.
 
@@ -53,7 +53,7 @@ La page `http://localhost:4321/` affiche :
 ## Definition of Done
 
 - [x] `apps/docs/src/pages/index.astro` affiche une page lisible.
-- [x] CSS `@fxp/react` et tokens importés.
+- [x] CSS `@qhuy/react` et tokens importés.
 - [x] Aperçu Button visible.
 - [x] Kit DA téléchargeable visible.
 - [x] Fiche feature créée.

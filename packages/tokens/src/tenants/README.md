@@ -46,4 +46,4 @@ La DA ne fournit pas ce CSS directement. Il est genere par Style Dictionary.
 
 ## Regle de compatibilite
 
-Un tenant peut changer des valeurs de tokens. Il ne peut pas renommer ou supprimer des tokens publics sans coordination FXP, car ces noms sont consommes par `@fxp/react`.
+Un tenant peut changer des valeurs de tokens. Il ne peut pas renommer ou supprimer des tokens publics sans coordination FXP, car ces noms sont consommes par `@qhuy/react`.

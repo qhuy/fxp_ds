@@ -48,7 +48,7 @@ ls packages/tokens/dist/
 #   tokens.d.ts        ← généré
 ```
 
-Le scope `--fxp-color-brand-500: #1e40af` etc. est **identique** au stub précédent (mêmes valeurs depuis `tokens.json`). **Aucun breaking** côté Storybook ni Astro docs ; ils continuent à importer `@fxp/tokens/css/fxp.css`.
+Le scope `--fxp-color-brand-500: #1e40af` etc. est **identique** au stub précédent (mêmes valeurs depuis `tokens.json`). **Aucun breaking** côté Storybook ni Astro docs ; ils continuent à importer `@qhuy/tokens/css/fxp.css`.
 
 ## Contrats
 
@@ -59,7 +59,7 @@ Le scope `--fxp-color-brand-500: #1e40af` etc. est **identique** au stub précé
   - `css` : `transformGroup: 'css'`, output `dist/css/fxp.css` au format `css/variables`
   - `js` : `transformGroup: 'js'`, output `dist/tokens.js` (`javascript/es6`) + `dist/tokens.d.ts` (`typescript/es6-declarations`)
 
-### Mises à jour `package.json` `@fxp/tokens`
+### Mises à jour `package.json` `@qhuy/tokens`
 
 | Champ | Avant | Après |
 |---|---|---|
@@ -74,7 +74,7 @@ Le scope `--fxp-color-brand-500: #1e40af` etc. est **identique** au stub précé
 
 ### Mise à jour `turbo.json` racine
 
-`storybook` task gagne `dependsOn: ["^build"]` pour s'assurer que `@fxp/tokens` (build) est fait avant que Storybook ne tente de résoudre les imports `@fxp/tokens/css/*`.
+`storybook` task gagne `dependsOn: ["^build"]` pour s'assurer que `@qhuy/tokens` (build) est fait avant que Storybook ne tente de résoudre les imports `@qhuy/tokens/css/*`.
 
 ### Suppression `packages/tokens/src/index.ts`
 
@@ -88,18 +88,18 @@ Plus nécessaire — les exports TS viennent maintenant de `dist/tokens.js` gén
 ## Historique / décisions
 
 - **2026-04-28** — Audit P2.4 a flaggué l'absence de pipeline. Décision : SD 4 minimal (1 source `tokens.json`, 2 platforms : css + js). `fxp.dark.css` reste copié source-only — dark via `$themes` SD reporté à la feature multi-tenant pour traiter les 2 (dark + tenants) cohéremment.
-- **Choix `tokens.js` + `tokens.d.ts`** plutôt que `tokens.ts` direct : SD 4 produit du JS + déclarations TS, la conso interne (Storybook globals, future doc) y accède en `import { tokens } from '@fxp/tokens'` typé.
+- **Choix `tokens.js` + `tokens.d.ts`** plutôt que `tokens.ts` direct : SD 4 produit du JS + déclarations TS, la conso interne (Storybook globals, future doc) y accède en `import { tokens } from '@qhuy/tokens'` typé.
 - **2026-04-28** — Extension tokens pour l'adaptation `Button` shadcn-like : couleurs `secondary`, `border`, focus muted, danger soft states, `space-0`, `line-height-*`, et namespace composant `--fxp-button-*` (heights, icon-only sizes, padding, gaps, radius, font/icon sizes, ring/active/disabled). Dark overrides source-only ajoutés pour les états neutres et destructive soft.
 - **2026-04-28** — Contrat de livraison DA documenté : `packages/tokens/src/README.md` pour le workflow Tokens Studio/DTCG, `ROLES.md` pour les responsabilités par rôle, `tenants/README.md` et `tenants/_TEMPLATE.md` pour les fiches tenant. La documentation est organisée par rôle et tenant, pas par intervenant individuel.
 
 ## Definition of Done
 
-- [x] `style-dictionary` ^4.4.0 ajouté en devDep `@fxp/tokens`
+- [x] `style-dictionary` ^4.4.0 ajouté en devDep `@qhuy/tokens`
 - [x] `style-dictionary.config.mjs` créé (2 platforms : css + js)
-- [x] `package.json` `@fxp/tokens` mis à jour (main/types/exports/files/scripts.build avec `--config ./style-dictionary.config.mjs` explicite)
+- [x] `package.json` `@qhuy/tokens` mis à jour (main/types/exports/files/scripts.build avec `--config ./style-dictionary.config.mjs` explicite)
 - [x] `turbo.json` racine : `storybook` task gagne `dependsOn: ["^build"]`
 - [x] `pnpm build` génère `dist/css/fxp.css` (tokens base + namespace `--fxp-button-*`), `dist/css/fxp.dark.css` (copié), `dist/tokens.js`, `dist/tokens.d.ts`
-- [x] `pnpm storybook:build` toujours vert (resolve `@fxp/tokens/css/fxp.css` post-build)
+- [x] `pnpm storybook:build` toujours vert (resolve `@qhuy/tokens/css/fxp.css` post-build)
 - [x] `pnpm test` + `pnpm typecheck` + `pnpm lint` + `pnpm boundaries` toujours verts
 - [x] Commit `feat(architecture): pipeline tokens Style Dictionary 4 (DTCG → CSS + TS)` à venir
 

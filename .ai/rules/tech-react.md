@@ -1,4 +1,4 @@
-# Règles tech — React (lib DS `@fxp/react`)
+# Règles tech — React (lib DS `@qhuy/react`)
 
 À charger pour toute tâche touchant `packages/react/`. Ce fichier remplace les règles `react-next` du preset (orientées **app Next.js consommatrice**) par des règles **lib DS** (orientées **publication NPM**).
 
@@ -11,7 +11,7 @@ Cf. [`.ai/rules/architecture.md`](architecture.md) pour le périmètre monorepo,
 - **TypeScript strict** — `strict: true` partout. `tsc --noEmit` bloquant en CI.
 - **Bundle output** — ESM (`.mjs`) + CJS (`.cjs`) + `.d.ts`, généré par `tsup`. `sideEffects: false` dans `package.json` → tree-shaking agressif.
 - **Pas de Next.js / Vite spécifique** — la lib doit fonctionner dans Next.js (App Router + Pages), Vite, Remix, Astro, Webpack legacy. **Pas** d'import `next/*`, pas d'utilisation `useRouter`/`usePathname`/`useSearchParams`. Si un composant a besoin d'un routing, l'app le passe en prop (ex : `Link` accepté en `asChild`).
-- **Primitives bas-niveau** — Radix UI. `lucide-react` pour les icônes (ou `@fxp/icons` si forké). Pas d'autre lib UI lourde.
+- **Primitives bas-niveau** — Radix UI. `lucide-react` pour les icônes (ou `@qhuy/icons` si forké). Pas d'autre lib UI lourde.
 
 ## Layout & nommage
 
@@ -177,13 +177,13 @@ Aucun string user-visible **hardcodé** dans un composant exposé. Cohérence av
 - **Props minimales** — chaque prop sert un usage clair. Ajouter une prop = élargir API surface = potentiel breaking futur.
 - **Breaking change = SemVer major + Changeset major + entry MIGRATION.md**. Jamais `Button2` (cf. guardrails).
 - **Cycle de dépréciation** : `@deprecated` JSDoc dans la major en cours → suppression à la major suivante.
-- **Composants exposés via `src/index.ts`** uniquement. Sub-imports profonds (`@fxp/react/components/Button/Button`) interdits côté apps — sinon on bloque les renames internes.
+- **Composants exposés via `src/index.ts`** uniquement. Sub-imports profonds (`@qhuy/react/components/Button/Button`) interdits côté apps — sinon on bloque les renames internes.
 
 ## Storybook (OBLIGATOIRE — Storybook 9+ / 10+)
 
 - Chaque composant exposé `packages/react/src/components/<Name>/<Name>.tsx` DOIT avoir un voisin `<Name>.stories.tsx`.
 - **Lint guard CI** : `lint:stories-required` — un nouveau composant sans story = build CI rouge.
-- Stories consomment les **vrais tokens** (pas de thème mock). Le Storybook charge `@fxp/tokens/css/fxp.css` + `fxp.dark.css` au boot.
+- Stories consomment les **vrais tokens** (pas de thème mock). Le Storybook charge `@qhuy/tokens/css/fxp.css` + `fxp.dark.css` au boot.
 - Couvrir au minimum : variants, tailles, états (hover/focus/disabled/loading), edge cases (empty, long content).
 - **Imports types depuis `@storybook/react-vite`** (pas `@storybook/react`) — pattern framework-based SB9+.
 - **`initialGlobals`** (pas `parameters.backgrounds`) pour configurer les contextes par défaut — API SB9+ globals.
@@ -226,7 +226,7 @@ Aucun string user-visible **hardcodé** dans un composant exposé. Cohérence av
 - ❌ `forwardRef` — deprecated en React 19. Utiliser `ref` comme prop standard (cf. anatomie composant).
 - ❌ `displayName` explicite — auto-dérivé du nom de la fonction. Inutile depuis ref-as-prop.
 - ❌ Composants exposés sans Storybook story (`lint:stories-required` rouge).
-- ❌ Sub-imports profonds depuis les apps (`@fxp/react/components/Button/Button`) — uniquement le barrel root.
+- ❌ Sub-imports profonds depuis les apps (`@qhuy/react/components/Button/Button`) — uniquement le barrel root.
 
 ## Validation (commandes monorepo Turbo)
 

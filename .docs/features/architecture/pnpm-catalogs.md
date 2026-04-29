@@ -69,7 +69,7 @@ catalog:
 ## Historique / décisions
 
 - **2026-04-28** — Audit P2.2 a flaggué la duplication des versions. Décision : catalogs minimal (TypeScript + React + types associés). Extension future si autre dep transverse émerge.
-- **2026-04-28** — Implémenté : `pnpm-workspace.yaml` enrichi avec 6 entrées catalog. Les 4 `package.json` (`@fxp/tokens`, `@fxp/react`, `@fxp/icons`, `@fxp/docs`) migrés vers `"catalog:"` references. `pnpm install` Already up to date (versions identiques résolues centralement). Bumps futurs = 1 ligne dans `pnpm-workspace.yaml`.
+- **2026-04-28** — Implémenté : `pnpm-workspace.yaml` enrichi avec 6 entrées catalog. Les 4 `package.json` (`@qhuy/tokens`, `@qhuy/react`, `@qhuy/icons`, `@qhuy/docs`) migrés vers `"catalog:"` references. `pnpm install` Already up to date (versions identiques résolues centralement). Bumps futurs = 1 ligne dans `pnpm-workspace.yaml`.
 
 ## Definition of Done
 

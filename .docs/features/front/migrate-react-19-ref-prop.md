@@ -20,7 +20,7 @@ progress:
 
 ## Objectif
 
-Aligner les composants `@fxp/react` sur le pattern moderne React 19 où `ref` est un prop standard. `forwardRef` est **deprecated** en React 19 (encore fonctionnel pour compat, retiré dans une future major).
+Aligner les composants `@qhuy/react` sur le pattern moderne React 19 où `ref` est un prop standard. `forwardRef` est **deprecated** en React 19 (encore fonctionnel pour compat, retiré dans une future major).
 
 Bénéfices :
 - Code plus simple (-1 wrapper, -1 import)

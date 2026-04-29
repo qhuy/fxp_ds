@@ -46,7 +46,7 @@ Pour la suite Storybook actuelle (`Button` + `Spinner`) :
 
 ## Contrats
 
-### Deps ajoutées (`@fxp/react`)
+### Deps ajoutées (`@qhuy/react`)
 
 - `@storybook/addon-vitest` (intégration SB↔Vitest)
 - `@vitest/browser` + `playwright` (browser testing infra)
@@ -77,10 +77,10 @@ Pour la suite Storybook actuelle (`Button` + `Spinner`) :
 - [x] `pnpm dlx storybook@latest add @storybook/addon-vitest --yes` exécuté (auto-config)
 - [x] Vitest 2 → 3 + Vite 5 → 6 (prérequis addon-vitest) — bump cohérent (déjà cataloged à part)
 - [x] `playwright` ajouté à `pnpm.onlyBuiltDependencies` racine (pour autoriser postinstall)
-- [x] Binaire Chromium installé via `pnpm --filter @fxp/react exec playwright install chromium`
+- [x] Binaire Chromium installé via `pnpm --filter @qhuy/react exec playwright install chromium`
 - [x] `vitest.config.ts` réécrit en `projects[]` (project `unit` happy-dom + project `storybook` Playwright Chromium headless)
 - [x] `.storybook/main.ts` enregistre `@storybook/addon-vitest`
-- [x] Script `test:storybook` câblé : `package.json` racine + `@fxp/react` ; turbo task `test:storybook` (dependsOn ^build)
+- [x] Script `test:storybook` câblé : `package.json` racine + `@qhuy/react` ; turbo task `test:storybook` (dependsOn ^build)
 - [x] `pnpm test:storybook` vert : 23 stories/tests passées en chromium headless, dont 19 Button
 - [x] `pnpm test` (unit Vitest) toujours vert : 33 tests, dont 28 Button
 - [x] `pnpm typecheck` (6/6) + `pnpm build` (4/4) + `pnpm lint` (clean, 1 warning toléré) + `pnpm boundaries` toujours verts

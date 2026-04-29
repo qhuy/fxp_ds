@@ -10,14 +10,14 @@ Squelette : `.docs/FEATURE_TEMPLATE.md`. Enforcement : `.githooks/commit-msg` su
 
 ## Bloquants avant DONE
 
-- Checklist transverse `.ai/quality/QUALITY_GATE.md#checklist-systématique-anti-oubli` passée, en particulier les sections composant `@fxp/react`, événements, Storybook, tokens et multitenant.
+- Checklist transverse `.ai/quality/QUALITY_GATE.md#checklist-systématique-anti-oubli` passée, en particulier les sections composant `@qhuy/react`, événements, Storybook, tokens et multitenant.
 - Feature doc front créée / à jour, avec `depends_on` vers back/security si applicable.
 - Build + typecheck verts.
 - États loading / error / empty gérés explicitement.
 - Accessibilité (labels, aria, contraste) respectée.
 - Imports absolus plutôt que chaînes relatives profondes.
 
-## Composants `@fxp/react`
+## Composants `@qhuy/react`
 
 Tout composant public interactif doit vérifier explicitement :
 

@@ -23,7 +23,7 @@ progress:
 
 ## Objectif
 
-Audit P2.3 a relevé que le layering documenté dans `.ai/rules/architecture.md` ("layering") n'a aucun enforcement runtime. Si un dev ajoute par erreur `import x from '@fxp/docs'` dans `packages/react/`, rien ne le bloque.
+Audit P2.3 a relevé que le layering documenté dans `.ai/rules/architecture.md` ("layering") n'a aucun enforcement runtime. Si un dev ajoute par erreur `import x from '@qhuy/docs'` dans `packages/react/`, rien ne le bloque.
 
 **Turborepo Boundaries** (Turbo 2.x) lit la dépendance graph + tags par package + rules root pour :
 - Détecter imports cross-package interdits
@@ -37,7 +37,7 @@ pnpm exec turbo boundaries
 # → Checked N files in K packages, no issues found
 ```
 
-Tentative d'ajouter `@fxp/docs` comme dep de `packages/react/` → **erreur boundaries** au CI/local.
+Tentative d'ajouter `@qhuy/docs` comme dep de `packages/react/` → **erreur boundaries** au CI/local.
 
 ## Contrats
 
@@ -45,10 +45,10 @@ Tentative d'ajouter `@fxp/docs` comme dep de `packages/react/` → **erreur boun
 
 | Package | Tag | Sens |
 |---|---|---|
-| `@fxp/tokens` | `tokens-layer` | Couche basse — rien au-dessus n'a besoin de FXP, pas de deps cross-package |
-| `@fxp/icons` | `icons-layer` | Pair de tokens, pas de deps cross-package |
-| `@fxp/react` | `components-layer` | Peut consommer `tokens-layer` + `icons-layer`, jamais `app-layer` |
-| `@fxp/docs` | `app-layer` | Top — consomme tout |
+| `@qhuy/tokens` | `tokens-layer` | Couche basse — rien au-dessus n'a besoin de FXP, pas de deps cross-package |
+| `@qhuy/icons` | `icons-layer` | Pair de tokens, pas de deps cross-package |
+| `@qhuy/react` | `components-layer` | Peut consommer `tokens-layer` + `icons-layer`, jamais `app-layer` |
+| `@qhuy/docs` | `app-layer` | Top — consomme tout |
 
 ### Rules root (`turbo.json`)
 

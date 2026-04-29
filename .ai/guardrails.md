@@ -19,7 +19,7 @@ L'agent ne doit *pas* proposer ou implémenter :
 - **Customisation au-delà des tokens DTCG** par les apps consommatrices — *les apps overrident exclusivement les CSS vars `--fxp-*` (couleurs, typo, spacing, radius, shadows, transitions, et catégories à venir). Ni le markup interne, ni le comportement, ni l'API publique des composants ne sont customisables sans PR upstream. Le theming multi-tenant (niveau 3) via Tokens Studio + Style Dictionary est, à l'inverse, le mode standard du projet (4+ apps consommatrices, 5+ tenants par app — cf. `.ai/rules/architecture.md`).*
 - **SLA contractuel mainteneur, deprecation policy stricte** — *composants simples, cadence opportuniste, pas d'engagement formel envers les apps consommatrices.*
 - **Composants suffixés numériquement** (`Button2`, `Button3`, `ButtonV2`) — *breaking change = SemVer major + entry MIGRATION.md + Changesets. Jamais de nouveau composant pour briser une API.*
-- **Distribution registry-style copy/paste** (mécanisme original Shadcn CLI) — *NPM compilé exclusif (`@fxp/react`, `@fxp/tokens`). "Shadcn-like" décrit la philosophie (Radix dessous, tokens-driven), pas le mécanisme de distribution.*
+- **Distribution registry-style copy/paste** (mécanisme original Shadcn CLI) — *NPM compilé exclusif (`@qhuy/react`, `@qhuy/tokens`). "Shadcn-like" décrit la philosophie (Radix dessous, tokens-driven), pas le mécanisme de distribution.*
 
 ## Glossaire métier
 
