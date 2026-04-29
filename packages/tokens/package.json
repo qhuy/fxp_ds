@@ -1,6 +1,6 @@
 {
   "name": "@qhuy/tokens",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "UNLICENSED",
   "description": "Tokens DTCG — couleurs, typo, spacing, radius, shadows. Pipeline Style Dictionary 4.",
   "type": "module",

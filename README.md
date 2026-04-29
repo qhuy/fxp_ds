@@ -175,6 +175,14 @@ Playground seul :
 pnpm --filter @qhuy/playground dev
 ```
 
+Playground consommateur NPM publie :
+
+```bash
+pnpm playground:npm:install
+pnpm playground:npm:dev
+pnpm playground:npm:build
+```
+
 Build tokens :
 
 ```bash
@@ -233,4 +241,7 @@ Une tâche est terminée uniquement si :
 - [Règles React](.ai/rules/tech-react.md)
 - [Registry design system](docs/design-system-registry.md)
 - [Atomic Design map](docs/atomic-design-map.md)
+- [README NPM @qhuy/react](packages/react/README.md)
+- [README NPM @qhuy/tokens](packages/tokens/README.md)
+- [README NPM @qhuy/icons](packages/icons/README.md)
 - [Contrat tokens DA](packages/tokens/src/README.md)
