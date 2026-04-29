@@ -14,7 +14,7 @@
   "dependencies": {
     "@qhuy/react": "workspace:*",
     "@qhuy/tokens": "workspace:*",
-    "next": "^15.1.0",
+    "next": "^16.2.4",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
