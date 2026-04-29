@@ -1,7 +1,6 @@
 {
-  "name": "@fxp/tokens",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@qhuy/tokens",
+  "version": "0.1.0",
   "license": "UNLICENSED",
   "description": "Tokens DTCG — couleurs, typo, spacing, radius, shadows. Pipeline Style Dictionary 4.",
   "type": "module",
@@ -21,9 +20,12 @@
     "dist",
     "src/tokens.json"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "style-dictionary build --config ./style-dictionary.config.mjs && cp src/css/fxp.dark.css dist/css/fxp.dark.css",
-    "typecheck": "echo \"@fxp/tokens: pas de TS source — .d.ts générés par Style Dictionary\"",
+    "typecheck": "echo \"@qhuy/tokens: pas de TS source — .d.ts générés par Style Dictionary\"",
     "test": "echo \"no tests yet\"",
     "lint": "echo \"no lint yet\""
   },

@@ -22,7 +22,7 @@ L'equipe FXP DS est responsable de :
 - Valider la structure DTCG.
 - Integrer les exports dans `packages/tokens/src/`.
 - Maintenir Style Dictionary et les sorties compilees.
-- Verifier les contrats `--fxp-*` consommes par `@fxp/react`.
+- Verifier les contrats `--fxp-*` consommes par `@qhuy/react`.
 - Refuser les tokens qui imposent un fork de composant.
 - Mettre a jour les fiches `.docs/features/`.
 
@@ -33,7 +33,7 @@ L'app consommatrice est responsable de :
 - Resoudre le tenant courant cote serveur.
 - Charger le CSS tenant correspondant.
 - Poser `data-tenant` sur `<html>`.
-- Importer une seule fois `@fxp/tokens/css/fxp.css` et `@fxp/react/styles.css`.
+- Importer une seule fois `@qhuy/tokens/css/fxp.css` et `@qhuy/react/styles.css`.
 - Ne pas override le markup, le comportement, ni l'API publique des composants FXP.
 
 ## Tenant / metier
@@ -44,4 +44,4 @@ Le representant tenant est responsable de :
 - Confirmer les exceptions ou contraintes metier.
 - Arbitrer les demandes qui sortent du perimetre tokens.
 
-Une demande qui necessite un nouveau comportement UI devient une PR upstream sur `@fxp/react`, pas un override tenant.
+Une demande qui necessite un nouveau comportement UI devient une PR upstream sur `@qhuy/react`, pas un override tenant.

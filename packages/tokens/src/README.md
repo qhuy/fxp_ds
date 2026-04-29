@@ -77,7 +77,7 @@ Chaque PR tokens doit verifier :
 - Le JSON DTCG est valide.
 - Les tokens requis par les composants existent.
 - Les contrastes des composants critiques restent acceptables.
-- `pnpm --filter @fxp/tokens build` passe.
+- `pnpm --filter @qhuy/tokens build` passe.
 - `pnpm build` passe au monorepo.
 - La fiche tenant est a jour.
 
@@ -86,8 +86,8 @@ Chaque PR tokens doit verifier :
 Une app consommatrice importe toujours les styles de base :
 
 ```ts
-import '@fxp/tokens/css/fxp.css'
-import '@fxp/react/styles.css'
+import '@qhuy/tokens/css/fxp.css'
+import '@qhuy/react/styles.css'
 ```
 
 Puis elle charge le CSS tenant au runtime :

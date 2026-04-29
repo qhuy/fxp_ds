@@ -18,7 +18,7 @@
     "format": "biome format --write .",
     "format:check": "biome format .",
     "dev": "turbo run dev",
-    "storybook": "turbo run storybook --filter=@fxp/react",
+    "storybook": "turbo run storybook --filter=@qhuy/react",
     "storybook:build": "turbo run storybook:build",
     "changeset": "changeset",
     "version-packages": "changeset version",

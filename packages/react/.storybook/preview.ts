@@ -1,6 +1,6 @@
 import type { Preview } from '@storybook/react-vite'
-import '@fxp/tokens/css/fxp.css'
-import '@fxp/tokens/css/fxp.dark.css'
+import '@qhuy/tokens/css/fxp.css'
+import '@qhuy/tokens/css/fxp.dark.css'
 
 const preview: Preview = {
   parameters: {

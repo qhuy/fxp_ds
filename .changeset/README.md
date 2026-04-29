@@ -6,7 +6,7 @@ We have a quick list of common questions to get you started engaging with this p
 
 ## Workflow FXP
 
-À chaque PR avec impact public sur `@fxp/tokens`, `@fxp/react` ou `@fxp/icons` :
+À chaque PR avec impact public sur `@qhuy/tokens`, `@qhuy/react` ou `@qhuy/icons` :
 
 1. `pnpm changeset` à la racine.
 2. Sélectionner les packages affectés.
