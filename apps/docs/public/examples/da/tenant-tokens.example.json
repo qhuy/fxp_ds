@@ -1,0 +1,54 @@
+{
+  "$description": "Exemple de livraison Tokens Studio / DTCG pour un tenant FanXP.",
+  "color": {
+    "brand": {
+      "500": {
+        "$value": "#14357a",
+        "$type": "color",
+        "$description": "Couleur principale du tenant"
+      },
+      "500-hover": {
+        "$value": "#0f2a63",
+        "$type": "color"
+      }
+    },
+    "fg": {
+      "default": {
+        "$value": "#132018",
+        "$type": "color"
+      },
+      "on-brand": {
+        "$value": "#ffffff",
+        "$type": "color"
+      }
+    },
+    "bg": {
+      "default": {
+        "$value": "#ffffff",
+        "$type": "color"
+      },
+      "muted": {
+        "$value": "#f2f6f3",
+        "$type": "color"
+      }
+    }
+  },
+  "button": {
+    "radius": {
+      "md": {
+        "$value": "12px",
+        "$type": "dimension"
+      }
+    },
+    "state": {
+      "focus-ring": {
+        "$value": "#91c7ff",
+        "$type": "color"
+      },
+      "disabled-opacity": {
+        "$value": 0.5,
+        "$type": "opacity"
+      }
+    }
+  }
+}
