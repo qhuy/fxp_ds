@@ -1,0 +1,24 @@
+[data-tenant='acme'] {
+  --fxp-color-brand-500: #14357a;
+  --fxp-color-brand-500-hover: #0d265b;
+  --fxp-color-fg-on-brand: #ffffff;
+  --fxp-color-secondary: #eef3ff;
+  --fxp-color-secondary-hover: #dbe7ff;
+  --fxp-color-secondary-fg: #102040;
+  --fxp-color-bg-default: #ffffff;
+  --fxp-color-bg-muted: #f4f7fc;
+  --fxp-color-fg-default: #111827;
+  --fxp-color-border-default: #d8e0ef;
+  --fxp-color-border-input: #bfcbdd;
+  --fxp-color-focus-ring: #2d5bd1;
+  --fxp-color-focus-ring-muted: #c7d7ff;
+  --fxp-color-status-danger: #c81e1e;
+  --fxp-color-status-danger-bg: #fff1f1;
+  --fxp-color-status-danger-bg-hover: #ffe0e0;
+  --fxp-color-status-danger-border: #ef6b6b;
+  --fxp-color-status-danger-ring: #ffd1d1;
+  --fxp-button-radius-xs: 0.625rem;
+  --fxp-button-radius-sm: 0.75rem;
+  --fxp-button-radius-md: 0.75rem;
+  --fxp-button-radius-lg: 0.75rem;
+}

@@ -1,6 +1,7 @@
 packages:
   - 'packages/*'
-  - 'apps/*'
+  - 'apps/docs'
+  - 'apps/playground'
 
 # Catalog — versions centralisées pour deps cross-workspace
 # (cf. .docs/features/architecture/pnpm-catalogs.md)
