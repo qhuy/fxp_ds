@@ -1,6 +1,6 @@
 {
   "name": "@qhuy/icons",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "UNLICENSED",
   "description": "Set d'icônes FXP — placeholder, re-export sélectif lucide-react à venir.",
   "type": "module",

@@ -13,6 +13,7 @@ touches:
   - pnpm-lock.yaml
   - .changeset/**
   - packages/*/package.json
+  - packages/*/README.md
   - packages/icons/tsup.config.ts
   - apps/*/package.json
   - apps/**/*
@@ -21,11 +22,10 @@ touches:
   - docs/**
   - README.md
 progress:
-  phase: implement
-  step: "scope npm @qhuy configuré, packages versionnés en 0.1.0"
-  blockers:
-    - "Publication effective dépend de l'auth npm locale ou de NPM_TOKEN en CI."
-  resume_hint: "Lancer pnpm release après npm login ou après provisionnement NPM_TOKEN en CI."
+  phase: review
+  step: "packages publies et README npm ajoutes"
+  blockers: []
+  resume_hint: "Verifier la publication README lors du prochain bump npm."
   updated: 2026-04-29
 ---
 
@@ -78,6 +78,8 @@ import '@qhuy/tokens/css/fxp.dark.css'
 - **2026-04-29** — Décision utilisateur : publier sous scope `@qhuy` plutôt que réserver `@fxp` immédiatement.
 - **2026-04-29** — Les packages `react`, `tokens`, `icons` sont rendus publiables en public. `icons` passe d'un placeholder source-only à un build `tsup` pour éviter de publier du TypeScript brut.
 - **2026-04-29** — `pnpm version-packages` exécuté : `@qhuy/react`, `@qhuy/tokens`, `@qhuy/icons` passent en `0.1.0` et leurs `CHANGELOG.md` sont créés.
+- **2026-04-29** — Publication npm effectuee pour les trois packages `0.1.0`.
+- **2026-04-29** — README npm ajoutes dans chaque package public pour documenter installation, imports CSS, theming, API et limites.
 
 ## Definition of Done
 
@@ -88,4 +90,5 @@ import '@qhuy/tokens/css/fxp.dark.css'
 - [x] `@qhuy/icons` compilé via `tsup`.
 - [x] Changeset initial consommé par `pnpm version-packages`.
 - [x] Versions initiales `0.1.0` prêtes à publier.
-- [ ] Publication npm effectuée.
+- [x] Publication npm effectuée.
+- [x] README npm ajoutés pour `@qhuy/react`, `@qhuy/tokens` et `@qhuy/icons`.

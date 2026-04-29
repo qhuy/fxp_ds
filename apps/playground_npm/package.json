@@ -12,9 +12,9 @@
     "lint": "echo \"no lint yet (handled at workspace root)\""
   },
   "dependencies": {
-    "@qhuy/icons": "https://registry.npmjs.org/@qhuy%2ficons/-/icons-0.1.0.tgz",
-    "@qhuy/react": "https://registry.npmjs.org/@qhuy%2freact/-/react-0.1.0.tgz",
-    "@qhuy/tokens": "https://registry.npmjs.org/@qhuy%2ftokens/-/tokens-0.1.0.tgz",
+    "@qhuy/icons": "https://registry.npmjs.org/@qhuy%2ficons/-/icons-0.1.1.tgz",
+    "@qhuy/react": "https://registry.npmjs.org/@qhuy%2freact/-/react-0.1.1.tgz",
+    "@qhuy/tokens": "https://registry.npmjs.org/@qhuy%2ftokens/-/tokens-0.1.1.tgz",
     "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
