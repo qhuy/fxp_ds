@@ -1,4 +1,4 @@
-# AI Context — fanxp-design-system
+# AI Context — bobun-ds
 
 Ce projet a été scaffoldé depuis le template [`ai_context`](https://github.com/qhuy/ai_context). Le setup cross-agent (Claude / Codex / Cursor / Gemini / Copilot) est industrialisé.
 
@@ -10,17 +10,23 @@ Ce projet a été scaffoldé depuis le template [`ai_context`](https://github.co
    git config core.hooksPath .githooks
    chmod +x .githooks/*
    ```
-3. Enrichir les fichiers `.ai/rules/<scope>.md` avec les règles spécifiques à fanxp-design-system.
-4. **Cadrer les guardrails** (recommandé) : dans Claude Code, lancer `/aic-project-guardrails` pour saisir les non-goals (hors-scope explicite) et le glossaire métier. Crée `.ai/guardrails.md` chargé via Pack A.
+3. Enrichir les fichiers `.ai/rules/<scope>.md` avec les règles spécifiques à bobun-ds.
+4. **Cadrer avant d'implémenter** (recommandé) : dans Claude Code, lancer `/aic-frame` pour produire objectif, plan, spécificités métier/technique, validation et non-goals éventuels. Peut créer `.ai/guardrails.md` si le cadrage projet le justifie.
 5. Vérifier l'intégrité :
    ```bash
    bash .ai/scripts/check-shims.sh
    bash .ai/scripts/check-features.sh
+   bash .ai/scripts/check-feature-docs.sh
+   ```
+6. Lancer le parcours de démarrage :
+   ```bash
+   bash .ai/scripts/ai-context.sh first-run
    ```
 
 ## Agents activés
 
 - claude
+- codex
 
 
 ## Scopes
@@ -28,6 +34,7 @@ Ce projet a été scaffoldé depuis le template [`ai_context`](https://github.co
 - `core` → `.ai/rules/core.md`
 - `quality` → `.ai/rules/quality.md`
 - `workflow` → `.ai/rules/workflow.md`
+- `product` → `.ai/rules/product.md` + features `.docs/features/product/`
 - `back` → `.ai/rules/back.md` + features `.docs/features/back/`
 - `front` → `.ai/rules/front.md` + features `.docs/features/front/`
 - `architecture` → `.ai/rules/architecture.md` + features `.docs/features/architecture/`
@@ -48,7 +55,8 @@ Ce projet a été scaffoldé depuis le template [`ai_context`](https://github.co
 
 Toute feature ajoute ou met à jour un fichier `.docs/features/<scope>/<id>.md` basé sur `.docs/FEATURE_TEMPLATE.md`.
 
-- Organisation par scope (`back/`, `front/`, `architecture/`, `security/`).
+- Organisation par scope (`product/`, `back/`, `front/`, `architecture/`, `security/`).
+- Le scope `product` trace les initiatives et décisions ; les features dev les relient via `product.initiative`, et les specs/stories/tickets externes via `external_refs`.
 - Cross-refs via `depends_on` (ex : une feature front liste les features back consommées).
 - Enforcement : `.githooks/commit-msg` bloque tout commit `feat:` sans fichier feature.
 
@@ -57,10 +65,26 @@ Toute feature ajoute ou met à jour un fichier `.docs/features/<scope>/<id>.md` 
 Quand le template évolue sur GitHub :
 
 ```bash
-copier update
+copier update --vcs-ref=HEAD
 ```
 
 Les réponses déjà données sont relues depuis `.copier-answers.yml`. Tu contrôles le diff appliqué.
+
+`--vcs-ref=HEAD` évite que Copier choisisse le dernier tag publié si le HEAD GitHub est plus récent.
+
+Si `.copier-answers.yml` manque ou ne contient pas `_src_path` / `_commit` :
+
+```bash
+bash .ai/scripts/ai-context.sh repair-copier-metadata
+# relire la proposition, puis :
+bash .ai/scripts/ai-context.sh repair-copier-metadata --apply
+```
+
+Pour prévisualiser une update sans toucher au repo courant, même si le worktree est sale :
+
+```bash
+bash .ai/scripts/ai-context.sh template-diff
+```
 
 ## Runtime
 
@@ -68,9 +92,30 @@ Les réponses déjà données sont relues depuis `.copier-answers.yml`. Tu contr
 - Git : hook `commit-msg` sous `.githooks/` (active via `git config core.hooksPath .githooks`). Bloque les `feat:` sans feature doc, même hors Claude.
 - Contenu du reminder : `.ai/reminder.md` (éditable librement).
 
+## Workflow quotidien
+
+| Intention | Commande |
+|---|---|
+| Démarrer après scaffold | `bash .ai/scripts/ai-context.sh first-run` |
+| Cadrer une mission | `bash .ai/scripts/ai-context.sh mission "<objectif>"` |
+| Voir où j'en suis | `bash .ai/scripts/ai-context.sh status` |
+| Préparer une édition avec Codex | `bash .ai/scripts/ai-context.sh brief <path>` |
+| Vérifier les docs du delta | `bash .ai/scripts/ai-context.sh document-delta` |
+| Réparer le mesh | `bash .ai/scripts/ai-context.sh repair` |
+| Réparer les métadonnées Copier | `bash .ai/scripts/ai-context.sh repair-copier-metadata` |
+| Prévisualiser le template | `bash .ai/scripts/ai-context.sh template-diff` |
+| Relire mon delta | `bash .ai/scripts/ai-context.sh review` |
+| Préparer le ship | `bash .ai/scripts/ai-context.sh ship-report` |
+| Tracer les initiatives produit | `bash .ai/scripts/ai-context.sh product-status` puis `bash .ai/scripts/ai-context.sh product-portfolio` |
+| Vérifier avant commit | `bash .ai/scripts/ai-context.sh doctor` puis `bash .ai/scripts/ai-context.sh check` |
+
+Claude reçoit le contexte feature automatiquement via hooks. Codex et les autres agents peuvent cadrer avec `mission`, obtenir le même contexte juste-à-temps avec `brief <path>` avant d'éditer, puis vérifier la sortie avec `document-delta` et `ship-report`.
+
 ## Checks
 
 - `bash .ai/scripts/check-shims.sh` — garde-fou structure shims.
 - `bash .ai/scripts/check-features.sh` — maillage feature (frontmatter + scope + depends_on).
+- `bash .ai/scripts/check-feature-docs.sh` — sections "bible feature" ; utiliser `--strict <scope/id>` avant DONE.
+- `bash .ai/scripts/check-product-links.sh` — liens `product.initiative` + initiatives product.
 - `bash .ai/scripts/check-ai-references.sh` — vérifie les liens markdown internes.
 - `bash .ai/scripts/check-commit-features.sh` — Conventional Commits + feat: touche features/.

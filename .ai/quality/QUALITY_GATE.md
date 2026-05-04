@@ -1,4 +1,4 @@
-# Quality Gate — fanxp-design-system
+# Quality Gate — bobun-ds
 
 Critères **BLOQUANTS** avant de déclarer une tâche DONE. À lire avec `.ai/index.md`.
 
@@ -23,6 +23,16 @@ Lister explicitement :
 - Compatibilité arrière cassée ?
 
 Si une case est cochée → confirmation utilisateur avant merge.
+
+## Doc Impact Decision (obligatoire)
+
+Avant DONE, déclarer l'une des décisions suivantes :
+
+- **A — Aucun impact doc** : changement interne sans effet comportemental, justifié en une ligne.
+- **B — Worklog seulement** : avancement, fix mineur ou décision locale sans changement de contrat.
+- **C — Fiche feature mise à jour** : comportement, contrat, dépendance, scope, permission, API, UX ou règle métier modifiée.
+
+Si la décision est **C**, la fiche feature concernée doit être modifiée dans le même changement. Si un fichier couvert par `touches:` est modifié, le hook `commit-msg` bloque le commit tant que la fiche feature ou son worklog associé n'est pas staged.
 
 ## Checklist systématique anti-oubli
 
@@ -99,6 +109,13 @@ Ne pas annoncer "terminé" si une validation pertinente n'a pas été exécutée
 
 Cette règle est **systématique** — pas de seuil de complexité, pas de "trop petit pour documenter". Le maillage ne devient puissant que s'il est complet.
 
+## Fraîcheur documentaire (BLOQUANT au commit)
+
+- `bash .ai/scripts/check-feature-freshness.sh --staged --strict` vérifie qu'un changement staged sur du code couvert par `touches:` inclut aussi la fiche feature ou son worklog.
+- `bash .ai/scripts/check-feature-freshness.sh --warn` signale les features dont le code couvert est plus récent que la documentation.
+- `bash .ai/scripts/check-feature-docs.sh` signale les sections manquantes ou trop vides ; `--strict` est à utiliser avant DONE sur les features nouvelles ou risquées.
+- En CI, le mode `--warn` reste informatif pour éviter les faux positifs sur l'historique importé ; le blocage strict se fait au commit.
+
 ## Commits — Conventional Commits (BLOQUANT)
 
 Tous les commits respectent le format :
@@ -124,6 +141,7 @@ Pas de "skip doc" implicite : si tu hésites entre `feat` et `refactor`, c'est p
 | core | Pack A chargé, HANDOFF clair si cross-scope |
 | quality | Evidence + feature mesh + Conventional Commits |
 | workflow | Commits fr, pas de full diff |
+| product | Initiative produit liée aux features dev via `product.initiative`, décision suivante explicite |
 | back | Feature doc sous `.docs/features/back/` à jour, validation paramètres, injection SQL, transactions, tests d'intégration |
 | front | Feature doc sous `.docs/features/front/` à jour (avec `depends_on` vers back si applicable), build/typecheck OK, états loading/error gérés, a11y |
 | architecture | Feature doc sous `.docs/features/architecture/` à jour, layering respecté, pas de dépendance circulaire, ADR si changement structurel |
