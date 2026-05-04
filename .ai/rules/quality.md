@@ -1,10 +1,7 @@
 # Rules — quality
 
-Voir [`.ai/quality/QUALITY_GATE.md`](../quality/QUALITY_GATE.md) pour le détail BLOQUANT.
+A charger seulement pres de DONE ou pour une tache a risque.
 
-Résumé :
-- Evidence (build, tests, lint) avant DONE.
-- Doc Impact Decision (A/B/C) avant DONE.
-- Risk Ledger pour les tâches non triviales.
+Source bloquante : [`.ai/quality/QUALITY_GATE.md`](../quality/QUALITY_GATE.md).
 
-> Enrichir avec les critères qualité spécifiques à fanxp-design-system (ex : coverage minimal, seuils perf).
+> Ajouter ici uniquement les seuils qualite locaux : coverage, perf, audit, compatibilite.

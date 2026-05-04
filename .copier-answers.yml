@@ -1,0 +1,15 @@
+# Changes here will be overwritten by Copier; do not edit manually unless
+# repairing the template metadata.
+_commit: ea1adac97f5f48e45339b845ccb91f467fe188fb
+_src_path: https://github.com/qhuy/ai_context.git
+adoption_mode: standard
+agents:
+  - claude
+  - codex
+commit_language: fr
+docs_root: .docs
+enable_ci_guard: true
+project_description: "Design system personnel open source : composants React + tokens DTCG + docs Astro."
+project_name: bobun-ds
+scope_profile: fullstack
+tech_profile: react-next

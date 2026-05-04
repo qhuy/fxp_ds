@@ -1,11 +1,8 @@
 # Rules — core
 
-Règles transverses applicables à **tout scope**.
+Complements transverses propres a bobun-ds.
 
-- Respecter la séquence de chargement de `.ai/index.md`.
-- Un scope primaire par tour. Cross-scope ⇒ HANDOFF.
-- Aucun pré-chargement de docs ; lecture juste-à-temps.
-- Pas de full diffs par défaut.
-- Messages de commit en français.
+Ne pas recopier les invariants de `.ai/index.md` ici. Ajouter seulement les
+contraintes locales qui changent une decision de code.
 
-> Enrichir ce fichier avec les règles transverses spécifiques à fanxp-design-system.
+> A completer si le projet a des regles globales non couvertes par l'index.

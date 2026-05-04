@@ -1,116 +1,63 @@
-# AI Context Index — fanxp-design-system
+# AI Context Index — bobun-ds
 
-> Design system FanXp — composants React (basés Radix/Shadcn) + tokens DTCG, exposés via NPM (`@qhuy/react`, `@qhuy/tokens`). Site de doc Astro.
+> Bobun DS — design system personnel open source : composants React (bases Radix/Shadcn) + tokens DTCG, exposes via NPM (`@qhuy/react`, `@qhuy/tokens`). Site de doc Astro.
 
-Entrée unique pour tout agent AI. Les shims à la racine (AGENTS.md, CLAUDE.md, …) pointent ici. Ne jamais dupliquer de règles en dehors de `.ai/`.
+Entree unique des agents. Mode par defaut : **lean context**.
 
-## Séquence de chargement obligatoire (Pack A)
+## Pack A — always load
 
-À lire à chaque nouvelle tâche, avant toute action :
+Lire uniquement ceci au demarrage :
 
-1. Ce fichier (`.ai/index.md`)
-2. `.ai/quality/QUALITY_GATE.md` — critères BLOQUANTS avant DONE + checklist anti-oubli
-3. `.ai/guardrails.md` — non-goals + glossaire métier (si présent ; créé via `/aic-project-guardrails`)
+- Requete utilisateur.
+- Ce fichier (`.ai/index.md`).
+- `git status --short`.
+- Fichiers d'implementation les plus proches, trouves par `rg` cible.
 
-Puis **identifier le scope primaire** et charger :
+Invariants :
+- Un scope primaire par tache. Cross-scope => `HANDOFF` explicite + confirmation.
+- Ne charger que le contexte necessaire. Pas de docs/catalog/index/cache/logs/full diff par defaut.
+- Avant `feat:` : une fiche `.docs/features/<scope>/<id>.md` doit etre creee ou mise a jour.
+- Avant DONE : executer la delivery gate et mettre a jour les docs impactees.
+- Commits en francais.
 
-4. `.ai/rules/<scope>.md` (Pack B, scope-dépendant)
-5. **Lister** `ls .docs/features/<scope>/` — obligatoire à chaque tâche (pas conditionnel).
-6. Si la tâche touche une feature existante → charger `.docs/features/<scope>/<id>.md` **et** suivre récursivement ses `depends_on`.
-7. Si la tâche crée une nouvelle feature → créer le fichier depuis `.docs/FEATURE_TEMPLATE.md` AVANT tout commit.
+## Scope Routing
 
-8. Charger les règles tech du preset :
+Ne charge `.ai/rules/<scope>.md` que si le scope est clair et utile a l'edition.
+Si le scope est incertain, utiliser cette table puis charger **un seul** fichier de scope.
 
-
-   - `.ai/rules/tech-react.md` si la tâche touche React/Next
-
-
-
-
-## Scopes disponibles
-
-| Scope | Rules | Features |
-|---|---|---|
-| `core` | [.ai/rules/core.md](rules/core.md) | — |
-| `quality` | [.ai/rules/quality.md](rules/quality.md) | — |
-| `workflow` | [.ai/rules/workflow.md](rules/workflow.md) | — |
-| `back` | [.ai/rules/back.md](rules/back.md) | [`.docs/features/back/`](../.docs/features/back/) |
-| `front` | [.ai/rules/front.md](rules/front.md) | [`.docs/features/front/`](../.docs/features/front/) |
-| `architecture` | [.ai/rules/architecture.md](rules/architecture.md) | [`.docs/features/architecture/`](../.docs/features/architecture/) |
-| `security` | [.ai/rules/security.md](rules/security.md) | [`.docs/features/security/`](../.docs/features/security/) |
-| `handoff` | [.ai/rules/handoff.md](rules/handoff.md) | — |
-
-
-
-## Preset technique
-
-| Preset | Rules |
+| Scope | Quand charger |
 |---|---|
-| `react-next` | [.ai/rules/tech-react.md](rules/tech-react.md) |
+| `core` | Regles propres au scope `core` |
+| `quality` | Regles qualite specifiques au projet, pres de DONE |
+| `workflow` | Routage ou procedure si le flux est ambigu |
+| `product` | Initiative, roadmap, decision produit, traceability |
+| `back` | API, domaine, persistance, services backend |
+| `front` | UI, routes frontend, etat client, design system |
+| `architecture` | Structure transversale, contrats, ADR, migration |
+| `security` | Auth, droits, secrets, donnees sensibles |
+| `handoff` | Passage explicite entre scopes |
 
+Regles tech a la demande :
+- `.ai/rules/tech-react.md` seulement pour React/Next.
 
+## On Demand
 
+- Feature docs : charger seulement si l'intent ou les paths matchent une feature ; si un path est connu, preferer `bash .ai/scripts/features-for-path.sh <path> --with-docs` avant tout listing de dossiers.
+- `depends_on` : suivre seulement les dependances necessaires a la decision ou a l'edition.
+- Quality gate : charger `.ai/quality/QUALITY_GATE.md` ou `.ai/workflows/quality-gate.md` pres de DONE, ou tot pour taches risquees (contrat, doc canonique, securite, DB).
+- Agent guidance : `.ai/agent/*` est optionnel, jamais Pack A.
+- Guardrails projet : charger `.ai/guardrails.md` seulement pour cadrage produit, non-goals ou glossaire metier.
+- Legacy/local rules : charger seulement le pointeur ou fichier local qui matche les paths touches.
+- Catalogues, references, worklogs, changelogs, skills, indexes generes, caches et diffs complets : recherche ciblee uniquement.
 
-## Feature mesh (règle transverse, systématique)
+## Exclusions
 
-Toute feature DOIT avoir son fichier sous `.docs/features/<scope>/<id>.md`.
+Pour la recuperation de contexte Codex, considerer on-demand seulement : `.claude/skills/**`, `.ai/docs/**`, `.ai/tests/**`, `docs/reference/**`, docs de migration, caches generes, logs/worklogs, diffs complets, larges listings recursifs. Detail : `.ai/context-ignore.md`.
 
-- **Organisation par scope** — un front peut dépendre d'un back via `depends_on: ["back/<id>"]`, un back peut dépendre d'une security via `depends_on: ["security/<id>"]`, etc.
-- **Frontmatter obligatoire** : `id`, `scope`, `title`, `status`, `depends_on`, `touches`. Squelette dans `.docs/FEATURE_TEMPLATE.md`.
-- **Enforcement** : `.githooks/commit-msg` bloque tout `feat:` qui ne touche aucun fichier `.docs/features/`. `.ai/scripts/check-features.sh` valide le maillage en CI.
+## Identite du projet
 
-## Règles transverses
-
-- **Un scope par tour** — si une tâche traverse plusieurs scopes, STOP + émettre un HANDOFF + attendre confirmation.
-- **Pas de pré-chargement** — charger uniquement ce que la tâche nécessite. Pas `grep -r`.
-- **Pas de full diffs par défaut** — présenter les changements ciblés.
-- **Checklist systématique** — avant DONE, repasser par `.ai/quality/QUALITY_GATE.md#checklist-systématique-anti-oubli` et expliciter toute validation pertinente non exécutée.
-- **Conventional Commits BLOQUANTS** — voir `.ai/quality/QUALITY_GATE.md` section Commits.
-- **Commits en français** (imposé par règles projet).
-
-## Auto-progression
-
-**Par défaut : zéro skill à invoquer.** L'utilisateur prompte en langage naturel, l'agent code/teste/commit, les transitions de phase feature sont appliquées automatiquement par deux canaux convergents :
-
-| Canal | Déclenché par | Agents bénéficiaires | Latence |
-|---|---|---|---|
-| Hook Claude `Stop` (`auto-progress.sh`) | fin de tour Claude Code | Claude | immédiat (avant commit) |
-| Hook git `pre-commit` (`.githooks/pre-commit`) | `git commit` | tous (claude, humain CLI) | au commit |
-
-Les deux partagent le même script et snapshotent chaque transition dans `.ai/.progress-history.jsonl` (append-only, 50 dernières, gitignored) pour permettre `/aic undo`.
-
-Règles inférées automatiquement (V1, conservatrice) :
-- Édits couverts par `touches:` d'une feature en `phase: spec` → bascule en `phase: implement`.
-- `progress.updated` bumpée à chaque édition.
-- Worklog appendé avec la liste des fichiers modifiés.
-
-Les transitions `implement → review` et `review → done` restent manuelles (override explicite ou `aic-feature-done`) pour éviter les faux positifs.
-
-### Skill `/aic` (override, rare)
-
-À n'utiliser que quand l'auto-progression se trompe :
-- `/aic repasse en spec` — rollback d'une bascule mal inférée
-- `/aic marque ça blocked, j'attends X` — bloqueur explicite
-- `/aic rouvre feature-X pour Y` — réouverture d'une fiche `done`
-- `/aic force done` — clôture sans attendre inférence evidence
-- `/aic undo` — annule la dernière transition auto
-
-Skills accessibles directement (lecture/CI) :
-- `/aic-feature-resume` — buckets EN COURS / BLOQUÉES / STALE / À FAIRE
-- `/aic-quality-gate` — check go/no-go complet
-- `/aic-project-guardrails` — cadre non-goals + glossaire métier (1-2 fois par projet ; produit `.ai/guardrails.md`)
-
-Les autres skills `/aic-feature-{new,update,handoff,done}` sont **internes** (invoqués par les hooks et par `/aic`). Pas besoin de les taper à la main.
-
-## Runtime enforcement
-
-- Hook `UserPromptSubmit` (Claude Code) → `.ai/scripts/pre-turn-reminder.sh` injecte ce rappel à chaque tour.
-- Hook `PreToolUse` sur `Bash(git commit*)` → `.ai/scripts/check-commit-features.sh` bloque `feat:` sans doc feature.
-- Git hook `commit-msg` (via `git config core.hooksPath .githooks`) → même check pour les commits hors Claude.
-- `.ai/scripts/check-shims.sh` → à lancer localement + en CI pour prévenir la dérive.
-- `.ai/scripts/check-features.sh` → valide le maillage feature (frontmatter, scope, depends_on).
-- `.ai/scripts/check-ai-references.sh` → vérifie les liens markdown internes.
+Bobun DS remplace l'ancien cadrage FanXp. Les contrats techniques historiques `@qhuy/*`, `--fxp-*` et `.fxp-*` restent stables tant qu'aucune migration breaking dediee n'est validee.
 
 ## Source du template
 
-Projet scaffoldé depuis [`ai_context`](https://github.com/qhuy/ai_context). `copier update` pour remonter la dernière version.
+Projet scaffolde depuis [`ai_context`](https://github.com/qhuy/ai_context). `copier update --vcs-ref=HEAD` remonte la derniere version GitHub.

@@ -10,12 +10,16 @@ depends_on:
   - front/playground-app
 touches:
   - README.md
+  - package.json
+  - LICENSE
+  - .ai/index.md
+  - .ai/guardrails.md
 progress:
   phase: implement
-  step: "README racine créé"
+  step: "README racine repositionné sur Bobun DS"
   blockers: []
   resume_hint: "Maintenir le README racine comme porte d'entrée humaine ; les sous-docs restent des références."
-  updated: 2026-04-28
+  updated: 2026-05-03
 ---
 
 # README racine opérationnel
@@ -55,6 +59,7 @@ Une personne qui lit `README.md` comprend :
 ## Historique / décisions
 
 - **2026-04-28** — Création d'un README racine opérationnel pour éviter que les consignes importantes restent cachées dans les sous-répertoires.
+- **2026-05-03** — Repositionnement du projet en Bobun DS, design system personnel open source sous licence MIT. Les contrats techniques historiques `@qhuy/*`, `--fxp-*` et `.fxp-*` restent stables en attendant une éventuelle migration breaking.
 
 ## Definition of Done
 
@@ -64,3 +69,5 @@ Une personne qui lit `README.md` comprend :
 - [x] Instructions dev app consommatrice explicites.
 - [x] Instructions agents IA explicites.
 - [x] Commandes et critères DONE listés.
+- [x] Positionnement Bobun DS documenté.
+- [x] Licence open source ajoutée.

@@ -1,13 +1,15 @@
-# AGENTS.md — fanxp-design-system
+# AGENTS.md — bobun-ds
 
-> **Tu DOIS lire [`.ai/index.md`](.ai/index.md) EN PRIORITÉ** et suivre sa séquence de chargement.
+> **Tu DOIS lire [`.ai/index.md`](.ai/index.md) avant toute action.**
 
-Hard rules (non-négociables, voir `.ai/index.md` pour le détail) :
-- Un scope primaire par tâche ; cross-scope ⇒ HANDOFF explicite
-- Ne pas pré-charger les docs — charger uniquement ce qui est requis
-- Avant DONE : passer les checks qualité et mettre à jour `.docs/`
-- Messages de commit en français
+Shim lean Codex : ne charge pas `.ai/quality/QUALITY_GATE.md`, `.ai/agent/*`,
+catalogues, references, worklogs, skills, indexes ou full diffs au demarrage.
 
-UX par défaut : **zéro skill à invoquer** — voir `.ai/index.md#auto-progression`.
+Hard rules :
+- Un scope primaire par tache ; cross-scope => HANDOFF explicite.
+- Contexte juste-a-temps ; recherche ciblee avec `rg`.
+- Avant `feat:` : fiche feature sous `.docs/features/`.
+- Avant DONE : quality gate + docs impactees.
+- Commits en francais.
 
-Ce fichier est un shim — aucune règle projet ici. Source unique : `.ai/`.
+Source unique : `.ai/`.
