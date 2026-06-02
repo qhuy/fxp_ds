@@ -7,7 +7,7 @@ import './globals.css'
 import { DEFAULT_TENANT, isTenantId } from './tenant-config'
 
 export const metadata = {
-  title: 'FXP Playground NPM',
+  title: 'Bobun DS Playground NPM',
   description: 'Terrain de jeu pour tester @qhuy/react publie sur npm en consumer Next.js reel',
 }
 

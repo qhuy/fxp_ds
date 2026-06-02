@@ -1,8 +1,8 @@
 {
   "name": "@qhuy/tokens",
   "version": "0.1.1",
-  "license": "UNLICENSED",
-  "description": "Tokens DTCG — couleurs, typo, spacing, radius, shadows. Pipeline Style Dictionary 4.",
+  "license": "MIT",
+  "description": "Tokens DTCG Bobun DS — couleurs, typo, spacing, radius, shadows. Pipeline Style Dictionary 4.",
   "type": "module",
   "main": "./dist/tokens.js",
   "types": "./dist/tokens.d.ts",

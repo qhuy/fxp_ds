@@ -52,7 +52,7 @@ Notes :
 
 Lister les ecarts acceptes, avec justification.
 
-## Validation FXP
+## Validation Bobun DS
 
 - [ ] DTCG valide
 - [ ] Tokens requis presents

@@ -1,8 +1,8 @@
 {
   "name": "@qhuy/icons",
   "version": "0.1.1",
-  "license": "UNLICENSED",
-  "description": "Set d'icônes FXP — placeholder, re-export sélectif lucide-react à venir.",
+  "license": "MIT",
+  "description": "Set d'icônes Bobun DS — placeholder, re-export sélectif lucide-react à venir.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

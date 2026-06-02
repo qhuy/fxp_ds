@@ -52,7 +52,7 @@ export default function PlaygroundPage() {
     <main>
       <header className="page-header">
         <div>
-          <h1>FXP Playground</h1>
+          <h1>Bobun DS Playground</h1>
           <p>
             Terrain de jeu consommateur pour <code>@qhuy/react</code> et <code>@qhuy/tokens</code>{' '}
             depuis les packages npm publies.

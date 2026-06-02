@@ -9,6 +9,25 @@ const config: StorybookConfig = {
     name: getAbsolutePath('@storybook/react-vite'),
     options: {},
   },
+  viteFinal: async (config) => {
+    config.resolve = {
+      ...config.resolve,
+      dedupe: [...(config.resolve?.dedupe ?? []), 'react', 'react-dom'],
+    }
+
+    config.optimizeDeps = {
+      ...config.optimizeDeps,
+      include: [
+        ...(config.optimizeDeps?.include ?? []),
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        'react/jsx-dev-runtime',
+      ],
+    }
+
+    return config
+  },
   typescript: {
     reactDocgen: 'react-docgen-typescript',
   },

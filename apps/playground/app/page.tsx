@@ -51,7 +51,7 @@ export default function PlaygroundPage() {
     <main>
       <header className="page-header">
         <div>
-          <h1>FXP Playground</h1>
+          <h1>Bobun DS Playground</h1>
           <p>
             Terrain de jeu local pour <code>@qhuy/react</code> via <code>workspace:*</code> (pas
             encore publié sur registry).

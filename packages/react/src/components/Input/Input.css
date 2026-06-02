@@ -1,0 +1,36 @@
+.fxp-input {
+  width: 100%;
+  min-width: 0;
+  height: var(--fxp-button-height-md);
+  padding: 0 var(--fxp-space-3);
+  font-family: var(--fxp-font-family-sans);
+  font-size: var(--fxp-font-size-sm);
+  line-height: var(--fxp-line-height-normal);
+  color: var(--fxp-color-fg-default);
+  background: var(--fxp-color-bg-default);
+  border: var(--fxp-button-border-width) solid var(--fxp-color-border-input);
+  border-radius: var(--fxp-radius-md);
+  outline: none;
+  transition:
+    border-color var(--fxp-transition-fast),
+    box-shadow var(--fxp-transition-fast);
+}
+
+.fxp-input::placeholder {
+  color: var(--fxp-color-fg-muted);
+}
+
+.fxp-input:focus-visible {
+  border-color: var(--fxp-color-focus-ring);
+  box-shadow: 0 0 0 var(--fxp-button-ring-width) var(--fxp-color-focus-ring-muted);
+}
+
+.fxp-input:disabled {
+  cursor: not-allowed;
+  opacity: var(--fxp-button-disabled-opacity);
+}
+
+.fxp-input[aria-invalid='true'] {
+  border-color: var(--fxp-color-status-danger);
+  box-shadow: 0 0 0 var(--fxp-button-ring-width) var(--fxp-color-status-danger-ring);
+}

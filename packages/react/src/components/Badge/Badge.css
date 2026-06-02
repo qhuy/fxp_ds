@@ -1,0 +1,38 @@
+.fxp-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  min-height: 1.25rem;
+  padding: 0 var(--fxp-space-2);
+  gap: var(--fxp-space-2);
+  font-family: var(--fxp-font-family-sans);
+  font-size: var(--fxp-font-size-xs);
+  font-weight: var(--fxp-font-weight-medium);
+  line-height: var(--fxp-line-height-tight);
+  white-space: nowrap;
+  border: 1px solid transparent;
+  border-radius: 999px;
+}
+
+.fxp-badge--default {
+  color: var(--fxp-color-fg-on-brand);
+  background: var(--fxp-color-brand-500);
+}
+
+.fxp-badge--secondary {
+  color: var(--fxp-color-secondary-fg);
+  background: var(--fxp-color-secondary);
+}
+
+.fxp-badge--outline {
+  color: var(--fxp-color-fg-default);
+  background: var(--fxp-color-bg-default);
+  border-color: var(--fxp-color-border-default);
+}
+
+.fxp-badge--destructive {
+  color: var(--fxp-color-status-danger);
+  background: var(--fxp-color-status-danger-bg);
+  border-color: var(--fxp-color-status-danger-border);
+}

@@ -1,0 +1,61 @@
+.fxp-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fxp-space-3);
+  width: 100%;
+}
+
+.fxp-tabs__list {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.125rem;
+  gap: 0.125rem;
+  background: var(--fxp-color-accent);
+  border-radius: var(--fxp-radius-md);
+}
+
+.fxp-tabs__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  height: var(--fxp-button-height-sm);
+  padding: 0 var(--fxp-space-3);
+  font-family: var(--fxp-font-family-sans);
+  font-size: var(--fxp-font-size-sm);
+  font-weight: var(--fxp-font-weight-medium);
+  color: var(--fxp-color-fg-muted);
+  background: transparent;
+  border: 0;
+  border-radius: calc(var(--fxp-radius-md) - 0.125rem);
+  outline: none;
+  cursor: pointer;
+  transition:
+    background-color var(--fxp-transition-fast),
+    color var(--fxp-transition-fast),
+    box-shadow var(--fxp-transition-fast);
+}
+
+.fxp-tabs__trigger[data-state='active'] {
+  color: var(--fxp-color-fg-default);
+  background: var(--fxp-color-surface-card);
+}
+
+.fxp-tabs__trigger:focus-visible {
+  box-shadow: 0 0 0 var(--fxp-button-ring-width) var(--fxp-color-focus-ring-muted);
+}
+
+.fxp-tabs__trigger:disabled {
+  cursor: not-allowed;
+  opacity: var(--fxp-button-disabled-opacity);
+}
+
+.fxp-tabs__content {
+  min-width: 0;
+  outline: none;
+}
+
+.fxp-tabs__content:focus-visible {
+  box-shadow: 0 0 0 var(--fxp-button-ring-width) var(--fxp-color-focus-ring-muted);
+}

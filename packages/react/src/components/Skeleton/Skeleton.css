@@ -1,0 +1,19 @@
+.fxp-skeleton {
+  display: block;
+  width: 100%;
+  min-height: 1rem;
+  border-radius: var(--fxp-radius-md);
+  background: var(--fxp-color-accent);
+  animation: fxp-skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes fxp-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}

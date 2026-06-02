@@ -1,6 +1,6 @@
 # @qhuy/react
 
-Composants React du design system FanXP.
+Composants React du design system Bobun DS.
 
 Le package est compile en ESM, CJS et types TypeScript. Il est concu pour etre consomme par des apps React 18 ou 19, notamment Next.js, Vite, Remix et Astro.
 
@@ -28,7 +28,7 @@ import '@qhuy/tokens/css/fxp.css'
 import '@qhuy/tokens/css/fxp.dark.css'
 ```
 
-Sans ces imports, les composants fonctionnent techniquement mais ne portent pas le theme FXP.
+Sans ces imports, les composants fonctionnent techniquement mais ne portent pas le theme Bobun DS.
 
 ## Usage rapide
 

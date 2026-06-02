@@ -1,6 +1,6 @@
 # @qhuy/icons
 
-Package d'icones React du design system FanXP.
+Package d'icones React du design system Bobun DS.
 
 La version `0.1.0` publie un package resolvable et compile, mais le set d'icones fonctionnel est encore a alimenter. Le package existe deja pour stabiliser l'installation npm et permettre aux apps consommatrices d'ajouter la dependance sans changer plus tard leur architecture.
 

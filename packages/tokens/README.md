@@ -1,6 +1,6 @@
 # @qhuy/tokens
 
-Tokens du design system FanXP.
+Tokens du design system Bobun DS.
 
 Le package expose les variables CSS `--fxp-*`, les types TypeScript generes et le fichier source `tokens.json`.
 

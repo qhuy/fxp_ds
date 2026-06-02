@@ -1,8 +1,14 @@
-# FanXP Design System
+# Bobun DS
 
-Design system FanXP livré en packages NPM : composants React, tokens DTCG et assets d'interface pour les applications FanXP multi-tenant.
+Bobun DS est un design system personnel et open source : composants React, tokens DTCG et assets d'interface livrés en packages NPM.
 
 Ce README est la porte d'entrée humaine du projet. Si une personne ou une IA lit un seul fichier, elle doit lire celui-ci.
+
+## Positionnement
+
+Bobun DS sert de terrain de construction pour un design system publiable, maintenable et réutilisable dans plusieurs apps. Le projet reste volontairement pragmatique : une petite surface publique, des contrats clairs, des tokens CSS stables et une documentation exploitable.
+
+Le repo ne produit pas une identité visuelle figée pour une marque cliente. Il fournit l'ossature technique et les contrats. L'identité visuelle vient des tokens, puis peut être adaptée par thème ou tenant.
 
 ## Ce que produit ce repo
 
@@ -12,22 +18,34 @@ Ce README est la porte d'entrée humaine du projet. Si une personne ou une IA li
 - `apps/docs` : documentation publique du design system.
 - `apps/playground` : playground Next.js pour tester les composants, thèmes et tenants.
 
-Le repo ne produit pas l'identité visuelle d'un tenant. Il fournit l'ossature technique et les contrats. L'identité visuelle vient de la DA via tokens.
+Les noms `@qhuy/*`, `--fxp-*` et `.fxp-*` sont conservés pour l'instant comme contrats techniques historiques. Les renommer demanderait une migration breaking dédiée.
+
+## Open Source
+
+Le projet est distribué sous licence MIT. Les packages publiables restent sous le scope personnel `@qhuy` tant qu'un scope npm dédié à Bobun DS n'est pas créé.
+
+Contributions attendues :
+
+- Changements petits et traçables.
+- API publiques typées et documentées.
+- Tests ciblés quand le comportement change.
+- Respect du feature mesh `.docs/features/`.
+- Commits en français.
 
 ## Ce que chaque intervenant doit faire
 
-### DA
+### Design
 
-La DA fournit des livrables exploitables par le design system, pas du CSS applicatif.
+Les livrables design doivent être exploitables par le design system, pas par du CSS applicatif direct.
 
 À fournir pour chaque thème ou tenant :
 
 - Export Tokens Studio au format DTCG JSON (`$value`, `$type`).
-- Tenant cible avec identifiant stable : `acme`, `stadium`, `nova`, etc.
+- Identifiant stable : `acme`, `stadium`, `nova`, etc.
 - Modes couverts : `light`, et `dark` si disponible.
 - Tokens sémantiques, pas seulement des palettes brutes.
 - États composants : default, hover, active, focus, disabled, invalid, loading.
-- Lien Figma source.
+- Lien Figma source si disponible.
 - Capture ou preview de référence.
 - Date/version de livraison.
 - Changelog court des changements.
@@ -41,7 +59,7 @@ La DA fournit des livrables exploitables par le design system, pas du CSS applic
 
 Références utiles :
 
-- [Contrat tokens DA](packages/tokens/src/README.md)
+- [Contrat tokens design](packages/tokens/src/README.md)
 - [Rôles tokens](packages/tokens/src/ROLES.md)
 - [Template tenant](packages/tokens/src/tenants/_TEMPLATE.md)
 
@@ -52,7 +70,7 @@ Avant de coder :
 1. Lire ce README.
 2. Lire [.ai/index.md](.ai/index.md) si la tâche est faite avec une IA ou doit rester traçable.
 3. Identifier le scope principal : `front`, `architecture`, `quality`, etc.
-4. Ouvrir ou mettre à jour la fiche `.docs/features/<scope>/<id>.md`.
+4. Ouvrir ou mettre à jour la fiche `.docs/features/<scope>/<id>.md` si le comportement change.
 5. Vérifier le [Quality Gate](.ai/quality/QUALITY_GATE.md).
 
 Pour un composant `@qhuy/react`, livrer systématiquement :
@@ -95,7 +113,7 @@ Charger ensuite le CSS tenant au runtime :
 
 Règles côté app :
 
-- Ne pas modifier le markup interne des composants FXP.
+- Ne pas modifier le markup interne des composants.
 - Ne pas copier/coller les composants depuis le package.
 - Ne pas surcharger `.fxp-button` ou autre classe interne.
 - Personnaliser uniquement via CSS variables `--fxp-*`.
@@ -114,14 +132,14 @@ Avant toute action :
 Avant de dire "terminé" :
 
 - Repasser par la checklist anti-oubli dans [QUALITY_GATE.md](.ai/quality/QUALITY_GATE.md#checklist-systématique-anti-oubli).
-- Mettre à jour la fiche feature.
+- Mettre à jour la fiche feature si le comportement change.
 - Lancer les checks pertinents.
 - Dire explicitement ce qui a été validé et ce qui ne l'a pas été.
 
 ## Structure du repo
 
 ```txt
-fanxp-design-system/
+bobun-ds/
 ├── apps/
 │   ├── docs/          # Documentation Astro
 │   └── playground/    # Playground Next.js multi-tenant
@@ -224,7 +242,7 @@ Le composant React ne connaît jamais le tenant actif. Les tenants modifient uni
 
 Une tâche est terminée uniquement si :
 
-- La fiche feature est à jour.
+- La fiche feature est à jour quand le comportement public change.
 - La doc racine ou le registry est à jour si le comportement public change.
 - Les tests pertinents sont verts.
 - `pnpm lint` est vert.
@@ -244,4 +262,4 @@ Une tâche est terminée uniquement si :
 - [README NPM @qhuy/react](packages/react/README.md)
 - [README NPM @qhuy/tokens](packages/tokens/README.md)
 - [README NPM @qhuy/icons](packages/icons/README.md)
-- [Contrat tokens DA](packages/tokens/src/README.md)
+- [Contrat tokens design](packages/tokens/src/README.md)

@@ -1,0 +1,16 @@
+.fxp-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fxp-space-2);
+  font-family: var(--fxp-font-family-sans);
+  font-size: var(--fxp-font-size-sm);
+  font-weight: var(--fxp-font-weight-medium);
+  line-height: var(--fxp-line-height-tight);
+  color: var(--fxp-color-fg-default);
+}
+
+.fxp-label:has(+ :disabled),
+.fxp-label[data-disabled='true'] {
+  cursor: not-allowed;
+  opacity: var(--fxp-button-disabled-opacity);
+}

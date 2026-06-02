@@ -12,7 +12,7 @@ Scope courant : `packages/react/src/components/**`, `apps/docs/**`, `apps/playgr
 ## Notes
 
 - Classification initiale basée sur la structure et le nommage ; affiner au fil du refactor.
-- Les primitives FXP vivent dans `packages/react/src/components/*`.
+- Les primitives Bobun DS vivent dans `packages/react/src/components/*`.
 - Les apps `apps/*` consomment `@qhuy/react` via le barrel public et importent `@qhuy/react/styles.css` une seule fois à la racine.
 
 ## Summary

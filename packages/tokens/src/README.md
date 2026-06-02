@@ -1,8 +1,8 @@
-# Tokens FXP — contrat de livraison DA
+# Tokens Bobun DS — contrat de livraison design
 
 Ce dossier est le point d'entree des livraisons tokens fournies par la DA.
 
-Le repo FXP ne produit pas l'identite visuelle. Il consomme des exports Tokens Studio au format DTCG, les valide, puis les compile en CSS variables via Style Dictionary.
+Le repo Bobun DS ne produit pas l'identite visuelle finale. Il consomme des exports Tokens Studio au format DTCG, les valide, puis les compile en CSS variables via Style Dictionary.
 
 ## Ce que la DA livre
 
@@ -12,7 +12,7 @@ Pour chaque tenant ou mise a jour de theme, la DA fournit :
 - Le lien Figma source.
 - Le tenant cible avec un identifiant stable (`acme`, `stadium`, `nova`, etc.).
 - Les modes fournis : `light`, et `dark` si disponible.
-- Les tokens semantiques attendus par FXP, pas uniquement des primitives de palette.
+- Les tokens semantiques attendus par Bobun DS, pas uniquement des primitives de palette.
 - Une capture de reference ou un lien de preview Figma.
 - Une version ou date de livraison.
 - Un changelog court indiquant ce qui a change.
@@ -26,7 +26,7 @@ La DA ne doit pas fournir :
 - Des noms de variables hors convention `--fxp-*`.
 - Des overrides par application consommatrice.
 
-Les composants FXP restent generiques. La personnalisation passe uniquement par les tokens.
+Les composants Bobun DS restent generiques. La personnalisation passe uniquement par les tokens.
 
 ## Format attendu
 
@@ -70,7 +70,7 @@ packages/tokens/src/
 
 `tokens.json` reste le stub/base courant tant que le pipeline multi-tenant complet n'est pas implemente. Les dossiers `tenants/<id>/` deviennent la source des livraisons tenant lorsque la feature `architecture/tokens-multi-tenant` sera ouverte.
 
-## Validation FXP
+## Validation Bobun DS
 
 Chaque PR tokens doit verifier :
 

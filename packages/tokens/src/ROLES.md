@@ -1,4 +1,4 @@
-# Roles tokens FXP
+# Roles tokens Bobun DS
 
 Ce document decrit les responsabilites par role. Il ne doit pas etre duplique par personne individuelle.
 
@@ -15,9 +15,9 @@ La DA est responsable de :
 
 La DA ne modifie pas les composants React et ne cible pas leur markup interne.
 
-## Equipe FXP Design System
+## Mainteneur Bobun DS
 
-L'equipe FXP DS est responsable de :
+Le mainteneur Bobun DS est responsable de :
 
 - Valider la structure DTCG.
 - Integrer les exports dans `packages/tokens/src/`.
@@ -34,7 +34,7 @@ L'app consommatrice est responsable de :
 - Charger le CSS tenant correspondant.
 - Poser `data-tenant` sur `<html>`.
 - Importer une seule fois `@qhuy/tokens/css/fxp.css` et `@qhuy/react/styles.css`.
-- Ne pas override le markup, le comportement, ni l'API publique des composants FXP.
+- Ne pas override le markup, le comportement, ni l'API publique des composants Bobun DS.
 
 ## Tenant / metier
 

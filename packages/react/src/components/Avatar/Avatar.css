@@ -1,0 +1,28 @@
+.fxp-avatar {
+  position: relative;
+  display: inline-flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--fxp-color-accent);
+}
+
+.fxp-avatar__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fxp-avatar__fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--fxp-font-family-sans);
+  font-size: var(--fxp-font-size-sm);
+  font-weight: var(--fxp-font-weight-medium);
+  color: var(--fxp-color-accent-fg);
+  background: var(--fxp-color-accent);
+}

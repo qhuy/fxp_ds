@@ -1,0 +1,15 @@
+.fxp-progress {
+  position: relative;
+  width: 100%;
+  height: 0.5rem;
+  overflow: hidden;
+  background: var(--fxp-color-bg-muted);
+  border-radius: 999px;
+}
+
+.fxp-progress__indicator {
+  width: 100%;
+  height: 100%;
+  background: var(--fxp-color-brand-500);
+  transition: transform var(--fxp-transition-fast);
+}
