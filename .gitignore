@@ -41,3 +41,15 @@ coverage/
 
 # Astro
 .astro/
+
+# ── IA setup (local-only, jamais commité) ──
+.ai/
+.agents/
+.claude/
+.copier-answers.yml
+.githooks/
+.docs/
+AGENTS.md
+CLAUDE.md
+README_AI_CONTEXT.md
+.github/workflows/ai-context-check.yml
