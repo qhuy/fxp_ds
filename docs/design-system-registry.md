@@ -38,6 +38,9 @@ Garder chaque entrée courte (1-4 lignes max). Détails d'implémentation = lire
 - **Checkbox** : contrôle booléen accessible basé Radix Checkbox. États `checked`, `disabled`, `aria-invalid`, focus-visible.
   → Fiche : [.docs/features/front/shadcn-core-primitives.md](../.docs/features/front/shadcn-core-primitives.md)
 
+- **Dialog** : modal overlay accessible basé Radix Dialog. Composition `Dialog` / `DialogTrigger` / `DialogContent` / `DialogHeader` / `DialogTitle` / `DialogDescription` / `DialogFooter` / `DialogClose`. Focus trap, scroll lock, escape close, animations via `--fxp-transition-base`.
+  → Fiche : [.docs/features/front/dialog-primitive.md](../.docs/features/front/dialog-primitive.md)
+
 - **Input** : champ texte natif stylé. Props natives pass-through, états `disabled`, `focus-visible`, `aria-invalid`.
   → Fiche : [.docs/features/front/shadcn-core-primitives.md](../.docs/features/front/shadcn-core-primitives.md)
 
