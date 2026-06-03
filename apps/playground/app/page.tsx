@@ -1,5 +1,16 @@
 'use client'
-import { Button, Spinner } from '@qhuy/react'
+import {
+  Button,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  Spinner,
+} from '@qhuy/react'
 import { useEffect, useState } from 'react'
 import { DEFAULT_TENANT, isTenantId, TENANTS, type TenantId } from './tenant-config'
 
@@ -152,6 +163,55 @@ export default function PlaygroundPage() {
               Lien stylé en bouton
             </a>
           </Button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Dialog — overlay accessible (Radix)</h2>
+        <div className="row">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>Confirmer une action</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Supprimer cet élément ?</DialogTitle>
+                <DialogDescription>
+                  Cette action est immédiate et ne peut pas être annulée.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button variant="ghost">Annuler</Button>
+                </DialogClose>
+                <DialogClose asChild>
+                  <Button variant="destructive">Supprimer</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="secondary">Lire les conditions</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Conditions d'utilisation</DialogTitle>
+                <DialogDescription>Scrollez le contenu interne.</DialogDescription>
+              </DialogHeader>
+              {Array.from({ length: 15 }).map((_, i) => (
+                <p key={`tos-${i.toString()}`}>
+                  Article {i + 1} — lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                </p>
+              ))}
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>J'ai lu</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </section>
 
